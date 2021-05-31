@@ -26,7 +26,7 @@ namespace MagicScepter
 
             if (Context.IsWorldReady
                 && Game1.activeClickableMenu == null
-                && player.IsMainPlayer
+                && player.IsLocalPlayer
                 && player.CurrentTool != null
                 && player.CurrentTool is Wand
                 && !player.isRidingHorse()
