@@ -1,0 +1,10 @@
+{
+  "dialog.title": "Choisir un emplacement:",
+  "dialog.location.farm": "La ferme",
+  "dialog.location.beach": "La plage",
+  "dialog.location.mountain": "La Montagne",
+  "dialog.location.desert": "Le Désert de Calico",
+  "dialog.location.island": "L'Île Gingembre",
+  "dialog.location.islandFarm": "Ferme de l'île",
+  "dialog.cancel": "Annuler"
+}

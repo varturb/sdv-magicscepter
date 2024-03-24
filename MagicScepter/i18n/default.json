@@ -1,0 +1,10 @@
+{
+  "dialog.title": "Choose a location:",
+  "dialog.location.farm": "The Farm",
+  "dialog.location.beach": "The Beach",
+  "dialog.location.mountain": "The Mountain",
+  "dialog.location.desert": "The Desert",
+  "dialog.location.island": "Ginger Island",
+  "dialog.location.islandFarm": "Ginger Island Farm",
+  "dialog.cancel": "Cancel"
+}

@@ -1,0 +1,10 @@
+{
+  "dialog.title": "Válassz egy helyszínt:",
+  "dialog.location.farm": "A Farm",
+  "dialog.location.beach": "Strand",
+  "dialog.location.mountain": "Hegyek",
+  "dialog.location.desert": "Calico Sivatag",
+  "dialog.location.island": "Gyömbér sziget",
+  "dialog.location.islandFarm": "Szigetbeli farm",
+  "dialog.cancel": "Mégse"
+}
