@@ -12,7 +12,7 @@ namespace MagicScepter
     Island,
     IslandFarm,
     DeepWoods,
-    MiniObelisk,
+    Ridgeside,
     None
   }
 
@@ -51,9 +51,21 @@ namespace MagicScepter
           return new WarpLocation("IslandSouth", 11, 11);
         case WarpLocationChoice.IslandFarm:
           return new WarpLocation("IslandWest", 77, 40);
+        case WarpLocationChoice.Ridgeside:
+          return new WarpLocation("Custom_Ridgeside_Ridge", 18, 10);
         default:
           throw new Exception("Invalid WarpLocationChoice");
       }
     }
+  }
+
+  public static class Obelisks
+  {
+    public const string Beach = "Water Obelisk";
+    public const string Mountain = "Earth Obelisk";
+    public const string Desert = "Desert Obelisk";
+    public const string Island = "Island Obelisk";
+    public const string DeepWoods = "Woods Obelisk";
+    public const string Ridgeside = "RSV_Obelisk";
   }
 }

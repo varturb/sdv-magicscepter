@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Buildings;
 using StardewValley.Locations;
-using StardewValley.Tools;
 
 namespace MagicScepter
 {
@@ -34,11 +31,12 @@ namespace MagicScepter
       Game1.currentLocation.createQuestionDialogue(
         helper.Translation.Get("dialog.title"),
         responses.ToArray(),
-        GetAnswer
+        HandleAnswer
       );
     }
 
-    private List<Response> GetLocationResponses() {
+    private List<Response> GetLocationResponses()
+    {
       var responses = new List<Response>
       {
           new(WarpLocationChoice.Farm.ToString(), helper.Translation.Get("dialog.location.farm"))
@@ -46,26 +44,30 @@ namespace MagicScepter
 
       foreach (var building in Game1.getFarm().buildings)
       {
+        Console.WriteLine(building.buildingType.Value);
         switch (building.buildingType.Value)
         {
-          case "Water Obelisk":
+          case Obelisks.Beach:
             responses.Add(new Response(WarpLocationChoice.Beach.ToString(), helper.Translation.Get("dialog.location.beach")));
             break;
-          case "Earth Obelisk":
+          case Obelisks.Mountain:
             responses.Add(new Response(WarpLocationChoice.Mountain.ToString(), helper.Translation.Get("dialog.location.mountain")));
             break;
-          case "Desert Obelisk":
+          case Obelisks.Desert:
             responses.Add(new Response(WarpLocationChoice.Desert.ToString(), helper.Translation.Get("dialog.location.desert")));
             break;
-          case "Island Obelisk":
+          case Obelisks.Island:
             responses.Add(new Response(WarpLocationChoice.Island.ToString(), helper.Translation.Get("dialog.location.island")));
 
             var islandWest = Game1.locations.First(loc => loc.Name == "IslandWest") as IslandWest;
             if ((bool)islandWest?.farmObelisk.Value)
               responses.Add(new Response(WarpLocationChoice.IslandFarm.ToString(), helper.Translation.Get("dialog.location.islandFarm")));
             break;
-          case "Woods Obelisk":
-            responses.Add(new Response(WarpLocationChoice.DeepWoods.ToString(), "Deep Woods"));
+          case Obelisks.DeepWoods:
+            responses.Add(new Response(WarpLocationChoice.DeepWoods.ToString(), helper.Translation.Get("dialog.location.deepWoods")));
+            break;
+          case Obelisks.Ridgeside:
+            responses.Add(new Response(WarpLocationChoice.Ridgeside.ToString(), helper.Translation.Get("dialog.location.ridgeside")));
             break;
         }
       }
@@ -75,15 +77,59 @@ namespace MagicScepter
       return responses;
     }
 
-    private void GetAnswer(Farmer farmer, string answer)
+    private void HandleAnswer(Farmer farmer, string answer)
     {
       _ = Enum.TryParse(answer, out WarpLocationChoice choice);
 
-      if (choice == WarpLocationChoice.None)
-        return;
+      switch(choice) {
+        case WarpLocationChoice.Farm:
+        case WarpLocationChoice.IslandFarm:
+          WandWarp(choice);
+          break;  
+        case WarpLocationChoice.Beach:
+        case WarpLocationChoice.Mountain:
+        case WarpLocationChoice.Desert:
+        case WarpLocationChoice.Island:
+        case WarpLocationChoice.DeepWoods:
+        case WarpLocationChoice.Ridgeside:
+          ObeliskWarp(choice, farmer);
+          break;
+        case WarpLocationChoice.None:
+        default:
+          break;
+      }
+    }
 
+    private static void WandWarp(WarpLocationChoice choice) 
+    {
       var location = WarpLocations.GetWarpLocation(choice);
       BetterWand.Warp(location);
+    }
+
+    private static void ObeliskWarp(WarpLocationChoice choice, Farmer farmer)
+    {
+      var obelisk = choice switch 
+      {
+        WarpLocationChoice.Beach => Obelisks.Beach,
+        WarpLocationChoice.Mountain => Obelisks.Mountain,
+        WarpLocationChoice.Desert => Obelisks.Desert,
+        WarpLocationChoice.Island => Obelisks.Island,
+        WarpLocationChoice.DeepWoods => Obelisks.DeepWoods,
+        WarpLocationChoice.Ridgeside => Obelisks.Ridgeside,
+        _ => null
+      };
+      
+      if (obelisk == null)
+        return;
+
+      foreach (var building in Game1.getFarm().buildings)
+      {
+        if (building.buildingType.Value == obelisk)
+        {
+          building.doAction(new Vector2(building.tileX.Value, building.tileY.Value), farmer);
+          break;
+        }
+      }
     }
   }
 }
