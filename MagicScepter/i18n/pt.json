@@ -6,5 +6,6 @@
   "dialog.location.desert": "O Deserto",
   "dialog.location.island": "Ilha Gengibre",
   "dialog.location.islandFarm": "Casa de Fazenda da Ilha",
+  "dialog.location.miniObelisk": "Mini Obelisco #{{number}}",
   "dialog.cancel": "Cancelar"
 }

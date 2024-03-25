@@ -6,5 +6,6 @@
   "dialog.location.desert": "Le Désert de Calico",
   "dialog.location.island": "L'Île Gingembre",
   "dialog.location.islandFarm": "Ferme de l'île",
+  "dialog.location.miniObelisk": "Mini-obélisque #{{number}}",
   "dialog.cancel": "Annuler"
 }

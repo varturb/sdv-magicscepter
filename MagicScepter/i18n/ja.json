@@ -6,5 +6,6 @@
   "dialog.location.desert": "カリコ砂漠",
   "dialog.location.island": "ジンジャーアイランドd",
   "dialog.location.islandFarm": "島の農場",
+  "dialog.location.miniObelisk": "ミニオベリスク #{{number}}",
   "dialog.cancel": "キャンセル"
 }

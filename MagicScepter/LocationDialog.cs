@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -11,6 +12,7 @@ namespace MagicScepter
   public class LocationDialog
   {
     private readonly IModHelper helper;
+    private List<WarpLocation> miniObelisks;
 
     public LocationDialog(IModHelper helper)
     {
@@ -44,7 +46,6 @@ namespace MagicScepter
 
       foreach (var building in Game1.getFarm().buildings)
       {
-        Console.WriteLine(building.buildingType.Value);
         switch (building.buildingType.Value)
         {
           case Obelisks.Beach:
@@ -72,6 +73,21 @@ namespace MagicScepter
         }
       }
 
+      miniObelisks = new List<WarpLocation>();
+      var index = 1;
+      foreach (var obj in Game1.getFarm().objects.Pairs)
+      {
+        if (obj.Value.Name == Obelisks.MiniObelisk)
+        {
+          var name = $"{obj.Value.Name} #{index}";
+          var x = (int)obj.Value.TileLocation.X;
+          var y = (int)obj.Value.TileLocation.Y;
+          responses.Add(new Response($"{WarpLocationChoice.MiniObelisk} #{index}", helper.Translation.Get("dialog.location.miniObelisk", new { number = index })));
+          miniObelisks.Add(new WarpLocation(name, x, y));
+          index++;
+        }
+      }
+
       responses.Add(new Response(WarpLocationChoice.None.ToString(), helper.Translation.Get("dialog.cancel")));
 
       return responses;
@@ -81,11 +97,17 @@ namespace MagicScepter
     {
       _ = Enum.TryParse(answer, out WarpLocationChoice choice);
 
-      switch(choice) {
+      if (answer.Contains(WarpLocationChoice.MiniObelisk.ToString()))
+      {
+        choice = WarpLocationChoice.MiniObelisk;
+      }
+
+      switch (choice)
+      {
         case WarpLocationChoice.Farm:
         case WarpLocationChoice.IslandFarm:
           WandWarp(choice);
-          break;  
+          break;
         case WarpLocationChoice.Beach:
         case WarpLocationChoice.Mountain:
         case WarpLocationChoice.Desert:
@@ -94,13 +116,16 @@ namespace MagicScepter
         case WarpLocationChoice.Ridgeside:
           ObeliskWarp(choice, farmer);
           break;
+        case WarpLocationChoice.MiniObelisk:
+          MiniObeliskWarp(answer);
+          break;
         case WarpLocationChoice.None:
         default:
           break;
       }
     }
 
-    private static void WandWarp(WarpLocationChoice choice) 
+    private static void WandWarp(WarpLocationChoice choice)
     {
       var location = WarpLocations.GetWarpLocation(choice);
       BetterWand.Warp(location);
@@ -108,7 +133,7 @@ namespace MagicScepter
 
     private static void ObeliskWarp(WarpLocationChoice choice, Farmer farmer)
     {
-      var obelisk = choice switch 
+      var obelisk = choice switch
       {
         WarpLocationChoice.Beach => Obelisks.Beach,
         WarpLocationChoice.Mountain => Obelisks.Mountain,
@@ -118,7 +143,7 @@ namespace MagicScepter
         WarpLocationChoice.Ridgeside => Obelisks.Ridgeside,
         _ => null
       };
-      
+
       if (obelisk == null)
         return;
 
@@ -130,6 +155,52 @@ namespace MagicScepter
           break;
         }
       }
+    }
+
+    private void MiniObeliskWarp(string answer)
+    {
+      var index = int.Parse(answer.Replace($"{WarpLocationChoice.MiniObelisk} #", ""));
+      var miniObelisk = miniObelisks[index - 1];
+      var warpLocationCoords = GetValidWarpTile(miniObelisk.CoordX, miniObelisk.CoordY);
+      if (warpLocationCoords == null)
+      {
+        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:MiniObelisk_NeedsSpace"));
+        return;
+      }
+      var warpLocation = new WarpLocation(WarpLocationChoice.Farm.ToString(), (int)warpLocationCoords.Value.X, (int)warpLocationCoords.Value.Y);
+      BetterWand.Warp(warpLocation);
+    }
+
+    private static Vector2? GetValidWarpTile(int x, int y)
+    {
+      var targetLocation = new Vector2(x, y + 1);
+
+      if (CanWarpHere(targetLocation))
+      {
+        return targetLocation;
+      }
+      targetLocation = new Vector2(x - 1, y);
+      if (CanWarpHere(targetLocation))
+      {
+        return targetLocation;
+      }
+      targetLocation = new Vector2(x + 1, y);
+      if (CanWarpHere(targetLocation))
+      {
+        return targetLocation;
+      }
+      targetLocation = new Vector2(x, y - 1);
+      if (CanWarpHere(targetLocation))
+      {
+        return targetLocation;
+      }
+
+      return null;
+    }
+
+    private static bool CanWarpHere(Vector2 v)
+    {
+      return Game1.getFarm().CanItemBePlacedHere(v);
     }
   }
 }

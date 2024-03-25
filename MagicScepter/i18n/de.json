@@ -6,5 +6,6 @@
   "dialog.location.desert": "Die Calico-Wüste",
   "dialog.location.island": "Die Ingwerinsel",
   "dialog.location.islandFarm": "Insel Bauernhaus",
+  "dialog.location.miniObelisk": "Mini-Obelisk #{{number}}",
   "dialog.cancel": "Abbrechen"
 }

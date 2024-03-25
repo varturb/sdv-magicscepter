@@ -6,5 +6,6 @@
   "dialog.location.desert": "Desierto de Calico",
   "dialog.location.island": "Isla Jengibre",
   "dialog.location.islandFarm": "Granja Isleña",
+  "dialog.location.miniObelisk": "Mini obelisco #{{number}}",
   "dialog.cancel": "Cancelar"
 }

@@ -13,6 +13,7 @@ namespace MagicScepter
     IslandFarm,
     DeepWoods,
     Ridgeside,
+    MiniObelisk,
     None
   }
 
@@ -67,5 +68,6 @@ namespace MagicScepter
     public const string Island = "Island Obelisk";
     public const string DeepWoods = "Woods Obelisk";
     public const string Ridgeside = "RSV_Obelisk";
+    public const string MiniObelisk = "Mini-Obelisk";
   }
 }
