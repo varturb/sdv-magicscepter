@@ -22,6 +22,7 @@
     <Compile Include="WarpLocations.cs" />
     <Compile Include="BetterWand.cs" />
     <Compile Include="LocationDialog.cs" />
+    <Compile Include="OrderedResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />
