@@ -23,6 +23,8 @@
     <Compile Include="BetterWand.cs" />
     <Compile Include="LocationDialog.cs" />
     <Compile Include="OrderedResponse.cs" />
+    <Compile Include="MultipleMiniObelisks/MiniObelisk.cs" />
+    <Compile Include="MultipleMiniObelisks/MultipleMiniObelisks.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />
@@ -41,5 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>

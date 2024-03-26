@@ -6,6 +6,7 @@
   "dialog.location.desert": "Пустыня Калико",
   "dialog.location.island": "Имбирный остров",
   "dialog.location.islandFarm": "Островная ферм",
-  "dialog.location.miniObelisk": "Мини-обелиск #{{number}}",
+  "dialog.location.miniObelisk": "Мини-обелиск",
+  "dialog.location.miniObeliskNumber": "Мини-обелиск #{{number}}",
   "dialog.cancel": "Отмена"
 }

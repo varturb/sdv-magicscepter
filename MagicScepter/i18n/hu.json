@@ -6,6 +6,7 @@
   "dialog.location.desert": "Calico Sivatag",
   "dialog.location.island": "Gyömbér sziget",
   "dialog.location.islandFarm": "Szigetbeli farm",
-  "dialog.location.miniObelisk": "Mini-Obeliszk #{{number}}",
+  "dialog.location.miniObelisk": "Mini-Obeliszk",
+  "dialog.location.miniObeliskNumber": "Mini-Obeliszk #{{number}}",
   "dialog.cancel": "Mégse"
 }

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
+using MagicScepter.MultipleMiniObelisksMod;
 
 namespace MagicScepter
 {
@@ -73,22 +73,35 @@ namespace MagicScepter
         }
       }
 
-      miniObelisks = new List<WarpLocation>();
-      var index = 1;
-      foreach (var obj in Game1.getFarm().objects.Pairs)
+      var responseIndex = 9;
+      if (MultipleMiniObelisks.IsLoaded(helper))
       {
-        if (obj.Value.Name == Obelisks.MiniObelisk)
+        var response = MultipleMiniObelisks.GetResponse(helper);
+        if (response != null)
         {
-          var name = $"{obj.Value.Name} #{index}";
-          var x = (int)obj.Value.TileLocation.X;
-          var y = (int)obj.Value.TileLocation.Y;
-          responses.Add(new(8 + index, new Response($"{WarpLocationChoice.MiniObelisk} #{index}", helper.Translation.Get("dialog.location.miniObelisk", new { number = index }))));
-          miniObelisks.Add(new WarpLocation(name, x, y));
-          index++;
+          responses.Add(new(responseIndex++, response));
+        }
+      }
+      else
+      {
+        var miniObeliskNumber = 1;
+        miniObelisks = new List<WarpLocation>();
+        foreach (var obj in Game1.getFarm().objects.Pairs)
+        {
+          if (obj.Value.Name == Obelisks.MiniObelisk)
+          {
+            var name = $"{obj.Value.Name} #{miniObeliskNumber}";
+            var x = (int)obj.Value.TileLocation.X;
+            var y = (int)obj.Value.TileLocation.Y;
+            responses.Add(new(responseIndex, new Response($"{WarpLocationChoice.MiniObelisk} #{miniObeliskNumber}", helper.Translation.Get("dialog.location.miniObeliskNumber", new { number = miniObeliskNumber }))));
+            miniObelisks.Add(new WarpLocation(name, x, y));
+            responseIndex++;
+            miniObeliskNumber++;
+          }
         }
       }
 
-      responses.Add(new(100, new Response(WarpLocationChoice.None.ToString(), helper.Translation.Get("dialog.cancel"))));
+      responses.Add(new(responseIndex, new Response(WarpLocationChoice.None.ToString(), helper.Translation.Get("dialog.cancel"))));
 
       return responses.OrderBy(r => r.Order).Select(r => r.Response).ToList();
     }
@@ -159,6 +172,12 @@ namespace MagicScepter
 
     private void MiniObeliskWarp(string answer)
     {
+      if (MultipleMiniObelisks.IsLoaded(helper))
+      {
+        MultipleMiniObelisks.OpenWarpMenu();
+        return;
+      }
+
       var index = int.Parse(answer.Replace($"{WarpLocationChoice.MiniObelisk} #", ""));
       var miniObelisk = miniObelisks[index - 1];
       var warpLocationCoords = GetValidWarpTile(miniObelisk.CoordX, miniObelisk.CoordY);
