@@ -8,6 +8,8 @@
   "dialog.location.islandFarm": "Ginger Island Farm",
   "dialog.location.deepWoods": "Deep Woods",
   "dialog.location.ridgeside": "Ridgeside",
+  "dialog.location.eastScarp": "East Scarp",
+  "dialog.location.downtownZuzu": "Downtown Zuzu",
   "dialog.location.miniObelisk": "Mini-Obelisk",
   "dialog.location.miniObeliskNumber": "Mini-Obelisk #{{number}}",
   "dialog.cancel": "Cancel"

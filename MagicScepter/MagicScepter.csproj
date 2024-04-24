@@ -19,12 +19,36 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ModEntry.cs" />
-    <Compile Include="WarpLocations.cs" />
     <Compile Include="BetterWand.cs" />
     <Compile Include="LocationDialog.cs" />
     <Compile Include="OrderedResponse.cs" />
-    <Compile Include="MultipleMiniObelisks/MiniObelisk.cs" />
-    <Compile Include="MultipleMiniObelisks/MultipleMiniObelisks.cs" />
+    <Compile Include="Coords.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Patches/WandDoFunctionPatch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mods/ModManager.cs" />
+    <Compile Include="Mods/SupportedMod.cs" />
+    <Compile Include="Mods/MultipleMiniObelisks/MiniObelisk.cs" />
+    <Compile Include="Mods/MultipleMiniObelisks/MultipleMiniObelisks.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="WarpLocations/ResponseManager.cs" />
+    <Compile Include="WarpLocations/LocationHelper.cs" />
+    <Compile Include="WarpLocations/WarpLocationBase.cs" />
+    <Compile Include="WarpLocations/Farm.cs" />
+    <Compile Include="WarpLocations/IslandFarm.cs" />
+    <Compile Include="WarpLocations/Island.cs" />
+    <Compile Include="WarpLocations/Beach.cs" />
+    <Compile Include="WarpLocations/Mountain.cs" />
+    <Compile Include="WarpLocations/Desert.cs" />
+    <Compile Include="WarpLocations/RidgesideVillage.cs" />
+    <Compile Include="WarpLocations/EastScarp.cs" />
+    <Compile Include="WarpLocations/DowntownZuzu.cs" />
+    <Compile Include="WarpLocations/DeepWoods.cs" />
+    <Compile Include="WarpLocations/MiniObelisk.cs" />
+    <Compile Include="WarpLocations/MiniObeliskManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

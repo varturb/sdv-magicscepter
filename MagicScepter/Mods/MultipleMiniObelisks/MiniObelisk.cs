@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace MagicScepter.MultipleMiniObelisksMod
+namespace MagicScepter.Mods.MultipleMiniObelisks
 {
   public class MiniObelisk
   {

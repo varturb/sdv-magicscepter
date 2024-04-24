@@ -5,10 +5,10 @@ namespace MagicScepter
 {
   public static class BetterWand
   {
-    public static void Warp(WarpLocation targetLocation)
+    public static void Warp(string location, int x, int y)
     {
       BeforeWarpAnimation();
-      WarpPlayerTo(targetLocation);
+      WarpPlayerTo(location, x, y);
       AfterWarpAnimation();
     }
 
@@ -65,12 +65,12 @@ namespace MagicScepter
       }
     }
 
-    private static void WarpPlayerTo(WarpLocation warpLocation)
+    private static void WarpPlayerTo(string location, int x, int y)
     {
       DelayedAction.fadeAfterDelay(new Game1.afterFadeFunction(() =>
       {
         var player = Game1.player;
-        Game1.warpFarmer(warpLocation.Name, warpLocation.CoordX, warpLocation.CoordY, false);
+        Game1.warpFarmer(location, x, y, false);
         Game1.fadeToBlackAlpha = 0.99f;
         Game1.screenGlow = false;
         Game1.displayFarmer = true;

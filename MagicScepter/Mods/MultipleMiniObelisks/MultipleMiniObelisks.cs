@@ -1,31 +1,16 @@
 using System.Collections.Generic;
-using StardewModdingAPI;
 using StardewValley;
 using Newtonsoft.Json;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
-namespace MagicScepter.MultipleMiniObelisksMod
+namespace MagicScepter.Mods.MultipleMiniObelisks
 {
   public static class MultipleMiniObelisks
   {
     private const string modUniqueID = "PeacefulEnd.MultipleMiniObelisks";
     private const string modDataKey = $"{modUniqueID}/obelisk-locations";
     private const string miniObelistGameObjectId = "238";
-
-    public static bool IsLoaded(IModHelper helper)
-    {
-      return helper.ModRegistry.IsLoaded(modUniqueID);
-    }
-
-    public static Response GetResponse(IModHelper helper)
-    {
-      if (FindObelisk() != null)
-      {
-        return new Response(WarpLocationChoice.MiniObelisk.ToString(), helper.Translation.Get("dialog.location.miniObelisk"));
-      }
-      return null;
-    }
 
     public static void OpenWarpMenu()
     {
@@ -40,6 +25,11 @@ namespace MagicScepter.MultipleMiniObelisksMod
           tempObject.checkForAction(Game1.player);
         }
       }
+    }
+
+    public static bool CanWarp()
+    {
+      return FindObelisk() != null;
     }
 
     private static MiniObelisk FindObelisk()

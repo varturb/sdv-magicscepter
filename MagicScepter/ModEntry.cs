@@ -1,62 +1,34 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Tools;
+using HarmonyLib;
+using MagicScepter.Patches;
+using MagicScepter.Mods;
+using MagicScepter.WarpLocations;
 
 namespace MagicScepter
 {
   public class ModEntry : Mod
   {
-    LocationDialog dialog;
-
     public override void Entry(IModHelper helper)
     {
-      dialog = new LocationDialog(Helper);
-      helper.Events.Input.ButtonPressed += OnButtonPressed;
-    }
-
-    private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
-    {
-      if (CanWandBeUsed(e))
+      try
       {
-        dialog.ShowLocationDialog();
+        ModManager.Initialize(Helper);
+        ResponseManager.Initialize(Helper);
+        WandDoFunctionPatch.Initialize(Monitor, Helper);
+
+        var harmony = new Harmony(ModManifest.UniqueID);
+        harmony.Patch(
+          original: AccessTools.Method(typeof(Wand), nameof(Wand.DoFunction)),
+          prefix: new HarmonyMethod(typeof(WandDoFunctionPatch), nameof(WandDoFunctionPatch.WandDoFunction_Prefix))
+        );
       }
-    }
-
-    private static bool CanWandBeUsed(ButtonPressedEventArgs e)
-    {
-      var player = Game1.player;
-
-      return Context.IsWorldReady
-          && Game1.activeClickableMenu == null
-          && player.IsLocalPlayer
-          && player.CurrentTool != null
-          && player.CurrentTool is Wand
-          && player.CanMove
-          && !player.isRidingHorse()
-          && !player.bathingClothes.Value
-          && e.Button.IsUseToolButton()
-          && !InOnScreenMenu(e.Cursor);
-    }
-
-    private static bool InOnScreenMenu(ICursorPosition cursor)
-    {
-      bool save = Game1.uiMode;
-      Game1.uiMode = true;
-      Vector2 v = cursor.GetScaledScreenPixels();
-      Game1.uiMode = save;
-      int x = (int)v.X;
-      int y = (int)v.Y;
-      for (int i = 0; i < Game1.onScreenMenus.Count; i++)
+      catch (Exception e)
       {
-        if (Game1.onScreenMenus[i].isWithinBounds(x, y))
-        {
-          return true;
-        }
+        Monitor.Log($"Issue with Harmony patch: {e}", LogLevel.Error);
+        return;
       }
-      return false;
     }
   }
 }
