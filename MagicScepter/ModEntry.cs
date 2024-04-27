@@ -5,6 +5,7 @@ using HarmonyLib;
 using MagicScepter.Patches;
 using MagicScepter.Mods;
 using MagicScepter.WarpLocations;
+using MagicScepter.Multiplayer;
 
 namespace MagicScepter
 {
@@ -12,12 +13,13 @@ namespace MagicScepter
   {
     public override void Entry(IModHelper helper)
     {
+      ModManager.Initialize(Helper);
+      ResponseManager.Initialize(Helper);
+      WandDoFunctionPatch.Initialize(Monitor, Helper);
+      MultiplayerManager.Initialize(Helper, ModManifest);
+
       try
       {
-        ModManager.Initialize(Helper);
-        ResponseManager.Initialize(Helper);
-        WandDoFunctionPatch.Initialize(Monitor, Helper);
-
         var harmony = new Harmony(ModManifest.UniqueID);
         harmony.Patch(
           original: AccessTools.Method(typeof(Wand), nameof(Wand.DoFunction)),
@@ -29,6 +31,9 @@ namespace MagicScepter
         Monitor.Log($"Issue with Harmony patch: {e}", LogLevel.Error);
         return;
       }
+
+      Helper.Events.Multiplayer.ModMessageReceived += MultiplayerManager.OnModMessageReceived;
+      Helper.Events.GameLoop.DayStarted += MultiplayerManager.OnDayStarted;
     }
   }
 }

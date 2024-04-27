@@ -28,6 +28,11 @@
     <Compile Include="Patches/WandDoFunctionPatch.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Multiplayer/MultiplayerManager.cs" />
+    <Compile Include="Multiplayer/IslandFarmBroadcastMessage.cs" />
+    <Compile Include="Multiplayer/IslandFarmUpdateMessage.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Mods/ModManager.cs" />
     <Compile Include="Mods/SupportedMod.cs" />
     <Compile Include="Mods/MultipleMiniObelisks/MiniObelisk.cs" />

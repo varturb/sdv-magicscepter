@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using MagicScepter.Multiplayer;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 
@@ -20,17 +22,24 @@ namespace MagicScepter.WarpLocations
 
     private bool CanWarpHere()
     {
-      var hasIslandObelisk = LocationHelper.FindBuilding(ObeliskName) != null;
-      if (!hasIslandObelisk) return false;
+      if (Context.IsMainPlayer)
+      {
+        var hasIslandObelisk = LocationHelper.FindBuilding(ObeliskName) != null;
+        if (!hasIslandObelisk) return false;
 
-      try
-      {
-        var islandWest = Game1.locations.First(loc => loc.Name == LocationName) as IslandWest;
-        return (bool)islandWest?.farmObelisk.Value;
+        try
+        {
+          var islandWest = Game1.locations.First(loc => loc.Name == LocationName) as IslandWest;
+          return (bool)islandWest?.farmObelisk.Value;
+        }
+        catch
+        {
+          return false;
+        }
       }
-      catch 
+      else
       {
-        return false;
+        return MultiplayerManager.CanWarpToIslandFarm;
       }
     }
   }

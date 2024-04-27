@@ -12,7 +12,7 @@ namespace MagicScepter
     public static void Initialize(IModHelper helper)
     {
       Helper = helper;
-    }    
+    }
 
     public static void ShowLocationDialog()
     {
@@ -25,7 +25,7 @@ namespace MagicScepter
         return;
       }
 
-      Game1.currentLocation.createQuestionDialogue(
+      Game1.player.currentLocation.createQuestionDialogue(
         Helper.Translation.Get("dialog.title"),
         responses.ToArray(),
         HandleAnswer
