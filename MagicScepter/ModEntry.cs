@@ -17,6 +17,7 @@ namespace MagicScepter
       ResponseManager.Initialize(Helper);
       WandDoFunctionPatch.Initialize(Monitor, Helper);
       MultiplayerManager.Initialize(Helper, ModManifest);
+      LocationDialog.Initialize(Helper);
 
       try
       {

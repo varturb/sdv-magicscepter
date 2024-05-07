@@ -9,19 +9,33 @@ namespace MagicScepter.WarpLocations
   public static class LocationHelper
   {
     private const string EastScarpFarmLocation = "EastScarp_MeadowFarm";
+    private const string RidgesideFarmLocation = "Custom_Ridgeside_SummitFarm";
 
     public static Building FindBuilding(string name)
     {
-      var building = Game1.getFarm().buildings.FirstOrDefault(building => building.buildingType.Value == name);
-      if (building != null) return building;
-
-      if (ModManager.IsModLoaded(SupportedMod.EastScarp))
+      try
       {
-        building = Game1.getLocationFromName(EastScarpFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
+        var building = Game1.getFarm().buildings.FirstOrDefault(building => building.buildingType.Value == name);
         if (building != null) return building;
-      }
 
-      return null;
+        if (ModManager.IsModLoaded(SupportedMod.EastScarp))
+        {
+          building = Game1.getLocationFromName(EastScarpFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
+          if (building != null) return building;
+        }
+
+        if (ModManager.IsModLoaded(SupportedMod.RidgesideVillage))
+        {
+          building = Game1.getLocationFromName(RidgesideFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
+          if (building != null) return building;
+        }
+
+        return null;
+      }
+      catch
+      {
+        return null;
+      }
     }
 
     public static List<Object> FindObjects(string name)

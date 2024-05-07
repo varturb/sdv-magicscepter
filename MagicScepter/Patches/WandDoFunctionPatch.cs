@@ -21,7 +21,6 @@ namespace MagicScepter.Patches
       {        
         if (who.IsLocalPlayer)
         {
-          LocationDialog.Initialize(Helper);
           LocationDialog.ShowLocationDialog();
         }
 

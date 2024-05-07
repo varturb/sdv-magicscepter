@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using MagicScepter.Multiplayer;
 using StardewModdingAPI;
@@ -24,13 +23,17 @@ namespace MagicScepter.WarpLocations
     {
       if (Context.IsMainPlayer)
       {
-        var hasIslandObelisk = LocationHelper.FindBuilding(ObeliskName) != null;
-        if (!hasIslandObelisk) return false;
-
         try
         {
-          var islandWest = Game1.locations.First(loc => loc.Name == LocationName) as IslandWest;
-          return (bool)islandWest?.farmObelisk.Value;
+          var hasIslandObelisk = LocationHelper.FindBuilding(ObeliskName) != null;
+          if (!hasIslandObelisk) return false;
+
+          var islandWest = Game1.locations.FirstOrDefault(loc => loc.Name == LocationName);
+          if (islandWest != null)
+          {
+            return (islandWest as IslandWest).farmObelisk.Value;
+          }
+          return false;
         }
         catch
         {

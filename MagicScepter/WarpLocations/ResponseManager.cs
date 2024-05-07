@@ -29,7 +29,9 @@ namespace MagicScepter.WarpLocations
       AddResponse(new IslandFarm());
       AddResponse(new DeepWoods());
       AddResponse(new RidgesideVillage());
+      AddResponse(new RidgesideVillageFarm());
       AddResponse(new EastScarp());
+      AddResponse(new EastScarpFarm());
       AddResponse(new DowntownZuzu());
       AddMiniObeliskResponses();
       AddCancelResponse();

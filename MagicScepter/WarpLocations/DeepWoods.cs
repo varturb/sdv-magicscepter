@@ -6,7 +6,7 @@ namespace MagicScepter.WarpLocations
 {
   public class DeepWoods : WarpLocationBase
   {
-    public override int Order => 7;
+    public override int Order => 20;
     internal override string LocationName => "DeepWoods";
     public override string DialogLabel => "dialog.location.deepWoods";
     internal override string ObeliskName => "Woods Obelisk";

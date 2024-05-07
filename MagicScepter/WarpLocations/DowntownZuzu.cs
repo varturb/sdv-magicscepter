@@ -6,7 +6,7 @@ namespace MagicScepter.WarpLocations
 {
   public class DowntownZuzu : WarpLocationBase
   {
-    public override int Order => 10;
+    public override int Order => 50;
     internal override string LocationName => "Custom_DTZ_ZuzuCity1";
     public override string DialogLabel => "dialog.location.downtownZuzu";
     internal override string ObeliskName => "DTZ.DowntownZuzuCP_Obelisk";

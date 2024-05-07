@@ -6,7 +6,7 @@ namespace MagicScepter.WarpLocations
 {
   public class EastScarp : WarpLocationBase
   {
-    public override int Order => 9;
+    public override int Order => 40;
     internal override string LocationName => "EastScarp_Village";
     public override string DialogLabel => "dialog.location.eastScarp";
     internal override string ObeliskName => "Scarp Obelisk";

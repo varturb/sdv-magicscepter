@@ -49,7 +49,9 @@
     <Compile Include="WarpLocations/Mountain.cs" />
     <Compile Include="WarpLocations/Desert.cs" />
     <Compile Include="WarpLocations/RidgesideVillage.cs" />
+    <Compile Include="WarpLocations/RidgesideVillageFarm.cs" />
     <Compile Include="WarpLocations/EastScarp.cs" />
+    <Compile Include="WarpLocations/EastScarpFarm.cs" />
     <Compile Include="WarpLocations/DowntownZuzu.cs" />
     <Compile Include="WarpLocations/DeepWoods.cs" />
     <Compile Include="WarpLocations/MiniObelisk.cs" />

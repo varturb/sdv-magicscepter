@@ -6,7 +6,7 @@ namespace MagicScepter.WarpLocations
 {
   public class RidgesideVillage : WarpLocationBase
   {
-    public override int Order => 8;
+    public override int Order => 30;
     internal override string LocationName => "Custom_Ridgeside_Ridge";
     public override string DialogLabel => "dialog.location.ridgeside";
     internal override string ObeliskName => "RSV_Obelisk";

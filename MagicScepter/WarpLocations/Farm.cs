@@ -7,7 +7,7 @@ namespace MagicScepter.WarpLocations
     public override int Order => 1;
     internal override string LocationName => "Farm";
     public override string DialogLabel => "dialog.location.farm"; 
-    internal override string ObeliskName => "Water Obelisk";
+    internal override string ObeliskName => null;
     public override bool CanWarp => true;
 
     public override void Warp()
