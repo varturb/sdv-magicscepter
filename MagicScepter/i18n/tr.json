@@ -8,5 +8,6 @@
   "dialog.location.islandFarm": "Ada Çiftliği",
   "dialog.location.miniObelisk": "Küçük Dikilitaş",
   "dialog.location.miniObeliskNumber": "Küçük Dikilitaş #{{number}}",
-  "dialog.cancel": "Vazgeç"
+  "dialog.cancel": "Vazgeç",
+  "menu.location.islandFarm": "Ada Çiftliği"
 }

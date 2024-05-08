@@ -1,22 +1,37 @@
 using System.Collections.Generic;
 using System.Linq;
-using StardewModdingAPI;
 using StardewValley;
 
 namespace MagicScepter.WarpLocations
 {
   public static class ResponseManager
   {
-    private static IModHelper Helper;
     private static List<OrderedResponse> Responses;
     private static List<WarpLocationBase> WarpLocations;
 
-    internal static void Initialize(IModHelper helper)
+    public static List<Response> GetResponses()
     {
-      Helper = helper;
+      Initialize();
+      AddCancelResponse();
+
+      return Responses.OrderBy(response => response.Order).Select(r => r.Response).ToList();
     }
 
-    public static List<Response> GetResponses()
+    public static List<WarpLocationBase> GetWarpLocations()
+    {
+      Initialize();
+
+      return WarpLocations;
+    }
+
+    public static void HandleResponse(string responseKey)
+    {
+      WarpLocations
+        .FirstOrDefault(location => location.DialogKey == responseKey)
+        ?.Warp();
+    }
+
+    private static void Initialize()
     {
       Responses = new List<OrderedResponse>();
       WarpLocations = new List<WarpLocationBase>();
@@ -34,23 +49,13 @@ namespace MagicScepter.WarpLocations
       AddResponse(new EastScarpFarm());
       AddResponse(new DowntownZuzu());
       AddMiniObeliskResponses();
-      AddCancelResponse();
-
-      return Responses.OrderBy(response => response.Order).Select(r => r.Response).ToList();
-    }
-
-    public static void HandleResponse(string responseKey)
-    {
-      WarpLocations
-        .FirstOrDefault(location => location.DialogKey == responseKey)
-        ?.Warp();
     }
 
     private static void AddResponse(WarpLocationBase location)
     {
       if (location.CanWarp)
       {
-        Responses.Add(new(location.Order, new Response(location.DialogKey, Helper.Translation.Get(location.DialogLabel))));
+        Responses.Add(new(location.Order, new Response(location.DialogKey, location.DialogText)));
         WarpLocations.Add(location);
       }
     }
@@ -62,8 +67,7 @@ namespace MagicScepter.WarpLocations
       {
         if (miniObelisk.CanWarp)
         {
-          var responeText = Helper.Translation.Get(miniObelisk.DialogLabel, new { number = miniObelisk.DisplayNumber });
-          Responses.Add(new(miniObelisk.Order, new Response(miniObelisk.DialogKey, responeText)));
+          Responses.Add(new(miniObelisk.Order, new Response(miniObelisk.DialogKey, miniObelisk.DialogText)));
           WarpLocations.Add(miniObelisk);
         }
       }
@@ -71,7 +75,7 @@ namespace MagicScepter.WarpLocations
 
     private static void AddCancelResponse()
     {
-      Responses.Add(new(10000, new Response("dialog.cancel", Helper.Translation.Get("dialog.cancel"))));
+      Responses.Add(new(10000, new Response("dialog.cancel", ModUtility.Helper.Translation.Get("dialog.cancel"))));
     }
   }
 }

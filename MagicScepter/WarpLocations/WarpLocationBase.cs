@@ -1,4 +1,4 @@
-using System;
+using Microsoft.Xna.Framework;
 
 namespace MagicScepter.WarpLocations
 {
@@ -10,10 +10,13 @@ namespace MagicScepter.WarpLocations
     internal abstract string ObeliskName { get; }
     public abstract bool CanWarp { get; }
     public string DialogKey;
+    public string DialogText;
+    public abstract Rectangle SpirteSource { get; }
 
     public WarpLocationBase()
     {
       DialogKey = DialogLabel;
+      DialogText = ModUtility.Helper.Translation.Get(DialogKey);
     }
 
     public abstract void Warp();

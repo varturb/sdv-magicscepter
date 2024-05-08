@@ -1,5 +1,7 @@
 using System.Linq;
 using MagicScepter.Multiplayer;
+using MagicScepter.Tools;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -10,9 +12,10 @@ namespace MagicScepter.WarpLocations
   {
     public override int Order => 6;
     internal override string LocationName => "IslandWest";
-    public override string DialogLabel => "dialog.location.islandFarm";
+    public override string DialogLabel => GetDialogLabel();
     internal override string ObeliskName => "Island Obelisk";
     public override bool CanWarp => CanWarpHere();
+    public override Rectangle SpirteSource => new(320, 0, 64, 64);
 
     public override void Warp()
     {
@@ -44,6 +47,13 @@ namespace MagicScepter.WarpLocations
       {
         return MultiplayerManager.CanWarpToIslandFarm;
       }
+    }
+
+    private static string GetDialogLabel()
+    {
+      return ModUtility.Config.UseOldDialogMenu 
+        ? "dialog.location.islandFarm" 
+        : "menu.location.islandFarm";
     }
   }
 }

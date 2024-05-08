@@ -8,5 +8,6 @@
   "dialog.location.islandFarm": "Fattoria dell'isola",
   "dialog.location.miniObelisk": "Mini-obelisco",
   "dialog.location.miniObeliskNumber": "Mini-obelisco #{{number}}",
-  "dialog.cancel": "Annulla"
+  "dialog.cancel": "Annulla",
+  "menu.location.islandFarm": "Fattoria dell'isola"
 }

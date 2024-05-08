@@ -6,19 +6,11 @@ namespace MagicScepter.Multiplayer
 {
   public static class MultiplayerManager
   {
-    private static IManifest manifest;
-    private static IModHelper helper;
     public static bool CanWarpToIslandFarm { get; set; } = false;
-
-    public static void Initialize(IModHelper modHelper, IManifest modManifest)
-    {
-      helper = modHelper;
-      manifest = modManifest;
-    }
 
     public static void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
     {
-      if (e.FromModID != manifest.UniqueID)
+      if (e.FromModID != ModUtility.Manifest.UniqueID)
       {
         return;
       }
@@ -54,12 +46,20 @@ namespace MagicScepter.Multiplayer
 
     private static void SendBroadcastMessage()
     {
-      helper.Multiplayer.SendMessage(new IslandFarmBroadcastMessage(CanWarpToIslandFarm), nameof(IslandFarmBroadcastMessage), modIDs: new[] { manifest.UniqueID });
+      ModUtility.Helper.Multiplayer.SendMessage(
+        new IslandFarmBroadcastMessage(CanWarpToIslandFarm), 
+        nameof(IslandFarmBroadcastMessage), 
+        modIDs: new[] { ModUtility.Manifest.UniqueID }
+      );
     }
 
     private static void SendUpdateMessage()
     {
-      helper.Multiplayer.SendMessage(new IslandFarmUpdateMessage(), nameof(IslandFarmUpdateMessage), modIDs: new[] { manifest.UniqueID });
+      ModUtility.Helper.Multiplayer.SendMessage(
+        new IslandFarmUpdateMessage(), 
+        nameof(IslandFarmUpdateMessage), 
+        modIDs: new[] { ModUtility.Manifest.UniqueID }
+      );
     }
   }
 }

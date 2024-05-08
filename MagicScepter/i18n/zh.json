@@ -8,5 +8,6 @@
   "dialog.location.islandFarm": "姜岛农舍",
   "dialog.location.miniObelisk": "迷你图腾尖塔",
   "dialog.location.miniObeliskNumber": "迷你图腾尖塔 #{{number}}",
-  "dialog.cancel": "取消"
+  "dialog.cancel": "取消",
+  "menu.location.islandFarm": "姜岛农舍"
 }

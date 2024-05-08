@@ -1,6 +1,6 @@
-using System.Diagnostics.Contracts;
 using MagicScepter.Mods;
 using MagicScepter.Mods.MultipleMiniObelisks;
+using MagicScepter.Tools;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
@@ -13,6 +13,7 @@ namespace MagicScepter.WarpLocations
     internal override string LocationName => "Farm";
     internal override string ObeliskName => "Mini-Obelisk";
     public override bool CanWarp => CanWarpHere();
+    public override Rectangle SpirteSource => new(384, 0, 64, 64);
     public int DisplayNumber;
 
     private string _dialogLabel = "dialog.location.miniObelisk";
@@ -27,6 +28,7 @@ namespace MagicScepter.WarpLocations
       _dialogLabel = "dialog.location.miniObeliskNumber";
       DisplayNumber = index + 1;
       DialogKey = $"{DialogKey}_{DisplayNumber}";
+      DialogText = ModUtility.Helper.Translation.Get(DialogLabel, new { number = DisplayNumber });
       Coords = coords;
     }
 

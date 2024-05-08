@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 
-namespace MagicScepter
+namespace MagicScepter.Tools
 {
   public static class BetterWand
   {

@@ -5,7 +5,7 @@
   "dialog.location.mountain": "The Mountain",
   "dialog.location.desert": "The Desert",
   "dialog.location.island": "Ginger Island",
-  "dialog.location.islandFarm": "Ginger Island Farm",
+  "dialog.location.islandFarm": "Ginger Island Farm",  
   "dialog.location.deepWoods": "Deep Woods",
   "dialog.location.ridgeside": "Ridgeside",
   "dialog.location.ridgesideFarm": "Ridgeside Summit Farm",
@@ -14,5 +14,8 @@
   "dialog.location.downtownZuzu": "Downtown Zuzu",
   "dialog.location.miniObelisk": "Mini-Obelisk",
   "dialog.location.miniObeliskNumber": "Mini-Obelisk #{{number}}",
-  "dialog.cancel": "Cancel"
+  "dialog.cancel": "Cancel",
+  "menu.location.islandFarm": "Island Farm",
+  "menu.location.ridgesideFarm": "Summit Farm",
+  "menu.location.eastScarpFarm": "Meadow Farm"
 }

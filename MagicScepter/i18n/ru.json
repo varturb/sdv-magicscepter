@@ -8,5 +8,6 @@
   "dialog.location.islandFarm": "Островная ферм",
   "dialog.location.miniObelisk": "Мини-обелиск",
   "dialog.location.miniObeliskNumber": "Мини-обелиск #{{number}}",
-  "dialog.cancel": "Отмена"
+  "dialog.cancel": "Отмена",
+  "menu.location.islandFarm": "Островная ферм"
 }

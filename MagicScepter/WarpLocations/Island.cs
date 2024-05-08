@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using MagicScepter.Mods;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
@@ -13,6 +10,7 @@ namespace MagicScepter.WarpLocations
     public override string DialogLabel => "dialog.location.island";
     internal override string ObeliskName => "Island Obelisk";
     public override bool CanWarp => CanWarpHere();
+    public override Rectangle SpirteSource => new(256, 0, 64, 64);
 
     public override void Warp()
     {

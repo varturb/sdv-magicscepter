@@ -1,3 +1,5 @@
+using MagicScepter.Tools;
+using Microsoft.Xna.Framework;
 using StardewValley;
 
 namespace MagicScepter.WarpLocations
@@ -6,9 +8,10 @@ namespace MagicScepter.WarpLocations
   {
     public override int Order => 1;
     internal override string LocationName => "Farm";
-    public override string DialogLabel => "dialog.location.farm"; 
+    public override string DialogLabel => "dialog.location.farm";
     internal override string ObeliskName => null;
     public override bool CanWarp => true;
+    public override Rectangle SpirteSource => new(0, 0, 64, 64);
 
     public override void Warp()
     {

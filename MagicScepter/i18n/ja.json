@@ -8,5 +8,6 @@
   "dialog.location.islandFarm": "島の農場",
   "dialog.location.miniObelisk": "ミニオベリスク",
   "dialog.location.miniObeliskNumber": "ミニオベリスク #{{number}}",
-  "dialog.cancel": "キャンセル"
+  "dialog.cancel": "キャンセル",
+  "menu.location.islandFarm": "島の農場"
 }

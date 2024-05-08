@@ -8,5 +8,6 @@
   "dialog.location.islandFarm": "Insel Bauernhaus",
   "dialog.location.miniObelisk": "Mini-Obelisk",
   "dialog.location.miniObeliskNumber": "Mini-Obelisk #{{number}}",
-  "dialog.cancel": "Abbrechen"
+  "dialog.cancel": "Abbrechen",
+  "menu.location.islandFarm": "Insel Bauernhaus"
 }

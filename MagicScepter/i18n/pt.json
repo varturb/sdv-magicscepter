@@ -8,5 +8,6 @@
   "dialog.location.islandFarm": "Casa de Fazenda da Ilha",
   "dialog.location.miniObelisk": "Mini Obelisco",
   "dialog.location.miniObeliskNumber": "Mini Obelisco #{{number}}",
-  "dialog.cancel": "Cancelar"
+  "dialog.cancel": "Cancelar",
+  "menu.location.islandFarm": "Casa de Fazenda da Ilha"
 }

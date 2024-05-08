@@ -3,8 +3,6 @@ using StardewModdingAPI;
 using StardewValley.Tools;
 using HarmonyLib;
 using MagicScepter.Patches;
-using MagicScepter.Mods;
-using MagicScepter.WarpLocations;
 using MagicScepter.Multiplayer;
 
 namespace MagicScepter
@@ -13,11 +11,7 @@ namespace MagicScepter
   {
     public override void Entry(IModHelper helper)
     {
-      ModManager.Initialize(Helper);
-      ResponseManager.Initialize(Helper);
-      WandDoFunctionPatch.Initialize(Monitor, Helper);
-      MultiplayerManager.Initialize(Helper, ModManifest);
-      LocationDialog.Initialize(Helper);
+      ModUtility.Initialize(helper, Monitor, ModManifest);
 
       try
       {

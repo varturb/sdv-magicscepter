@@ -10,6 +10,7 @@ namespace MagicScepter.WarpLocations
     public override string DialogLabel => "dialog.location.beach";
     internal override string ObeliskName => "Water Obelisk";
     public override bool CanWarp => CanWarpHere();
+    public override Rectangle SpirteSource => new(64, 0, 64, 64);
 
     public override void Warp()
     {

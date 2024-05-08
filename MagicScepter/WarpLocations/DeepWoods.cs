@@ -11,6 +11,7 @@ namespace MagicScepter.WarpLocations
     public override string DialogLabel => "dialog.location.deepWoods";
     internal override string ObeliskName => "Woods Obelisk";
     public override bool CanWarp => CanWarpHere();
+    public override Rectangle SpirteSource => new(448, 0, 64, 64);
 
     public override void Warp()
     {

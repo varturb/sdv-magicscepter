@@ -11,6 +11,7 @@ namespace MagicScepter.WarpLocations
     public override string DialogLabel => "dialog.location.downtownZuzu";
     internal override string ObeliskName => "DTZ.DowntownZuzuCP_Obelisk";
     public override bool CanWarp => CanWarpHere();
+    public override Rectangle SpirteSource => new(768, 0, 64, 64);
 
     public override void Warp()
     {

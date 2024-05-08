@@ -19,10 +19,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ModEntry.cs" />
-    <Compile Include="BetterWand.cs" />
-    <Compile Include="LocationDialog.cs" />
+    <Compile Include="ModConfig.cs" />
+    <Compile Include="ActionHandler.cs" />
     <Compile Include="OrderedResponse.cs" />
     <Compile Include="Coords.cs" />
+    <Compile Include="ModUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tools/BetterWand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches/WandDoFunctionPatch.cs" />
@@ -37,6 +41,9 @@
     <Compile Include="Mods/SupportedMod.cs" />
     <Compile Include="Mods/MultipleMiniObelisks/MiniObelisk.cs" />
     <Compile Include="Mods/MultipleMiniObelisks/MultipleMiniObelisks.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UI/WarpMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="WarpLocations/ResponseManager.cs" />

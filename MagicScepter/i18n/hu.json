@@ -8,5 +8,6 @@
   "dialog.location.islandFarm": "Szigetbeli farm",
   "dialog.location.miniObelisk": "Mini-Obeliszk",
   "dialog.location.miniObeliskNumber": "Mini-Obeliszk #{{number}}",
-  "dialog.cancel": "Mégse"
+  "dialog.cancel": "Mégse",
+  "menu.location.islandFarm": "Szigetbeli farm"
 }

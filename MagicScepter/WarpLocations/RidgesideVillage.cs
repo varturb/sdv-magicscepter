@@ -11,6 +11,7 @@ namespace MagicScepter.WarpLocations
     public override string DialogLabel => "dialog.location.ridgeside";
     internal override string ObeliskName => "RSV_Obelisk";
     public override bool CanWarp => CanWarpHere();
+    public override Rectangle SpirteSource => new(512, 0, 64, 64);
 
     public override void Warp()
     {
