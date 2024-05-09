@@ -11,6 +11,7 @@ namespace MagicScepter.Mods
         SupportedMod.EastScarp => ModUtility.Helper.ModRegistry.IsLoaded("atravita.EastScarp"),
         SupportedMod.DowntownZuzu => ModUtility.Helper.ModRegistry.IsLoaded("DTZ.DowntownZuzuDLL"),
         SupportedMod.DeepWoods => ModUtility.Helper.ModRegistry.IsLoaded("maxvollmer.deepwoodsmod"),
+        SupportedMod.VisitMountVapius => ModUtility.Helper.ModRegistry.IsLoaded("lumisteria.visitmountvapius.code"),
         _ => false,
       };
     }

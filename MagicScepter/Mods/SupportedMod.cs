@@ -6,6 +6,7 @@ namespace MagicScepter.Mods
     RidgesideVillage,
     DowntownZuzu,
     EastScarp,
-    DeepWoods
+    DeepWoods,
+    VisitMountVapius
   }
 }

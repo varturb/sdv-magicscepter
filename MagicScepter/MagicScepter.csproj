@@ -61,6 +61,7 @@
     <Compile Include="WarpLocations/EastScarpFarm.cs" />
     <Compile Include="WarpLocations/DowntownZuzu.cs" />
     <Compile Include="WarpLocations/DeepWoods.cs" />
+    <Compile Include="WarpLocations/VisitMountVapius.cs" />
     <Compile Include="WarpLocations/MiniObelisk.cs" />
     <Compile Include="WarpLocations/MiniObeliskManager.cs" />
   </ItemGroup>

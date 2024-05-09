@@ -48,6 +48,7 @@ namespace MagicScepter.WarpLocations
       AddResponse(new EastScarp());
       AddResponse(new EastScarpFarm());
       AddResponse(new DowntownZuzu());
+      AddResponse(new VisitMountVapius());
       AddMiniObeliskResponses();
     }
 
