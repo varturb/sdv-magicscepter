@@ -16,7 +16,6 @@ namespace MagicScepter.UI
     private readonly List<WarpLocationBase> warpLocations;
     private List<ClickableTextureComponent> warpLocationButtons;
     private float alpha;
-    private string selectedWarpTarget;
     private int selectedWarpTargetIndex = -1;
     private int selectionTime;
     private int oldSelectedWarpTargetIndex;
@@ -101,9 +100,10 @@ namespace MagicScepter.UI
     {
       exitThisMenu(false);
 
-      if (selectedWarpTarget != null)
+      if (selectedWarpTargetIndex > -1)
       {
-        ResponseManager.HandleResponse(selectedWarpTarget);
+        var warpTargetKey = warpLocations[selectedWarpTargetIndex].DialogKey;
+        ResponseManager.HandleResponse(warpTargetKey);
       }
     }
 
@@ -129,7 +129,6 @@ namespace MagicScepter.UI
       {
         if (warpLocationButtons[index].containsPoint(x, y))
         {
-          selectedWarpTarget = warpLocations[index].DialogKey;
           selectedWarpTargetIndex = index;
           if (selectedWarpTargetIndex == oldSelectedWarpTargetIndex)
             return;
@@ -138,7 +137,6 @@ namespace MagicScepter.UI
           return;
         }
       }
-      selectedWarpTarget = null;
       selectedWarpTargetIndex = -1;
     }
 
@@ -184,13 +182,9 @@ namespace MagicScepter.UI
             if ((double)num2 > (double)num1)
             {
               num1 = num2;
-              selectedWarpTarget = warpLocations[index].DialogKey;
               selectedWarpTargetIndex = index;
 
-              Game1.setMousePosition(
-                warpLocationButtons[selectedWarpTargetIndex].bounds.Right - warpLocationButtons[selectedWarpTargetIndex].bounds.Width / 8,
-                warpLocationButtons[selectedWarpTargetIndex].bounds.Bottom - warpLocationButtons[selectedWarpTargetIndex].bounds.Height / 8
-              );
+              FixMousePosition();
             }
           }
         }
@@ -202,7 +196,7 @@ namespace MagicScepter.UI
           warpLocationButtons[index].scale = Utility.MoveTowards(warpLocationButtons[index].scale, buttonScale, (float)(time.ElapsedGameTime.Milliseconds / 1000f * 10f));
         }
       }
-      if (selectedWarpTarget != null && selectedWarpTargetIndex > -1)
+      if (selectedWarpTargetIndex > -1)
       {
         warpLocationButtons[selectedWarpTargetIndex].scale = selectedButtonScale;
       }
@@ -217,47 +211,31 @@ namespace MagicScepter.UI
       base.update(time);
     }
 
-    public override void receiveGamePadButton(Buttons b)
+    public override void receiveKeyPress(Keys key)
     {
-      if (b == Buttons.DPadUp || b == Buttons.DPadRight)
-      {
-        if (selectedWarpTargetIndex >= 0 && selectedWarpTargetIndex < warpLocationButtons.Count - 1)
-        {
-          selectedWarpTargetIndex++;
-        }
-        else
-        {
-          selectedWarpTargetIndex = 0;
-        }
-      }
-      if (b == Buttons.DPadDown || b == Buttons.DPadLeft)
-      {
-        if (selectedWarpTargetIndex <= warpLocationButtons.Count && selectedWarpTargetIndex > 0)
-        {
-          selectedWarpTargetIndex--;
-        }
-        else if (selectedWarpTargetIndex == 0)
-        {
-          selectedWarpTargetIndex = warpLocationButtons.Count - 1;
-        }
-        else
-        {
-          selectedWarpTargetIndex = 0;
-        }
-      }
+      HandleUseToolButton(key);
+      HandleUpButton(key);
+      HandleRightButton(key);
+      HandleDownButton(key);
+      HandleLeftButton(key);
 
-      Game1.setMousePosition(
-        warpLocationButtons[selectedWarpTargetIndex].bounds.Right - warpLocationButtons[selectedWarpTargetIndex].bounds.Width / 8,
-        warpLocationButtons[selectedWarpTargetIndex].bounds.Bottom - warpLocationButtons[selectedWarpTargetIndex].bounds.Height / 8
-      );
+      base.receiveKeyPress(key);
     }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
+      ConfirmSelection();
+
       x = (int)Utility.ModifyCoordinateFromUIScale(x);
       y = (int)Utility.ModifyCoordinateFromUIScale(y);
-      ConfirmSelection();
       base.receiveLeftClick(x, y, playSound);
+    }
+
+    public override void receiveScrollWheelAction(int direction)
+    {
+      HandleScrollWheel(direction);
+
+      base.receiveScrollWheelAction(direction);
     }
 
     public override void draw(SpriteBatch b)
@@ -274,22 +252,213 @@ namespace MagicScepter.UI
         }
       }
 
-      if (selectedWarpTarget != null)
+      if (selectedWarpTargetIndex > -1)
       {
         warpLocationButtons[selectedWarpTargetIndex].draw(b, white, 0.86f);
-
-        foreach (var warpLocation in warpLocations)
-        {
-          if (warpLocation.DialogKey == selectedWarpTarget)
-          {
-            SpriteText.drawStringWithScrollCenteredAt(b, warpLocation.DialogText, xPositionOnScreen + width / 2, yPositionOnScreen + height + 40);
-            break;
-          }
-        }
+        SpriteText.drawStringWithScrollCenteredAt(b, warpLocations[selectedWarpTargetIndex].DialogText, xPositionOnScreen + width / 2, yPositionOnScreen + height + 40);
       }
 
       base.draw(b);
       base.drawMouse(b);
+    }
+
+    private void HandleUseToolButton(Keys key)
+    {
+      if (!Game1.options.doesInputListContain(Game1.options.useToolButton, key))
+        return;
+
+      ConfirmSelection();
+    }
+
+    private void HandleUpButton(Keys key)
+    {
+      if (!Game1.options.doesInputListContain(Game1.options.moveUpButton, key))
+        return;
+
+      var count = warpLocationButtons.Count;
+      var firstIndex = 0;
+      var lastIndex = warpLocationButtons.Count - 1;
+      ref var index = ref selectedWarpTargetIndex;
+
+      // var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
+      var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
+      // var rightThreshold = (int)Math.Round((float)count / 4 * 3);
+
+      if (index == -1)
+      {
+        index = firstIndex;
+      }
+      else
+      {
+        if (index == lastIndex)
+        {
+          index = firstIndex;
+        }
+        else if (firstIndex < index && index <= downThreshold)
+        {
+          index--;
+        }
+        else if (downThreshold < index && index < lastIndex)
+        {
+          index++;
+        }
+      }
+
+      FixMousePosition();
+    }
+
+    private void HandleRightButton(Keys key)
+    {
+      if (!Game1.options.doesInputListContain(Game1.options.moveRightButton, key))
+        return;
+
+      var count = warpLocationButtons.Count;
+      var firstIndex = 0;
+      var lastIndex = warpLocationButtons.Count - 1;
+      ref var index = ref selectedWarpTargetIndex;
+
+      var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
+      // var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
+      var rightThreshold = (int)Math.Round((float)count / 4 * 3);
+
+      if (index == -1)
+      {
+        index = rightThreshold;
+      }
+      else
+      {
+        if (index == firstIndex)
+        {
+          index = lastIndex;
+        }
+        else if ((firstIndex < index && index <= leftThreshold) || (lastIndex >= index && index > rightThreshold))
+        {
+          index--;
+        }
+        else if (leftThreshold < index && index < rightThreshold)
+        {
+          index++;
+        }
+      }
+
+      FixMousePosition();
+    }
+
+    private void HandleDownButton(Keys key)
+    {
+      if (!Game1.options.doesInputListContain(Game1.options.moveDownButton, key))
+        return;
+
+      var count = warpLocationButtons.Count;
+      var firstIndex = 0;
+      var lastIndex = warpLocationButtons.Count - 1;
+      ref var index = ref selectedWarpTargetIndex;
+
+      // var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
+      var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
+      // var rightThreshold = (int)Math.Round((float)count / 4 * 3);
+
+      if (index == -1)
+      {
+        index = downThreshold;
+      }
+      else
+      {
+        if (index == firstIndex)
+        {
+          index = lastIndex;
+        }
+        else if (lastIndex >= index && index > downThreshold)
+        {
+          index--;
+        }
+        else if (firstIndex < index && index < downThreshold)
+        {
+          index++;
+        }
+      }
+
+      FixMousePosition();
+    }
+
+    private void HandleLeftButton(Keys key)
+    {
+      if (!Game1.options.doesInputListContain(Game1.options.moveLeftButton, key))
+        return;
+
+      var count = warpLocationButtons.Count;
+      var firstIndex = 0;
+      var lastIndex = warpLocationButtons.Count - 1;
+      ref var index = ref selectedWarpTargetIndex;
+
+      var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
+      // var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
+      var rightThreshold = (int)Math.Round((float)count / 4 * 3);
+
+      if (index == -1)
+      {
+        index = leftThreshold;
+      }
+      else
+      {
+        if (index == lastIndex)
+        {
+          index = firstIndex;
+        }
+        else if (leftThreshold < index && index <= rightThreshold)
+        {
+          index--;
+        }
+        else if ((firstIndex <= index && index < leftThreshold) || (lastIndex > index && index > rightThreshold))
+        {
+          index++;
+        }
+      }
+
+      FixMousePosition();
+    }
+
+    private void HandleScrollWheel(int direction)
+    {
+      var lastItemIndex = warpLocationButtons.Count - 1;
+      ref var index = ref selectedWarpTargetIndex;
+
+      if (index == -1)
+      {
+        index = 0;
+      }
+      else if (direction > 0)
+      {
+        if (-1 < index && index < lastItemIndex)
+        {
+          index++;
+        }
+        else
+        {
+          index = 0;
+        }
+      }
+      else if (direction < 0)
+      {
+        if (0 < index && index <= lastItemIndex)
+        {
+          index--;
+        }
+        else
+        {
+          index = lastItemIndex;
+        }
+      }
+
+      FixMousePosition();
+    }
+
+    private void FixMousePosition()
+    {
+      Game1.setMousePosition(
+        warpLocationButtons[selectedWarpTargetIndex].bounds.Right - warpLocationButtons[selectedWarpTargetIndex].bounds.Width / 8,
+        warpLocationButtons[selectedWarpTargetIndex].bounds.Bottom - warpLocationButtons[selectedWarpTargetIndex].bounds.Height / 8
+      );
     }
   }
 }
