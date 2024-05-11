@@ -4,6 +4,8 @@ using StardewValley.Tools;
 using HarmonyLib;
 using MagicScepter.Patches;
 using MagicScepter.Multiplayer;
+using MagicScepter.Mods.GenericModConfigMenu;
+using MagicScepter.Mods;
 
 namespace MagicScepter
 {
@@ -26,9 +28,14 @@ namespace MagicScepter
         Monitor.Log($"Issue with Harmony patch: {e}", LogLevel.Error);
         return;
       }
-
+      
       Helper.Events.Multiplayer.ModMessageReceived += MultiplayerManager.OnModMessageReceived;
       Helper.Events.GameLoop.DayStarted += MultiplayerManager.OnDayStarted;
+
+      if (ModManager.IsModLoaded(SupportedMod.GenericModConfigMenu))
+      {
+        Helper.Events.GameLoop.GameLaunched += GenericModConfigMenu.OnGameLaunched;
+      }
     }
   }
 }

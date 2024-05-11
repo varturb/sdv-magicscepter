@@ -7,6 +7,7 @@ namespace MagicScepter.Mods
     DowntownZuzu,
     EastScarp,
     DeepWoods,
-    VisitMountVapius
+    VisitMountVapius,
+    GenericModConfigMenu
   }
 }

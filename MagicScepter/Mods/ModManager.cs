@@ -12,6 +12,7 @@ namespace MagicScepter.Mods
         SupportedMod.DowntownZuzu => ModUtility.Helper.ModRegistry.IsLoaded("DTZ.DowntownZuzuDLL"),
         SupportedMod.DeepWoods => ModUtility.Helper.ModRegistry.IsLoaded("maxvollmer.deepwoodsmod"),
         SupportedMod.VisitMountVapius => ModUtility.Helper.ModRegistry.IsLoaded("lumisteria.visitmountvapius.code"),
+        SupportedMod.GenericModConfigMenu => ModUtility.Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"),
         _ => false,
       };
     }

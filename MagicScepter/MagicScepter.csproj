@@ -41,6 +41,8 @@
     <Compile Include="Mods/SupportedMod.cs" />
     <Compile Include="Mods/MultipleMiniObelisks/MiniObelisk.cs" />
     <Compile Include="Mods/MultipleMiniObelisks/MultipleMiniObelisks.cs" />
+    <Compile Include="Mods/GenericModConfigMenu/GenericModConfigMenu.cs" />
+    <Compile Include="Mods/GenericModConfigMenu/IGenericModConfigMenuApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UI/WarpMenu.cs" />
@@ -79,6 +81,11 @@
     <None Include="i18n/ru.json" />
     <None Include="i18n/tr.json" />
     <None Include="i18n/zh.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
