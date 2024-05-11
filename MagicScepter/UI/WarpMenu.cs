@@ -27,17 +27,19 @@ namespace MagicScepter.UI
     private readonly float selectedButtonScale = 1.8f;
     private bool gamepadMode;
 
+    private bool ignoreMouse = false;
+
     public WarpMenu(List<WarpLocationBase> warpLocations)
     {
       menuBackgroundTexture = ModUtility.Helper.ModContent.Load<Texture2D>("assets/spritesheet.png");
-      width = 384;
-      height = 384;
-      xPositionOnScreen = (int)((float)(Game1.viewport.Width / 2) - (float)width / 2f);
-      yPositionOnScreen = (int)((float)(Game1.viewport.Height / 2) - (float)height / 2f);
+      width = 400;
+      height = 400;
+
       alpha = 0f;
 
       this.warpLocations = warpLocations;
 
+      SetMenuPositionOnScreen();
       CreateWarpTargetButtons();
       SnapToPlayerPosition();
     }
@@ -57,7 +59,6 @@ namespace MagicScepter.UI
         ));
         index++;
       }
-      RepositionWarpTargetButtons();
     }
 
     private void RepositionWarpTargetButtons()
@@ -66,8 +67,8 @@ namespace MagicScepter.UI
       foreach (var button in warpLocationButtons)
       {
         var num = Utility.Lerp(0f, MathF.PI * 2f, (float)index / (float)warpLocationButtons.Count);
-        button.bounds.X = (int)((float)(xPositionOnScreen + width / 2 + (int)(-Math.Sin(num) * (double)buttonRadius) * 4) - (float)button.bounds.Width / 2f);
-        button.bounds.Y = (int)((float)(yPositionOnScreen + height / 2 + (int)(-Math.Cos(num) * (double)buttonRadius) * 4) - (float)button.bounds.Height / 2f);
+        button.bounds.X = (int)((float)(xPositionOnScreen + width / 2f + (int)(-Math.Sin(num) * (double)buttonRadius) * 4) - (float)button.bounds.Width / 2f);
+        button.bounds.Y = (int)((float)(yPositionOnScreen + height / 2f + (int)(-Math.Cos(num) * (double)buttonRadius) * 4) - (float)button.bounds.Height / 2f);
         index++;
       }
     }
@@ -77,9 +78,7 @@ namespace MagicScepter.UI
       if (Game1.player == null)
         return;
 
-      var vector2 = Game1.player.getLocalPosition(Game1.viewport) + new Vector2((float)-width / 2f, (float)-height / 2f);
-      xPositionOnScreen = (int)vector2.X + 24;
-      yPositionOnScreen = (int)vector2.Y - 32;
+      SetMenuPositionOnScreen();
 
       if (xPositionOnScreen + width > Game1.viewport.Width)
         xPositionOnScreen -= xPositionOnScreen + width - Game1.viewport.Width;
@@ -119,10 +118,7 @@ namespace MagicScepter.UI
 
     public override void performHoverAction(int x, int y)
     {
-      x = (int)Utility.ModifyCoordinateFromUIScale(x);
-      y = (int)Utility.ModifyCoordinateFromUIScale(y);
-
-      if (gamepadMode)
+      if (gamepadMode || ignoreMouse)
         return;
 
       for (int index = 0; index < warpLocationButtons.Count; ++index)
@@ -140,8 +136,43 @@ namespace MagicScepter.UI
       selectedWarpTargetIndex = -1;
     }
 
+    public override void receiveKeyPress(Keys key)
+    {
+      HandleUseToolButton(key);
+      SetMenuPositionOnScreen();
+      HandleUpButton(key);
+      HandleRightButton(key);
+      HandleDownButton(key);
+      HandleLeftButton(key);
+
+      base.receiveKeyPress(key);
+    }
+
+    public override void receiveLeftClick(int x, int y, bool playSound = true)
+    {
+      x = (int)Utility.ModifyCoordinateFromUIScale(x);
+      y = (int)Utility.ModifyCoordinateFromUIScale(y);
+      ConfirmSelection();
+      base.receiveLeftClick(x, y, playSound);
+    }
+
+    public override void receiveScrollWheelAction(int direction)
+    {
+      HandleScrollWheel(direction);
+
+      base.receiveScrollWheelAction(direction);
+    }
+
+
     public override void update(GameTime time)
     {
+      var mousePosition = Game1.input.GetMouseState();
+      var oldMouseState = Game1.oldMouseState;
+      if (mousePosition != oldMouseState)
+      {
+        ignoreMouse = false;
+      }
+
       age += time.ElapsedGameTime.Milliseconds;
 
       if (age > expandTime)
@@ -189,7 +220,8 @@ namespace MagicScepter.UI
           }
         }
       }
-      for (int index = 0; index < warpLocationButtons.Count; ++index)
+
+      for (int index = 0; index < warpLocationButtons.Count; index++)
       {
         if (warpLocationButtons[index].scale > buttonScale)
         {
@@ -211,38 +243,13 @@ namespace MagicScepter.UI
       base.update(time);
     }
 
-    public override void receiveKeyPress(Keys key)
-    {
-      HandleUseToolButton(key);
-      HandleUpButton(key);
-      HandleRightButton(key);
-      HandleDownButton(key);
-      HandleLeftButton(key);
-
-      base.receiveKeyPress(key);
-    }
-
-    public override void receiveLeftClick(int x, int y, bool playSound = true)
-    {
-      ConfirmSelection();
-
-      x = (int)Utility.ModifyCoordinateFromUIScale(x);
-      y = (int)Utility.ModifyCoordinateFromUIScale(y);
-      base.receiveLeftClick(x, y, playSound);
-    }
-
-    public override void receiveScrollWheelAction(int direction)
-    {
-      HandleScrollWheel(direction);
-
-      base.receiveScrollWheelAction(direction);
-    }
-
     public override void draw(SpriteBatch b)
     {
+      SetMenuPositionOnScreen();
+      RepositionWarpTargetButtons();
+
       var white = Color.White;
       white.A = (byte)Utility.Lerp(0f, 255f, alpha);
-
       var index = 0;
       foreach (var button in warpLocationButtons)
       {
@@ -258,8 +265,8 @@ namespace MagicScepter.UI
         SpriteText.drawStringWithScrollCenteredAt(b, warpLocations[selectedWarpTargetIndex].DialogText, xPositionOnScreen + width / 2, yPositionOnScreen + height + 40);
       }
 
-      base.draw(b);
-      base.drawMouse(b);
+      if (!ignoreMouse)
+        base.drawMouse(b);
     }
 
     private void HandleUseToolButton(Keys key)
@@ -455,10 +462,49 @@ namespace MagicScepter.UI
 
     private void FixMousePosition()
     {
-      Game1.setMousePosition(
-        warpLocationButtons[selectedWarpTargetIndex].bounds.Right - warpLocationButtons[selectedWarpTargetIndex].bounds.Width / 8,
-        warpLocationButtons[selectedWarpTargetIndex].bounds.Bottom - warpLocationButtons[selectedWarpTargetIndex].bounds.Height / 8
-      );
+      if (selectedWarpTargetIndex > -1)
+      {
+        var button = warpLocationButtons[selectedWarpTargetIndex].bounds;
+        var x = button.Right - button.Width / 8;
+        var y = button.Bottom - button.Height / 8;
+
+        ignoreMouse = ShouldIgnoreMouseUI();
+        if (!ignoreMouse)
+          Game1.setMousePosition(x, y);
+      }
+    }
+    private void SetMenuPositionOnScreen()
+    {
+      var menuPositiononScreen = GetMenuPositionOnScreen();
+      xPositionOnScreen = (int)menuPositiononScreen.X;
+      yPositionOnScreen = (int)menuPositiononScreen.Y;
+    }
+
+    private Vector2 GetMenuPositionOnScreen()
+    {
+      var playerStandingPosition = Game1.player.getStandingPosition();
+      var offset = new Vector2(-width / 2f, -height / 2f);
+      var playerYOffset = Utility.ModifyCoordinateForUIScale(-48);
+      var playerCenterPoint = new Vector2(playerStandingPosition.X - (float)Game1.viewport.X, playerStandingPosition.Y - (float)Game1.viewport.Y);
+      var playerCenterPositionOnScreen = Utility.ModifyCoordinatesForUIScale(playerCenterPoint);
+      playerCenterPositionOnScreen.Y += playerYOffset;
+
+      return playerCenterPositionOnScreen + offset;
+    }
+
+    private static bool ShouldIgnoreMouseUI()
+    {
+      var uiScale = Game1.options.uiScale;
+      var zoomLevel = Game1.options.zoomLevel;
+      var diff = zoomLevel - uiScale;
+
+      if (zoomLevel < 1.2 && diff > 0.2)
+        return true;
+
+      if (zoomLevel >= 1.2 && diff > 0.4)
+        return true;
+
+      return false;
     }
   }
 }
