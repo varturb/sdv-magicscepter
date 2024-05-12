@@ -313,7 +313,7 @@ namespace MagicScepter.UI
 
       var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
       // var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
-      var rightThreshold = (int)Math.Round((float)count / 4 * 3);
+      var rightThreshold = count > 2 ? (int)Math.Round((float)count / 4 * 3) : 1;
 
       if (index == -1)
       {
@@ -350,7 +350,7 @@ namespace MagicScepter.UI
 
       // var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
       var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
-      // var rightThreshold = (int)Math.Round((float)count / 4 * 3);
+      // var rightThreshold = count > 2 ? (int)Math.Round((float)count / 4 * 3) : 1;
 
       if (index == -1)
       {
@@ -387,8 +387,8 @@ namespace MagicScepter.UI
 
       var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
       // var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
-      var rightThreshold = (int)Math.Round((float)count / 4 * 3);
-
+      var rightThreshold = count > 2 ? (int)Math.Round((float)count / 4 * 3) : 1;
+      
       if (index == -1)
       {
         index = leftThreshold;
