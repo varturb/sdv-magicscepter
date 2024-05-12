@@ -8,6 +8,7 @@ namespace MagicScepter.Mods
     EastScarp,
     DeepWoods,
     VisitMountVapius,
+    StardewValleyExpanded,
     GenericModConfigMenu
   }
 }

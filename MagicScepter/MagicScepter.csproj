@@ -66,6 +66,7 @@
     <Compile Include="WarpLocations/VisitMountVapius.cs" />
     <Compile Include="WarpLocations/MiniObelisk.cs" />
     <Compile Include="WarpLocations/MiniObeliskManager.cs" />
+    <Compile Include="WarpLocations/EnchantedGrave.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />

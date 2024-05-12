@@ -79,19 +79,6 @@ namespace MagicScepter.UI
         return;
 
       SetMenuPositionOnScreen();
-
-      if (xPositionOnScreen + width > Game1.viewport.Width)
-        xPositionOnScreen -= xPositionOnScreen + width - Game1.viewport.Width;
-
-      if (xPositionOnScreen < 0)
-        xPositionOnScreen -= xPositionOnScreen;
-
-      if (yPositionOnScreen + height > Game1.viewport.Height)
-        yPositionOnScreen -= yPositionOnScreen + height - Game1.viewport.Height;
-
-      if (yPositionOnScreen < 0)
-        yPositionOnScreen -= yPositionOnScreen;
-
       RepositionWarpTargetButtons();
     }
 
@@ -478,6 +465,18 @@ namespace MagicScepter.UI
       var menuPositiononScreen = GetMenuPositionOnScreen();
       xPositionOnScreen = (int)menuPositiononScreen.X;
       yPositionOnScreen = (int)menuPositiononScreen.Y;
+
+      if (xPositionOnScreen + width > Game1.viewport.Width)
+        xPositionOnScreen -= xPositionOnScreen + width - Game1.viewport.Width + 5;
+
+      if (xPositionOnScreen < 0)
+        xPositionOnScreen -= xPositionOnScreen;
+
+      if (yPositionOnScreen + height > Game1.viewport.Height)
+        yPositionOnScreen -= yPositionOnScreen + height - Game1.viewport.Height + 5;
+
+      if (yPositionOnScreen < 0)
+        yPositionOnScreen -= yPositionOnScreen;
     }
 
     private Vector2 GetMenuPositionOnScreen()

@@ -42,6 +42,7 @@ namespace MagicScepter.WarpLocations
       AddResponse(new Desert());
       AddResponse(new Island());
       AddResponse(new IslandFarm());
+      AddResponse(new EnchantedGrave());
       AddResponse(new DeepWoods());
       AddResponse(new RidgesideVillage());
       AddResponse(new RidgesideVillageFarm());
