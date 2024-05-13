@@ -1,4 +1,5 @@
-using MagicScepter.WarpLocations;
+using System.Linq;
+using MagicScepter.Handlers;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
@@ -7,6 +8,7 @@ namespace MagicScepter.Multiplayer
   public static class MultiplayerManager
   {
     public static bool CanWarpToIslandFarm { get; set; } = false;
+    private const string islandFarmID = "magicscepter_islandfarm";
 
     public static void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
     {
@@ -15,18 +17,18 @@ namespace MagicScepter.Multiplayer
         return;
       }
 
-      if (e.Type == nameof(IslandFarmUpdateMessage))
+      if (e.Type == nameof(IslandFarmSyncRequestMessage))
       {
         if (Context.IsMainPlayer)
         {
-          SendBroadcastMessage();
+          SendSyncResponseMessage();
         }
       }
-      else if (e.Type == nameof(IslandFarmBroadcastMessage))
+      else if (e.Type == nameof(IslandFarmSyncResponseMessage))
       {
         if (!Context.IsMainPlayer)
         {
-          var message = e.ReadAs<IslandFarmBroadcastMessage>();
+          var message = e.ReadAs<IslandFarmSyncResponseMessage>();
           CanWarpToIslandFarm = message.CanWarp;
         }
       }
@@ -36,28 +38,29 @@ namespace MagicScepter.Multiplayer
     {
       if (Context.IsMainPlayer)
       {
-        CanWarpToIslandFarm = new IslandFarm().CanWarp;
+        var islandWarpObject = ResponseHandler.GetWarpObjects().FirstOrDefault(x => x.ID == islandFarmID);
+        CanWarpToIslandFarm = islandWarpObject?.CanWarp ?? false;
       }
       else
       {
-        SendUpdateMessage();
+        SendSyncRequestMessage();
       }
     }
 
-    private static void SendBroadcastMessage()
+    private static void SendSyncResponseMessage()
     {
       ModUtility.Helper.Multiplayer.SendMessage(
-        new IslandFarmBroadcastMessage(CanWarpToIslandFarm), 
-        nameof(IslandFarmBroadcastMessage), 
+        new IslandFarmSyncResponseMessage(CanWarpToIslandFarm), 
+        nameof(IslandFarmSyncResponseMessage), 
         modIDs: new[] { ModUtility.Manifest.UniqueID }
       );
     }
 
-    private static void SendUpdateMessage()
+    private static void SendSyncRequestMessage()
     {
       ModUtility.Helper.Multiplayer.SendMessage(
-        new IslandFarmUpdateMessage(), 
-        nameof(IslandFarmUpdateMessage), 
+        new IslandFarmSyncRequestMessage(), 
+        nameof(IslandFarmSyncRequestMessage), 
         modIDs: new[] { ModUtility.Manifest.UniqueID }
       );
     }

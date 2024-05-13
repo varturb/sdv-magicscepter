@@ -1,6 +1,7 @@
 ﻿using StardewValley;
 using StardewModdingAPI;
 using System;
+using MagicScepter.Handlers;
 
 namespace MagicScepter.Patches
 {

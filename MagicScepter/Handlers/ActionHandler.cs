@@ -1,9 +1,8 @@
 using StardewValley;
-using MagicScepter.WarpLocations;
 using System.Linq;
 using MagicScepter.UI;
 
-namespace MagicScepter
+namespace MagicScepter.Handlers
 {
   public static class ActionHandler
   {
@@ -21,16 +20,16 @@ namespace MagicScepter
 
     private static void ShowWarpDialog()
     {
-      var responses = ResponseManager.GetResponses();
+      var responses = ResponseHandler.GetResponses();
       if (responses.Count == 2)
       {
-        var farmResponseKey = new WarpLocations.Farm().DialogKey;
-        ResponseManager.HandleResponse(farmResponseKey);
+        var farmResponseKey = responses.First().responseKey;
+        ResponseHandler.HandleResponse(farmResponseKey);
         return;
       }
 
       Game1.player.currentLocation.createQuestionDialogue(
-        ModUtility.Helper.Translation.Get("dialog.title"),
+        ModUtility.Helper.Translation.Get("label.title"),
         responses.ToArray(),
         HandleAnswer
       );
@@ -38,20 +37,20 @@ namespace MagicScepter
 
     private static void HandleAnswer(Farmer farmer, string answer)
     {
-      ResponseManager.HandleResponse(answer);
+      ResponseHandler.HandleResponse(answer);
     }
 
     private static void ShowWarpMenu()
     {
-      var warpLocations = ResponseManager.GetWarpLocations();
-      if (warpLocations.Count == 1)
+      var warpObjects = ResponseHandler.GetWarpObjects();
+      if (warpObjects.Count == 1)
       {
-        var farmResponse = warpLocations.First();
-        ResponseManager.HandleResponse(farmResponse.DialogKey);
+        var farmResponse = warpObjects.First();
+        ResponseHandler.HandleResponse(farmResponse.ID);
       }
       else
       {
-        Game1.activeClickableMenu = new WarpMenu(warpLocations);
+        Game1.activeClickableMenu = new WarpMenu(warpObjects);
       }
     }
   }

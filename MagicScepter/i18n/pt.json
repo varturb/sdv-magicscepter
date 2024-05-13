@@ -1,13 +1,11 @@
 {
-  "dialog.title": "Escolha um local:",
-  "dialog.location.farm": "A Fazenda",
-  "dialog.location.beach": "A Praia",
-  "dialog.location.mountain": "A Montanha",
-  "dialog.location.desert": "O Deserto",
-  "dialog.location.island": "Ilha Gengibre",
-  "dialog.location.islandFarm": "Casa de Fazenda da Ilha",
-  "dialog.location.miniObelisk": "Mini Obelisco",
-  "dialog.location.miniObeliskNumber": "Mini Obelisco #{{number}}",
-  "dialog.cancel": "Cancelar",
-  "menu.location.islandFarm": "Casa de Fazenda da Ilha"
+ "label.title": "Escolha um local:",
+ "label.location.farm": "A Fazenda",
+ "label.location.beach": "A Praia",
+ "label.location.mountain": "A Montanha",
+ "label.location.desert": "O Deserto",
+ "label.location.island": "Ilha Gengibre",
+ "label.location.islandFarm": "Casa de Fazenda da Ilha",
+ "label.location.miniObelisk": "Mini Obelisco",
+ "label.cancel": "Cancelar"
 }

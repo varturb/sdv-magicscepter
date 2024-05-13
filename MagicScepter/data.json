@@ -1,0 +1,351 @@
+[
+  {
+    "ID": "magicscepter_farm",
+    "Order": 1,
+    "TranslationKey":"label.location.farm",
+    "SpriteOffset": 0,
+    "Warp": {
+      "Do": {
+        "Type": "Farm",
+        "Location": "Farm",
+        "Point": {
+          "X": 64,
+          "Y": 15
+        }
+      }
+    }
+  },
+  {
+    "ID": "magicscepter_beach",
+    "Order": 2,
+    "TranslationKey":"label.location.beach",
+    "SpriteOffset": 64,
+    "Warp": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "Water Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Obelisk",
+          "Is": "Water Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_mountain",
+    "Order": 3,
+    "TranslationKey":"label.location.mountain",
+    "SpriteOffset": 128,
+    "Warp": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "Earth Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Obelisk",
+          "Is": "Earth Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_desert",
+    "Order": 4,
+    "TranslationKey":"label.location.desert",
+    "SpriteOffset": 192,
+    "Warp": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "Desert Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Obelisk",
+          "Is": "Desert Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_island",
+    "Order": 5,
+    "TranslationKey":"label.location.island",
+    "SpriteOffset": 256,
+    "Warp": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "Island Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Obelisk",
+          "Is": "Island Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_islandfarm",
+    "Order": 6,
+    "TranslationKey":"label.location.islandFarm",
+    "SpriteOffset": 320,
+    "Warp": {
+      "Do": {
+        "Type": "Warp",
+        "Location": "IslandWest",
+        "Point": {
+          "X": 77,
+          "Y": 40
+        }
+      },
+      "When": [
+        {
+          "Type": "Obelisk",
+          "Is": "Island Obelisk"
+        },
+        {
+          "Type": "IslandObelisk",
+          "Is": "IslandWest"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_enchantedgrave",
+    "Order": 7,
+    "TranslationKey":"label.location.enchantedGrave",
+    "SpriteOffset": 896,
+    "Warp": {
+      "Do": {
+        "Type": "Warp",
+        "Location": "Custom_EnchantedGrove",
+        "Point": {
+          "X": 30,
+          "Y": 27
+        }
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "FlashShifter.SVECode"
+        },
+        {
+          "Type": "Event",
+          "Is": "908073"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_ridgesidevillage",
+    "Order": 8,
+    "TranslationKey":"label.location.ridgeside",
+    "SpriteOffset": 512,
+    "Warp": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "RSV_Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "Rafseazz.RidgesideVillage"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "RSV_Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_ridgesidevillagefarm",
+    "Order": 9,
+    "TranslationKey":"label.location.ridgesideFarm",
+    "SpriteOffset": 576,
+    "Warp": {
+      "Do": {
+        "Type": "Warp",
+        "Location": "Custom_Ridgeside_SummitFarm",
+        "Point": {
+          "X": 18,
+          "Y": 47
+        }
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "Rafseazz.RidgesideVillage"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "RSV_Obelisk"
+        },
+        {
+          "Type": "Quest",
+          "Is": "RSV.UntimedSpecialOrder.SpiritRealmFlames"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_eastscarp",
+    "Order": 10,
+    "TranslationKey":"label.location.eastScarp",
+    "SpriteOffset": 640,
+    "Warp": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "Scarp Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "atravita.EastScarp"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "Scarp Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_eastscarpfarm",
+    "Order": 11,
+    "TranslationKey":"label.location.eastScarpFarm",
+    "SpriteOffset": 704,
+    "Warp": {
+      "Do": {
+        "Type": "Warp",
+        "Location": "EastScarp_MeadowFarm",
+        "Point": {
+          "X": 44,
+          "Y": 10
+        }
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "atravita.EastScarp"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "Scarp Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_downtownzuzu",
+    "Order": 11,
+    "TranslationKey":"label.location.downtownZuzu",
+    "SpriteOffset": 768,
+    "Warp": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "DTZ.DowntownZuzuCP_Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "DTZ.DowntownZuzuDLL"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "DTZ.DowntownZuzuCP_Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_mountvapius",
+    "Order": 12,
+    "TranslationKey":"label.location.visitMountVapius",
+    "SpriteOffset": 832,
+    "Warp": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "Lumisteria.MtVapius_Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "lumisteria.visitmountvapius.code"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "Lumisteria.MtVapius_Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_deepwoods",
+    "Order": 13,
+    "TranslationKey":"label.location.deepWoods",
+    "SpriteOffset": 448,
+    "Warp": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "Woods Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "maxvollmer.deepwoodsmod"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "Woods Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_miniobelisk",
+    "Order": 14,
+    "TranslationKey":"label.location.miniObelisk",
+    "SpriteOffset": 384,
+    "Warp": {
+      "Do": {
+        "Type": "MiniObelisk",
+        "Name": "Mini-Obelisk",
+        "Location": "Farm"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "IsNot": "PeacefulEnd.MultipleMiniObelisks"
+        },
+        {
+          "Type": "MiniObelisk",
+          "Is": "Mini-Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "magicscepter_multipleminiobelisk",
+    "Order": 14,
+    "TranslationKey":"label.location.miniObelisk",
+    "SpriteOffset": 384,
+    "Warp": {
+      "Do": {
+        "Type": "MultipleMiniObelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "PeacefulEnd.MultipleMiniObelisks"
+        },
+        {
+          "Type": "MultipleMiniObelisk"
+        }
+      ]
+    }
+  }
+]

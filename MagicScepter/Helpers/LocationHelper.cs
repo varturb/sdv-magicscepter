@@ -4,7 +4,7 @@ using MagicScepter.Mods;
 using StardewValley;
 using StardewValley.Buildings;
 
-namespace MagicScepter.WarpLocations
+namespace MagicScepter.Helpers
 {
   public static class LocationHelper
   {
@@ -41,10 +41,10 @@ namespace MagicScepter.WarpLocations
     public static List<Object> FindObjects(string name)
     {
       return Game1.getFarm().objects.Pairs
-      .ToList()
-      .FindAll(obj => obj.Value.Name == name)
-      .Select(obj => obj.Value)
-      .ToList();
+        .ToList()
+        .FindAll(obj => obj.Value.Name == name)
+        .Select(obj => obj.Value)
+        .ToList();
     }
   }
 }

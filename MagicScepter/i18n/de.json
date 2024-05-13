@@ -1,13 +1,11 @@
 {
-  "dialog.title": "Wähle einen Ort:",
-  "dialog.location.farm": "Der Hof",
-  "dialog.location.beach": "Der Strand",
-  "dialog.location.mountain": "Die Berge",
-  "dialog.location.desert": "Die Calico-Wüste",
-  "dialog.location.island": "Die Ingwerinsel",
-  "dialog.location.islandFarm": "Insel Bauernhaus",
-  "dialog.location.miniObelisk": "Mini-Obelisk",
-  "dialog.location.miniObeliskNumber": "Mini-Obelisk #{{number}}",
-  "dialog.cancel": "Abbrechen",
-  "menu.location.islandFarm": "Insel Bauernhaus"
+ "label.title": "Wähle einen Ort:",
+ "label.location.farm": "Der Hof",
+ "label.location.beach": "Der Strand",
+ "label.location.mountain": "Die Berge",
+ "label.location.desert": "Die Calico-Wüste",
+ "label.location.island": "Die Ingwerinsel",
+ "label.location.islandFarm": "Insel Bauernhaus",
+ "label.location.miniObelisk": "Mini-Obelisk",
+ "label.cancel": "Abbrechen"
 }

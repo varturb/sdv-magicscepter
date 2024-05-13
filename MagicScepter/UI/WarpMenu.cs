@@ -1,4 +1,5 @@
-using MagicScepter.WarpLocations;
+using MagicScepter.Models;
+using MagicScepter.Handlers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,7 +14,7 @@ namespace MagicScepter.UI
   public class WarpMenu : IClickableMenu
   {
     private readonly Texture2D menuBackgroundTexture;
-    private readonly List<WarpLocationBase> warpLocations;
+    private readonly List<WarpObject> warpObjects;
     private List<ClickableTextureComponent> warpLocationButtons;
     private float alpha;
     private int selectedWarpTargetIndex = -1;
@@ -26,18 +27,16 @@ namespace MagicScepter.UI
     private readonly float buttonScale = 1.2f;
     private readonly float selectedButtonScale = 1.8f;
     private bool gamepadMode;
-
     private bool ignoreMouse = false;
 
-    public WarpMenu(List<WarpLocationBase> warpLocations)
+    public WarpMenu(List<WarpObject> warpObjects)
     {
       menuBackgroundTexture = ModUtility.Helper.ModContent.Load<Texture2D>("assets/spritesheet.png");
       width = 400;
       height = 400;
-
       alpha = 0f;
 
-      this.warpLocations = warpLocations;
+      this.warpObjects = warpObjects;
 
       SetMenuPositionOnScreen();
       CreateWarpTargetButtons();
@@ -49,7 +48,7 @@ namespace MagicScepter.UI
       warpLocationButtons = new List<ClickableTextureComponent>();
 
       var index = 0;
-      foreach (var warpLocation in warpLocations)
+      foreach (var warpLocation in warpObjects)
       {
         warpLocationButtons.Add(new ClickableTextureComponent(
           new Rectangle(0, 0, 64, 64),
@@ -88,8 +87,8 @@ namespace MagicScepter.UI
 
       if (selectedWarpTargetIndex > -1)
       {
-        var warpTargetKey = warpLocations[selectedWarpTargetIndex].DialogKey;
-        ResponseManager.HandleResponse(warpTargetKey);
+        var id = warpObjects[selectedWarpTargetIndex].ID;
+        ResponseHandler.HandleResponse(id);
       }
     }
 
@@ -249,7 +248,7 @@ namespace MagicScepter.UI
       if (selectedWarpTargetIndex > -1)
       {
         warpLocationButtons[selectedWarpTargetIndex].draw(b, white, 0.86f);
-        SpriteText.drawStringWithScrollCenteredAt(b, warpLocations[selectedWarpTargetIndex].DialogText, xPositionOnScreen + width / 2, yPositionOnScreen + height + 40);
+        SpriteText.drawStringWithScrollCenteredAt(b, warpObjects[selectedWarpTargetIndex].Text, xPositionOnScreen + width / 2, yPositionOnScreen + height + 40);
       }
 
       if (!ignoreMouse)
@@ -388,7 +387,7 @@ namespace MagicScepter.UI
       var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
       // var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
       var rightThreshold = count > 2 ? (int)Math.Round((float)count / 4 * 3) : 1;
-      
+
       if (index == -1)
       {
         index = leftThreshold;

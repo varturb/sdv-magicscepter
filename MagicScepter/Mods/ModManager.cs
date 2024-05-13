@@ -6,16 +6,21 @@ namespace MagicScepter.Mods
     {
       return mod switch
       {
-        SupportedMod.MultipleMiniObelisks => ModUtility.Helper.ModRegistry.IsLoaded("PeacefulEnd.MultipleMiniObelisks"),
-        SupportedMod.RidgesideVillage => ModUtility.Helper.ModRegistry.IsLoaded("Rafseazz.RidgesideVillage"),
-        SupportedMod.EastScarp => ModUtility.Helper.ModRegistry.IsLoaded("atravita.EastScarp"),
-        SupportedMod.DowntownZuzu => ModUtility.Helper.ModRegistry.IsLoaded("DTZ.DowntownZuzuDLL"),
-        SupportedMod.DeepWoods => ModUtility.Helper.ModRegistry.IsLoaded("maxvollmer.deepwoodsmod"),
-        SupportedMod.VisitMountVapius => ModUtility.Helper.ModRegistry.IsLoaded("lumisteria.visitmountvapius.code"),
-        SupportedMod.StardewValleyExpanded => ModUtility.Helper.ModRegistry.IsLoaded("FlashShifter.SVECode"),
-        SupportedMod.GenericModConfigMenu => ModUtility.Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"),
+        SupportedMod.MultipleMiniObelisks => IsModLoaded("PeacefulEnd.MultipleMiniObelisks"),
+        SupportedMod.RidgesideVillage => IsModLoaded("Rafseazz.RidgesideVillage"),
+        SupportedMod.EastScarp => IsModLoaded("atravita.EastScarp"),
+        SupportedMod.DowntownZuzu => IsModLoaded("DTZ.DowntownZuzuDLL"),
+        SupportedMod.DeepWoods => IsModLoaded("maxvollmer.deepwoodsmod"),
+        SupportedMod.VisitMountVapius => IsModLoaded("lumisteria.visitmountvapius.code"),
+        SupportedMod.StardewValleyExpanded => IsModLoaded("FlashShifter.SVECode"),
+        SupportedMod.GenericModConfigMenu => IsModLoaded("spacechase0.GenericModConfigMenu"),
         _ => false,
       };
+    }
+
+    internal static bool IsModLoaded(string modId)
+    {
+      return ModUtility.Helper.ModRegistry.IsLoaded(modId);
     }
   }
 }

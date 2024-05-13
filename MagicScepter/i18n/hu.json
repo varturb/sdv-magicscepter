@@ -1,13 +1,11 @@
 {
-  "dialog.title": "Válassz egy helyszínt:",
-  "dialog.location.farm": "A Farm",
-  "dialog.location.beach": "Strand",
-  "dialog.location.mountain": "Hegyek",
-  "dialog.location.desert": "Calico Sivatag",
-  "dialog.location.island": "Gyömbér sziget",
-  "dialog.location.islandFarm": "Szigetbeli farm",
-  "dialog.location.miniObelisk": "Mini-Obeliszk",
-  "dialog.location.miniObeliskNumber": "Mini-Obeliszk #{{number}}",
-  "dialog.cancel": "Mégse",
-  "menu.location.islandFarm": "Szigetbeli farm"
+ "label.title": "Válassz egy helyszínt:",
+ "label.location.farm": "A Farm",
+ "label.location.beach": "Strand",
+ "label.location.mountain": "Hegyek",
+ "label.location.desert": "Calico Sivatag",
+ "label.location.island": "Gyömbér sziget",
+ "label.location.islandFarm": "Szigetbeli farm",
+ "label.location.miniObelisk": "Mini-Obeliszk",
+ "label.cancel": "Mégse"
 }

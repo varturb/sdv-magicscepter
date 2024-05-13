@@ -1,13 +1,11 @@
 {
-  "dialog.title": "위치를 선택해주세요:",
-  "dialog.location.farm": "농장",
-  "dialog.location.beach": "해변",
-  "dialog.location.mountain": "산맥",
-  "dialog.location.desert": "칼리코 사막",
-  "dialog.location.island": "진저 섬",
-  "dialog.location.islandFarm": "섬 농장",
-  "dialog.location.miniObelisk": "미니 오벨리스크",
-  "dialog.location.miniObeliskNumber": "미니 오벨리스크 #{{number}}",
-  "dialog.cancel": "취소",
-  "menu.location.islandFarm": "섬 농장"
+ "label.title": "위치를 선택해주세요:",
+ "label.location.farm": "농장",
+ "label.location.beach": "해변",
+ "label.location.mountain": "산맥",
+ "label.location.desert": "칼리코 사막",
+ "label.location.island": "진저 섬",
+ "label.location.islandFarm": "섬 농장",
+ "label.location.miniObelisk": "미니 오벨리스크",
+ "label.cancel": "취소"
 }

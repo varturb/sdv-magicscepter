@@ -20,10 +20,21 @@
   <ItemGroup>
     <Compile Include="ModEntry.cs" />
     <Compile Include="ModConfig.cs" />
-    <Compile Include="ActionHandler.cs" />
-    <Compile Include="OrderedResponse.cs" />
-    <Compile Include="Coords.cs" />
     <Compile Include="ModUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helpers/ModDataHelper.cs" />
+    <Compile Include="Helpers/LocationHelper.cs" />
+    <Compile Include="Helpers/FileHelper.cs" />
+    <Compile Include="Helpers/WarpHelper.cs" />
+    <Compile Include="Helpers/ExtensionsMethods.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models/DataEntry.cs" />
+    <Compile Include="Models/WarpLocationSaveDataEntry.cs" />
+    <Compile Include="Models/WarpDoWhen.cs" />
+    <Compile Include="Models/WarpObject.cs" />
+    <Compile Include="Models/MiniObeliskObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tools/BetterWand.cs" />
@@ -33,8 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Multiplayer/MultiplayerManager.cs" />
-    <Compile Include="Multiplayer/IslandFarmBroadcastMessage.cs" />
-    <Compile Include="Multiplayer/IslandFarmUpdateMessage.cs" />
+    <Compile Include="Multiplayer/IslandFarmSyncRequestMessage.cs" />
+    <Compile Include="Multiplayer/IslandFarmSyncResponseMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mods/ModManager.cs" />
@@ -45,30 +56,15 @@
     <Compile Include="Mods/GenericModConfigMenu/IGenericModConfigMenuApi.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UI/ConfigMenu.cs" />
     <Compile Include="UI/WarpMenu.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WarpLocations/ResponseManager.cs" />
-    <Compile Include="WarpLocations/LocationHelper.cs" />
-    <Compile Include="WarpLocations/WarpLocationBase.cs" />
-    <Compile Include="WarpLocations/Farm.cs" />
-    <Compile Include="WarpLocations/IslandFarm.cs" />
-    <Compile Include="WarpLocations/Island.cs" />
-    <Compile Include="WarpLocations/Beach.cs" />
-    <Compile Include="WarpLocations/Mountain.cs" />
-    <Compile Include="WarpLocations/Desert.cs" />
-    <Compile Include="WarpLocations/RidgesideVillage.cs" />
-    <Compile Include="WarpLocations/RidgesideVillageFarm.cs" />
-    <Compile Include="WarpLocations/EastScarp.cs" />
-    <Compile Include="WarpLocations/EastScarpFarm.cs" />
-    <Compile Include="WarpLocations/DowntownZuzu.cs" />
-    <Compile Include="WarpLocations/DeepWoods.cs" />
-    <Compile Include="WarpLocations/VisitMountVapius.cs" />
-    <Compile Include="WarpLocations/MiniObelisk.cs" />
-    <Compile Include="WarpLocations/MiniObeliskManager.cs" />
-    <Compile Include="WarpLocations/EnchantedGrave.cs" />
+    <Compile Include="Handlers/ActionHandler.cs" />
+    <Compile Include="Handlers/ResponseHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="data.json" />
     <None Include="manifest.json" />
     <None Include="i18n/de.json" />
     <None Include="i18n/default.json" />

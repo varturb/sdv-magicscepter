@@ -1,13 +1,11 @@
 {
-  "dialog.title": "Выберите место:",
-  "dialog.location.farm": "Ферма",
-  "dialog.location.beach": "Пляж",
-  "dialog.location.mountain": "Горы",
-  "dialog.location.desert": "Пустыня Калико",
-  "dialog.location.island": "Имбирный остров",
-  "dialog.location.islandFarm": "Островная ферм",
-  "dialog.location.miniObelisk": "Мини-обелиск",
-  "dialog.location.miniObeliskNumber": "Мини-обелиск #{{number}}",
-  "dialog.cancel": "Отмена",
-  "menu.location.islandFarm": "Островная ферм"
+ "label.title": "Выберите место:",
+ "label.location.farm": "Ферма",
+ "label.location.beach": "Пляж",
+ "label.location.mountain": "Горы",
+ "label.location.desert": "Пустыня Калико",
+ "label.location.island": "Имбирный остров",
+ "label.location.islandFarm": "Островная ферм",
+ "label.location.miniObelisk": "Мини-обелиск",
+ "label.cancel": "Отмена"
 }

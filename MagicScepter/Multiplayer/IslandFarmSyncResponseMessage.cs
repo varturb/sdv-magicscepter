@@ -1,10 +1,10 @@
 namespace MagicScepter.Multiplayer
 {
-  public class IslandFarmBroadcastMessage
+  public class IslandFarmSyncResponseMessage
   {
     public bool CanWarp { get; }
 
-    public IslandFarmBroadcastMessage(bool canWarp)
+    public IslandFarmSyncResponseMessage(bool canWarp)
     {
       CanWarp = canWarp;
     }

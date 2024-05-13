@@ -1,13 +1,11 @@
 {
-  "dialog.title": "Choisir un emplacement:",
-  "dialog.location.farm": "La ferme",
-  "dialog.location.beach": "La plage",
-  "dialog.location.mountain": "La Montagne",
-  "dialog.location.desert": "Le Désert de Calico",
-  "dialog.location.island": "L'Île Gingembre",
-  "dialog.location.islandFarm": "Ferme de l'île",
-  "dialog.location.miniObelisk": "Mini-obélisque",
-  "dialog.location.miniObeliskNumber": "Mini-obélisque #{{number}}",
-  "dialog.cancel": "Annuler",
-  "menu.location.islandFarm": "Ferme de l'île"
+ "label.title": "Choisir un emplacement:",
+ "label.location.farm": "La ferme",
+ "label.location.beach": "La plage",
+ "label.location.mountain": "La Montagne",
+ "label.location.desert": "Le Désert de Calico",
+ "label.location.island": "L'Île Gingembre",
+ "label.location.islandFarm": "Ferme de l'île",
+ "label.location.miniObelisk": "Mini-obélisque",
+ "label.cancel": "Annuler"
 }

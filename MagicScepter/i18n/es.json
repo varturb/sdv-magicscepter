@@ -1,13 +1,11 @@
 {
-  "dialog.title": "Elige la ubicación:",
-  "dialog.location.farm": "La granja",
-  "dialog.location.beach": "La playa",
-  "dialog.location.mountain": "La montaña",
-  "dialog.location.desert": "Desierto de Calico",
-  "dialog.location.island": "Isla Jengibre",
-  "dialog.location.islandFarm": "Granja Isleña",
-  "dialog.location.miniObelisk": "Mini obelisco",
-  "dialog.location.miniObeliskNumber": "Mini obelisco #{{number}}",
-  "dialog.cancel": "Cancelar",
-  "menu.location.islandFarm": "Granja Isleña"
+ "label.title": "Elige la ubicación:",
+ "label.location.farm": "La granja",
+ "label.location.beach": "La playa",
+ "label.location.mountain": "La montaña",
+ "label.location.desert": "Desierto de Calico",
+ "label.location.island": "Isla Jengibre",
+ "label.location.islandFarm": "Granja Isleña",
+ "label.location.miniObelisk": "Mini obelisco",
+ "label.cancel": "Cancelar"
 }
