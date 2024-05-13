@@ -13,12 +13,12 @@ namespace MagicScepter.UI
 {
   public class WarpMenu : IClickableMenu
   {
+    private readonly WarpMenuConfigButton configButton;
     private readonly Texture2D menuBackgroundTexture;
     private readonly List<WarpObject> warpObjects;
     private List<ClickableTextureComponent> warpLocationButtons;
     private float alpha;
     private int selectedWarpTargetIndex = -1;
-    private int selectionTime;
     private int oldSelectedWarpTargetIndex;
     private int age;
     private int buttonRadius;
@@ -28,13 +28,16 @@ namespace MagicScepter.UI
     private readonly float selectedButtonScale = 1.8f;
     private bool gamepadMode;
     private bool ignoreMouse = false;
+    private bool positionHoverTextOnTop = false;
 
     public WarpMenu(List<WarpObject> warpObjects)
     {
-      menuBackgroundTexture = ModUtility.Helper.ModContent.Load<Texture2D>("assets/spritesheet.png");
       width = 400;
       height = 400;
       alpha = 0f;
+
+      menuBackgroundTexture = ModUtility.Helper.ModContent.Load<Texture2D>("assets/spritesheet.png");
+      configButton = new WarpMenuConfigButton();
 
       this.warpObjects = warpObjects;
 
@@ -104,7 +107,7 @@ namespace MagicScepter.UI
 
     public override void performHoverAction(int x, int y)
     {
-      if (gamepadMode || ignoreMouse)
+      if (gamepadMode || ignoreMouse || alpha != 1f)
         return;
 
       for (int index = 0; index < warpLocationButtons.Count; ++index)
@@ -114,12 +117,9 @@ namespace MagicScepter.UI
           selectedWarpTargetIndex = index;
           if (selectedWarpTargetIndex == oldSelectedWarpTargetIndex)
             return;
-
-          selectionTime = 0;
-          return;
         }
       }
-      selectedWarpTargetIndex = -1;
+      // selectedWarpTargetIndex = -1;
     }
 
     public override void receiveKeyPress(Keys key)
@@ -138,8 +138,19 @@ namespace MagicScepter.UI
     {
       x = (int)Utility.ModifyCoordinateFromUIScale(x);
       y = (int)Utility.ModifyCoordinateFromUIScale(y);
-      ConfirmSelection();
+
+      configButton.receiveLeftClick(x, y, playSound);
       base.receiveLeftClick(x, y, playSound);
+
+      if (selectedWarpTargetIndex > -1)
+      {
+        var wo = warpLocationButtons[selectedWarpTargetIndex];
+        if (wo.containsPoint(x, y))
+        {
+          ConfirmSelection();
+        }
+      }
+
     }
 
     public override void receiveScrollWheelAction(int direction)
@@ -152,12 +163,12 @@ namespace MagicScepter.UI
 
     public override void update(GameTime time)
     {
-      var mousePosition = Game1.input.GetMouseState();
-      var oldMouseState = Game1.oldMouseState;
-      if (mousePosition != oldMouseState)
-      {
-        ignoreMouse = false;
-      }
+      // var mousePosition = Game1.input.GetMouseState();
+      // var oldMouseState = Game1.oldMouseState;
+      // if (mousePosition != oldMouseState)
+      // {
+      //   ignoreMouse = false;
+      // }
 
       age += time.ElapsedGameTime.Milliseconds;
 
@@ -222,10 +233,9 @@ namespace MagicScepter.UI
       if (oldSelectedWarpTargetIndex != selectedWarpTargetIndex)
       {
         oldSelectedWarpTargetIndex = selectedWarpTargetIndex;
-        selectionTime = 0;
       }
 
-      selectionTime += time.ElapsedGameTime.Milliseconds;
+      // selectionTime += time.ElapsedGameTime.Milliseconds;
       base.update(time);
     }
 
@@ -248,10 +258,26 @@ namespace MagicScepter.UI
       if (selectedWarpTargetIndex > -1)
       {
         warpLocationButtons[selectedWarpTargetIndex].draw(b, white, 0.86f);
-        SpriteText.drawStringWithScrollCenteredAt(b, warpObjects[selectedWarpTargetIndex].Text, xPositionOnScreen + width / 2, yPositionOnScreen + height + 40);
+
+        var text = warpObjects[selectedWarpTargetIndex].Text;
+        var textWidth = SpriteText.getWidthOfString(text);
+        var y = yPositionOnScreen + height + 40;
+        var x = xPositionOnScreen + width / 2;
+        configButton.xPositionOnScreen = x + textWidth / 2 + 48;
+        configButton.yPositionOnScreen = y - 4;
+
+        if (positionHoverTextOnTop)
+        {
+          y = yPositionOnScreen - 100;
+          configButton.yPositionOnScreen = y - 4;
+        }
+
+        SpriteText.drawStringWithScrollCenteredAt(b, text, x, y);
+        configButton.draw(b);
       }
 
-      if (!ignoreMouse)
+      // if (!ignoreMouse)
+      if (!gamepadMode)
         base.drawMouse(b);
     }
 
@@ -448,6 +474,7 @@ namespace MagicScepter.UI
 
     private void FixMousePosition()
     {
+      return;
       if (selectedWarpTargetIndex > -1)
       {
         var button = warpLocationButtons[selectedWarpTargetIndex].bounds;
@@ -459,6 +486,7 @@ namespace MagicScepter.UI
           Game1.setMousePosition(x, y);
       }
     }
+    
     private void SetMenuPositionOnScreen()
     {
       var menuPositiononScreen = GetMenuPositionOnScreen();
@@ -466,16 +494,26 @@ namespace MagicScepter.UI
       yPositionOnScreen = (int)menuPositiononScreen.Y;
 
       if (xPositionOnScreen + width > Game1.viewport.Width)
+      { // right off screen 
         xPositionOnScreen -= xPositionOnScreen + width - Game1.viewport.Width + 5;
+      }
 
       if (xPositionOnScreen < 0)
+      { // left off screen
         xPositionOnScreen -= xPositionOnScreen;
+      }
 
       if (yPositionOnScreen + height > Game1.viewport.Height)
+      { // bottom off screen
         yPositionOnScreen -= yPositionOnScreen + height - Game1.viewport.Height + 5;
+      }
 
       if (yPositionOnScreen < 0)
+      { // top off screen
         yPositionOnScreen -= yPositionOnScreen;
+      }
+
+      positionHoverTextOnTop = yPositionOnScreen >= Game1.viewport.Height - height - 5 - 64;
     }
 
     private Vector2 GetMenuPositionOnScreen()

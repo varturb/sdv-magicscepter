@@ -9,15 +9,15 @@ namespace MagicScepter.Helpers
 {
   public static class ModDataHelper
   {
-    internal static string SaveDataKey = $"{ModUtility.Manifest.UniqueID}/warp-locations";
+    private static readonly string SaveDataKey = $"{ModUtility.Manifest.UniqueID}/warp-locations";
 
-    public static List<WarpLocationSaveDataEntry> GetWarpLocationEntries()
+    public static List<SaveDataEntry> GetWarpLocationEntries()
     {
-      var entires = JsonConvert.DeserializeObject<List<WarpLocationSaveDataEntry>>(Game1.MasterPlayer.modData[SaveDataKey]);
-      return entires ?? new List<WarpLocationSaveDataEntry>();
+      var entires = JsonConvert.DeserializeObject<List<SaveDataEntry>>(Game1.MasterPlayer.modData[SaveDataKey]);
+      return entires ?? new List<SaveDataEntry>();
     }
 
-    public static WarpLocationSaveDataEntry GetWarpLocationEntry(string id)
+    public static SaveDataEntry GetWarpLocationEntry(string id)
     {
       var warpLocations = GetWarpLocationEntries();
       return warpLocations.FirstOrDefault(x => x.ID == id);
@@ -52,7 +52,7 @@ namespace MagicScepter.Helpers
       // Game1.player.modData[SaveDataKey] = JsonConvert.SerializeObject(warpLocationsSaveData);
     }
 
-    public static void UpdateSaveData(WarpLocationSaveDataEntry entry)
+    public static void UpdateSaveData(SaveDataEntry entry)
     {
       if (!Context.IsMainPlayer)
         return;

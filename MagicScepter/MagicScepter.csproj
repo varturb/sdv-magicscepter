@@ -31,7 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models/DataEntry.cs" />
-    <Compile Include="Models/WarpLocationSaveDataEntry.cs" />
+    <Compile Include="Models/SaveDataEntry.cs" />
     <Compile Include="Models/WarpDoWhen.cs" />
     <Compile Include="Models/WarpObject.cs" />
     <Compile Include="Models/MiniObeliskObject.cs" />
@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="UI/ConfigMenu.cs" />
     <Compile Include="UI/WarpMenu.cs" />
+    <Compile Include="UI/WarpMenuConfigButton.cs" />
+    <Compile Include="UI/DialogConfigButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers/ActionHandler.cs" />
