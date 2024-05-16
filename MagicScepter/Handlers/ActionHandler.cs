@@ -4,6 +4,8 @@ using MagicScepter.UI;
 using StardewValley.Menus;
 using StardewModdingAPI.Events;
 using System;
+using MagicScepter.Constants;
+using MagicScepter.Helpers;
 
 namespace MagicScepter.Handlers
 {
@@ -37,7 +39,7 @@ namespace MagicScepter.Handlers
 
       drawButton = true;
       Game1.player.currentLocation.createQuestionDialogue(
-        ModUtility.Helper.Translation.Get("label.title"),
+        TranslatedKeys.Title,
         responses.ToArray(),
         HandleAnswer
       );
@@ -59,6 +61,7 @@ namespace MagicScepter.Handlers
       }
       else
       {
+        warpObjects = warpObjects.FilterHiddenItems();
         Game1.activeClickableMenu = new WarpMenu(warpObjects);
       }
     }

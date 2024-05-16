@@ -6,6 +6,8 @@ using MagicScepter.Patches;
 using MagicScepter.Multiplayer;
 using MagicScepter.Mods.GenericModConfigMenu;
 using MagicScepter.Mods;
+using MagicScepter.Helpers;
+using MagicScepter.Models;
 
 namespace MagicScepter
 {
@@ -28,9 +30,15 @@ namespace MagicScepter
         Monitor.Log($"Issue with Harmony patch: {e}", LogLevel.Error);
         return;
       }
-      
+
       Helper.Events.Multiplayer.ModMessageReceived += MultiplayerManager.OnModMessageReceived;
       Helper.Events.GameLoop.DayStarted += MultiplayerManager.OnDayStarted;
+      Helper.Events.GameLoop.DayStarted += ModDataHelper.OnDayStarted;
+
+      if (!ModManager.IsModLoaded(SupportedMod.MultipleMiniObelisks))
+      {
+        Helper.Events.World.ObjectListChanged += MiniObeliskObject.OnObjectListChanged;
+      }
 
       if (ModManager.IsModLoaded(SupportedMod.GenericModConfigMenu))
       {

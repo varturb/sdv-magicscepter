@@ -1,3 +1,4 @@
+using MagicScepter.Constants;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -7,14 +8,22 @@ namespace MagicScepter.UI
 {
   public class WarpMenuConfigButton : IClickableMenu
   {
-
-    private readonly Texture2D emoteMenuTexture;
+    private readonly Texture2D spritesheetTexture;
+    private readonly ClickableTextureComponent button;
 
     public WarpMenuConfigButton()
     {
-      width = 64;
-      height = 64;
-      emoteMenuTexture = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\EmoteMenu");
+      width = 36;
+      height = 36;
+      
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(PathConstants.SpritesheetTexturePath);
+
+      button = new ClickableTextureComponent(
+        new Rectangle(0, 0, 36, 36),
+        spritesheetTexture,
+        new Rectangle(34, 64, 12, 12),
+        3f
+      );
     }
 
     public override void receiveLeftClick(int x, int y, bool playSound = false)
@@ -40,34 +49,11 @@ namespace MagicScepter.UI
       var hovered = isWithinBounds(Game1.getMouseX(), Game1.getMouseY());
       var alpha = hovered ? 1f : 0.3f;
       var white = Color.White * alpha;
+      button.bounds.X = xPositionOnScreen;
+      button.bounds.Y = yPositionOnScreen;
+      button.draw(b, white, 1f);
 
-      b.Draw( // draw icon background
-        Game1.mouseCursors2,
-        new Vector2(xPositionOnScreen, yPositionOnScreen),
-        new Rectangle(64, 208, 16, 16),
-        white,
-        0.0f,
-        Vector2.Zero,
-        Game1.pixelZoom,
-        SpriteEffects.None,
-        1f
-      );
-      b.Draw( // draw icon
-        emoteMenuTexture,
-        new Vector2(xPositionOnScreen + 12, yPositionOnScreen + 12),
-        new Rectangle(64, 16, 16, 16),
-        white,
-        0.0f,
-        Vector2.Zero,
-        2.5f,
-        SpriteEffects.None,
-        1f
-      );
-
-      if (hovered)
-      {
-        drawHoverText(Game1.spriteBatch, "Settings", Game1.smallFont);
-      }
+      if (hovered) drawHoverText(Game1.spriteBatch, TranslatedKeys.Configuration, Game1.smallFont);
 
       base.draw(b);
     }

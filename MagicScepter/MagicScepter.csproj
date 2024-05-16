@@ -28,6 +28,8 @@
     <Compile Include="Helpers/FileHelper.cs" />
     <Compile Include="Helpers/WarpHelper.cs" />
     <Compile Include="Helpers/ExtensionsMethods.cs" />
+    <Compile Include="Helpers/TranslationHelper.cs" />
+    <Compile Include="Helpers/GameHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models/DataEntry.cs" />
@@ -35,6 +37,12 @@
     <Compile Include="Models/WarpDoWhen.cs" />
     <Compile Include="Models/WarpObject.cs" />
     <Compile Include="Models/MiniObeliskObject.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants/PathConstants.cs" />
+    <Compile Include="Constants/TranslatedKeys.cs" />
+    <Compile Include="Constants/WarpDoType.cs" />
+    <Compile Include="Constants/WarpWhenType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tools/BetterWand.cs" />
@@ -56,14 +64,23 @@
     <Compile Include="Mods/GenericModConfigMenu/IGenericModConfigMenuApi.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI/ConfigMenu.cs" />
     <Compile Include="UI/WarpMenu.cs" />
     <Compile Include="UI/WarpMenuConfigButton.cs" />
     <Compile Include="UI/DialogConfigButton.cs" />
+    <Compile Include="UI/ConfigMenu/ConfigMenu.cs" />
+    <Compile Include="UI/ConfigMenu/ButtonBase.cs" />
+    <Compile Include="UI/ConfigMenu/RenameButton.cs" />
+    <Compile Include="UI/ConfigMenu/RenameMenu.cs" />
+    <Compile Include="UI/ConfigMenu/MoveUpButton.cs" />
+    <Compile Include="UI/ConfigMenu/MoveDownButton.cs" />
+    <Compile Include="UI/ConfigMenu/VisibilityButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers/ActionHandler.cs" />
     <Compile Include="Handlers/ResponseHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Debug/ScreenDebug.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="data.json" />

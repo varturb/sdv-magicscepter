@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using MagicScepter.Constants;
 using MagicScepter.Models;
 using MagicScepter.Mods;
 using MagicScepter.Mods.MultipleMiniObelisks;
@@ -48,7 +48,7 @@ namespace MagicScepter.Helpers
         WarpWhenType.MultipleMiniObelisk => MultipleMiniObelisks.CanWarp(),
         WarpWhenType.Mod => when.Is != null ? IsModLoaded(when.Is) : !IsModLoaded(when.IsNot),
         WarpWhenType.Quest => IsQuestCompleted(when.Is),
-        WarpWhenType.Event => IsEventSeen(when.Is),        
+        WarpWhenType.Event => IsEventSeen(when.Is),
         _ => false,
       };
     }
@@ -148,11 +148,10 @@ namespace MagicScepter.Helpers
       var obeliskCoords = GetValidTile(x, y);
       if (obeliskCoords == null)
       {
-        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:MiniObelisk_NeedsSpace"));
+        Game1.showRedMessage(Game1.content.LoadString(PathConstants.MiniObeliskNeedsSpaceMessagePath));
         return;
       }
 
-      Console.WriteLine($"{obeliskCoords.X}:{obeliskCoords.Y}");
       BetterWand.Warp(location, obeliskCoords.X, obeliskCoords.Y);
     }
 

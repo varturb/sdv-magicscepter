@@ -1,8 +1,8 @@
 [
   {
-    "ID": "magicscepter_farm",
+    "ID": "MagicScepter_Farm",
     "Order": 1,
-    "TranslationKey":"label.location.farm",
+    "TranslationKey": "WarpOptionFarm",
     "SpriteOffset": 0,
     "Warp": {
       "Do": {
@@ -16,9 +16,9 @@
     }
   },
   {
-    "ID": "magicscepter_beach",
+    "ID": "MagicScepter_Beach",
     "Order": 2,
-    "TranslationKey":"label.location.beach",
+    "TranslationKey": "WarpOptionBeach",
     "SpriteOffset": 64,
     "Warp": {
       "Do": {
@@ -34,9 +34,9 @@
     }
   },
   {
-    "ID": "magicscepter_mountain",
+    "ID": "MagicScepter_Mountain",
     "Order": 3,
-    "TranslationKey":"label.location.mountain",
+    "TranslationKey": "WarpOptionMountain",
     "SpriteOffset": 128,
     "Warp": {
       "Do": {
@@ -52,9 +52,9 @@
     }
   },
   {
-    "ID": "magicscepter_desert",
+    "ID": "MagicScepter_Desert",
     "Order": 4,
-    "TranslationKey":"label.location.desert",
+    "TranslationKey": "WarpOptionDesert",
     "SpriteOffset": 192,
     "Warp": {
       "Do": {
@@ -70,9 +70,9 @@
     }
   },
   {
-    "ID": "magicscepter_island",
+    "ID": "MagicScepter_Island",
     "Order": 5,
-    "TranslationKey":"label.location.island",
+    "TranslationKey": "WarpOptionIsland",
     "SpriteOffset": 256,
     "Warp": {
       "Do": {
@@ -88,9 +88,9 @@
     }
   },
   {
-    "ID": "magicscepter_islandfarm",
+    "ID": "MagicScepter_IslandFarm",
     "Order": 6,
-    "TranslationKey":"label.location.islandFarm",
+    "TranslationKey": "WarpOptionIslandFarm",
     "SpriteOffset": 320,
     "Warp": {
       "Do": {
@@ -114,9 +114,9 @@
     }
   },
   {
-    "ID": "magicscepter_enchantedgrave",
+    "ID": "MagicScepter_EnchantedGrave",
     "Order": 7,
-    "TranslationKey":"label.location.enchantedGrave",
+    "TranslationKey": "WarpOptionEnchantedGrave",
     "SpriteOffset": 896,
     "Warp": {
       "Do": {
@@ -140,9 +140,9 @@
     }
   },
   {
-    "ID": "magicscepter_ridgesidevillage",
+    "ID": "MagicScepter_RidgesideVillage",
     "Order": 8,
-    "TranslationKey":"label.location.ridgeside",
+    "TranslationKey": "WarpOptionRidgesideVillage",
     "SpriteOffset": 512,
     "Warp": {
       "Do": {
@@ -162,9 +162,9 @@
     }
   },
   {
-    "ID": "magicscepter_ridgesidevillagefarm",
+    "ID": "MagicScepter_RidgesideVillageFarm",
     "Order": 9,
-    "TranslationKey":"label.location.ridgesideFarm",
+    "TranslationKey": "WarpOptionRidgesideVillageFarm",
     "SpriteOffset": 576,
     "Warp": {
       "Do": {
@@ -192,9 +192,9 @@
     }
   },
   {
-    "ID": "magicscepter_eastscarp",
+    "ID": "MagicScepter_EastScarp",
     "Order": 10,
-    "TranslationKey":"label.location.eastScarp",
+    "TranslationKey": "WarpOptionEastScarp",
     "SpriteOffset": 640,
     "Warp": {
       "Do": {
@@ -214,9 +214,9 @@
     }
   },
   {
-    "ID": "magicscepter_eastscarpfarm",
+    "ID": "MagicScepter_EastScarpFarm",
     "Order": 11,
-    "TranslationKey":"label.location.eastScarpFarm",
+    "TranslationKey": "WarpOptionEastScarpFarm",
     "SpriteOffset": 704,
     "Warp": {
       "Do": {
@@ -240,9 +240,9 @@
     }
   },
   {
-    "ID": "magicscepter_downtownzuzu",
+    "ID": "MagicScepter_DowntownZuzu",
     "Order": 11,
-    "TranslationKey":"label.location.downtownZuzu",
+    "TranslationKey": "WarpOptionDowntownZuzu",
     "SpriteOffset": 768,
     "Warp": {
       "Do": {
@@ -262,9 +262,9 @@
     }
   },
   {
-    "ID": "magicscepter_mountvapius",
+    "ID": "MagicScepter_VisitMountVapius",
     "Order": 12,
-    "TranslationKey":"label.location.visitMountVapius",
+    "TranslationKey": "WarpOptionVisitMountVapius",
     "SpriteOffset": 832,
     "Warp": {
       "Do": {
@@ -284,9 +284,9 @@
     }
   },
   {
-    "ID": "magicscepter_deepwoods",
+    "ID": "MagicScepter_DeepWoods",
     "Order": 13,
-    "TranslationKey":"label.location.deepWoods",
+    "TranslationKey": "WarpOptionDeepWoods",
     "SpriteOffset": 448,
     "Warp": {
       "Do": {
@@ -306,9 +306,9 @@
     }
   },
   {
-    "ID": "magicscepter_miniobelisk",
+    "ID": "MagicScepter_MiniObelisk",
     "Order": 14,
-    "TranslationKey":"label.location.miniObelisk",
+    "TranslationKey": "WarpOptionMiniObelisk",
     "SpriteOffset": 384,
     "Warp": {
       "Do": {
@@ -329,9 +329,9 @@
     }
   },
   {
-    "ID": "magicscepter_multipleminiobelisk",
+    "ID": "MagicScepter_MultipleMiniObelisk",
     "Order": 14,
-    "TranslationKey":"label.location.miniObelisk",
+    "TranslationKey": "WarpOptionMiniObelisk",
     "SpriteOffset": 384,
     "Warp": {
       "Do": {

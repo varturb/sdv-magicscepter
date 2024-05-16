@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using MagicScepter.Constants;
 using MagicScepter.Models;
 using MagicScepter.Helpers;
 using Newtonsoft.Json;
@@ -9,18 +10,18 @@ namespace MagicScepter.Handlers
 {
   public static class ResponseHandler
   {
-    private const string miniObeliskID = "magicscepter_miniobelisk";
+    private const string miniObeliskID = "MagicScepter_MiniObelisk";
 
     public static List<Response> GetResponses()
     {
       var responses = new List<Response>();
-      var warpObjects = GetWarpObjects();
+      var warpObjects = GetWarpObjects().FilterHiddenItems();
 
       foreach (var wo in warpObjects)
       {
         responses.Add(new Response(wo.ID, wo.Text));
       }
-      responses.Add(new Response("label.cancel", ModUtility.Helper.Translation.Get("label.cancel")));
+      responses.Add(new Response(TranslatedKeys.Cancel, TranslatedKeys.Cancel));
 
       return responses;
     }
@@ -58,7 +59,7 @@ namespace MagicScepter.Handlers
         }
       }
 
-      return warpObjects.OrderBy(x => x.Order).ToList();
+      return warpObjects.AdjustOrder();
     }
 
     private static List<MiniObeliskObject> GetMiniObeliskObjects(DataEntry dataItem)
@@ -69,7 +70,7 @@ namespace MagicScepter.Handlers
       for (var i = 0; i < miniObelisks.Count; i++)
       {
         var m = miniObelisks[i];
-        miniObeliskObjects.Add(new MiniObeliskObject(dataItem, i, (int)m.TileLocation.X, (int)m.TileLocation.Y));  
+        miniObeliskObjects.Add(new MiniObeliskObject(dataItem, i, (int)m.TileLocation.X, (int)m.TileLocation.Y));
       }
       return miniObeliskObjects;
     }

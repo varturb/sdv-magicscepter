@@ -8,13 +8,15 @@ using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using MagicScepter.Constants;
+using MagicScepter.Debug;
 
 namespace MagicScepter.UI
 {
   public class WarpMenu : IClickableMenu
   {
     private readonly WarpMenuConfigButton configButton;
-    private readonly Texture2D menuBackgroundTexture;
+    private readonly Texture2D spritesheetTexture;
     private readonly List<WarpObject> warpObjects;
     private List<ClickableTextureComponent> warpLocationButtons;
     private float alpha;
@@ -30,13 +32,13 @@ namespace MagicScepter.UI
     private bool ignoreMouse = false;
     private bool positionHoverTextOnTop = false;
 
-    public WarpMenu(List<WarpObject> warpObjects)
+    public WarpMenu(List<WarpObject> warpObjects): base(0, 0, 0, 0, false)
     {
       width = 400;
       height = 400;
       alpha = 0f;
 
-      menuBackgroundTexture = ModUtility.Helper.ModContent.Load<Texture2D>("assets/spritesheet.png");
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(PathConstants.SpritesheetTexturePath);
       configButton = new WarpMenuConfigButton();
 
       this.warpObjects = warpObjects;
@@ -55,7 +57,7 @@ namespace MagicScepter.UI
       {
         warpLocationButtons.Add(new ClickableTextureComponent(
           new Rectangle(0, 0, 64, 64),
-          menuBackgroundTexture,
+          spritesheetTexture,
           warpLocation.SpirteSource,
           buttonScale
         ));
@@ -261,24 +263,22 @@ namespace MagicScepter.UI
 
         var text = warpObjects[selectedWarpTargetIndex].Text;
         var textWidth = SpriteText.getWidthOfString(text);
-        var y = yPositionOnScreen + height + 40;
+        var y = positionHoverTextOnTop ? yPositionOnScreen - 100 : yPositionOnScreen + height + 40;
         var x = xPositionOnScreen + width / 2;
-        configButton.xPositionOnScreen = x + textWidth / 2 + 48;
-        configButton.yPositionOnScreen = y - 4;
-
-        if (positionHoverTextOnTop)
-        {
-          y = yPositionOnScreen - 100;
-          configButton.yPositionOnScreen = y - 4;
-        }
-
-        SpriteText.drawStringWithScrollCenteredAt(b, text, x, y);
+        configButton.xPositionOnScreen = x + textWidth / 2 - 4;
+        configButton.yPositionOnScreen = y + 8;
+        var textOffset = "  ";
+        
+        SpriteText.drawStringWithScrollCenteredAt(b, text + textOffset, x, y);
         configButton.draw(b);
       }
 
       // if (!ignoreMouse)
-      if (!gamepadMode)
-        base.drawMouse(b);
+      // if (!gamepadMode)
+      drawMouse(b);
+
+      // var debug = new ScreenDebug(this);
+      // debug.DrawDebug();
     }
 
     private void HandleUseToolButton(Keys key)
@@ -486,7 +486,7 @@ namespace MagicScepter.UI
           Game1.setMousePosition(x, y);
       }
     }
-    
+
     private void SetMenuPositionOnScreen()
     {
       var menuPositiononScreen = GetMenuPositionOnScreen();

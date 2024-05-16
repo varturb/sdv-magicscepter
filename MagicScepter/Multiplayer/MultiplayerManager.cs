@@ -8,7 +8,7 @@ namespace MagicScepter.Multiplayer
   public static class MultiplayerManager
   {
     public static bool CanWarpToIslandFarm { get; set; } = false;
-    private const string islandFarmID = "magicscepter_islandfarm";
+    private const string islandFarmID = "MagicScepter_IslandFarm";
 
     public static void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
     {
