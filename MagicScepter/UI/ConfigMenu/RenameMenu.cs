@@ -28,14 +28,14 @@ namespace MagicScepter.UI
 
     private ConfigMenu parentMenu;
 
-    private WarpObject warpObject;
+    private TeleportScroll teleportScroll;
 
     private string hoverText = string.Empty;
 
-    public RenameMenu(ConfigMenu parentMenu, WarpObject warpOption)
+    public RenameMenu(ConfigMenu parentMenu, TeleportScroll teleportScroll)
     {
       this.parentMenu = parentMenu;
-      warpObject = warpOption;
+      this.teleportScroll = teleportScroll;
 
       xPositionOnScreen = 0;
       yPositionOnScreen = 0;
@@ -50,7 +50,7 @@ namespace MagicScepter.UI
       e = TextBoxEnter;
       textBox.OnEnterPressed += e;
       Game1.keyboardDispatcher.Subscriber = textBox;
-      textBox.Text = warpOption.Text;
+      textBox.Text = teleportScroll.Text;
       textBox.Selected = true;
 
       textBoxCC = new ClickableComponent(
@@ -125,7 +125,7 @@ namespace MagicScepter.UI
         {
           if (Context.IsMainPlayer)
           {
-            var entryToSave = warpObject.ConvertToSaveDataEntry();
+            var entryToSave = teleportScroll.ConvertToSaveDataEntry();
             entryToSave.Name = textBox.Text;
             ModDataHelper.UpdateSaveData(entryToSave);
           }
@@ -137,7 +137,7 @@ namespace MagicScepter.UI
           }
           exitThisMenu();
 
-          parentMenu.RefreshWarpObjects();
+          parentMenu.RefreshTeleportScrolls();
           Game1.activeClickableMenu = parentMenu;
         }
       }
@@ -210,7 +210,7 @@ namespace MagicScepter.UI
       if (resetButton.containsPoint(x, y))
       {
         Game1.playSound("smallSelect");
-        textBox.Text = warpObject.DefaultText;
+        textBox.Text = teleportScroll.DefaultText;
       }
     }
 
@@ -218,7 +218,7 @@ namespace MagicScepter.UI
     {
       base.draw(b);
       b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
-      SpriteText.drawStringWithScrollCenteredAt(b, TranslatedKeys.Rename, Game1.uiViewport.Width / 2, Game1.uiViewport.Height / 2 - 128, TranslatedKeys.Rename);
+      SpriteText.drawStringWithScrollCenteredAt(b, TranslatedKeys.ChangeName, Game1.uiViewport.Width / 2, Game1.uiViewport.Height / 2 - 128, TranslatedKeys.ChangeName);
       textBox.Draw(b);
 
       saveButton.draw(b);

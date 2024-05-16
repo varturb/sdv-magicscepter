@@ -38,14 +38,14 @@ namespace MagicScepter.UI
       if (skip)
         return;
 
-      var warpObjects = configMenu.warpObjects;
-      var prev = warpObjects[index - 1].ConvertToSaveDataEntry();
-      var curr = warpObjects[index].ConvertToSaveDataEntry();
+      var teleportScrolls = configMenu.teleportScrolls;
+      var prev = teleportScrolls[index - 1].ConvertToSaveDataEntry();
+      var curr = teleportScrolls[index].ConvertToSaveDataEntry();
       (curr.Order, prev.Order) = (prev.Order, curr.Order);
 
       var entiresToSave = new List<SaveDataEntry> { prev, curr };
       ModDataHelper.UpdateSaveData(entiresToSave);
-      configMenu.RefreshWarpObjects();
+      configMenu.RefreshTeleportScrolls();
 
       Game1.playSound("smallSelect");
     }

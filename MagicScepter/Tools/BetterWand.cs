@@ -5,14 +5,14 @@ namespace MagicScepter.Tools
 {
   public static class BetterWand
   {
-    public static void Warp(string location, int x, int y)
+    public static void Teleport(string location, int x, int y)
     {
-      BeforeWarpAnimation();
-      WarpPlayerTo(location, x, y);
-      AfterWarpAnimation();
+      BeforeTeleportAnimation();
+      TeleportPlayerTo(location, x, y);
+      AfterTeleportAnimation();
     }
 
-    private static void BeforeWarpAnimation()
+    private static void BeforeTeleportAnimation()
     {
       var currentLocation = Game1.currentLocation;
       var player = Game1.player;
@@ -43,7 +43,7 @@ namespace MagicScepter.Tools
       Game1.flashAlpha = 1f;
     }
 
-    private static void AfterWarpAnimation()
+    private static void AfterTeleportAnimation()
     {
       var player = Game1.player;
       new Rectangle(player.GetBoundingBox().X, player.GetBoundingBox().Y, 64, 64).Inflate(192, 192);
@@ -65,7 +65,7 @@ namespace MagicScepter.Tools
       }
     }
 
-    private static void WarpPlayerTo(string location, int x, int y)
+    private static void TeleportPlayerTo(string location, int x, int y)
     {
       DelayedAction.fadeAfterDelay(new Game1.afterFadeFunction(() =>
       {

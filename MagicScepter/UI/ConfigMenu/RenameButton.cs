@@ -12,7 +12,7 @@ namespace MagicScepter.UI
     private readonly ConfigMenu configMenu;
 
     public RenameButton(int index, ConfigMenu configMenu)
-      : base(56, 48, new Rectangle(64, 16, 16, 16), 3f, TranslatedKeys.Rename)
+      : base(56, 48, new Rectangle(64, 16, 16, 16), 3f, TranslatedKeys.ChangeName)
     {
       this.index = index;
       this.configMenu = configMenu;
@@ -20,7 +20,7 @@ namespace MagicScepter.UI
 
     protected override void SetupTexture()
     {
-      var texture = Game1.temporaryContent.Load<Texture2D>(PathConstants.EmoteMenuTexturePath);
+      var texture = Game1.temporaryContent.Load<Texture2D>(AllConstants.EmoteMenuTexturePath);
       SetTexture(texture);
     }
 
@@ -34,7 +34,7 @@ namespace MagicScepter.UI
     protected override void ButtonPressed()
     {
       Game1.playSound("smallSelect");
-      Game1.activeClickableMenu = new RenameMenu(configMenu, configMenu.warpObjects[index]);
+      Game1.activeClickableMenu = new RenameMenu(configMenu, configMenu.teleportScrolls[index]);
     }
 
     protected override void Draw()

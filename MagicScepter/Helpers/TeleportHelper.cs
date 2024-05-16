@@ -13,9 +13,9 @@ using StardewValley.Locations;
 
 namespace MagicScepter.Helpers
 {
-  public static class WarpHelper
+  public static class TeleportHelper
   {
-    public static bool CanWarp(List<WarpWhen> whenList)
+    public static bool CanTeleport(List<ActionWhen> whenList)
     {
       if (whenList == null)
       {
@@ -33,44 +33,44 @@ namespace MagicScepter.Helpers
       return true;
     }
 
-    public static void Warp(WarpDo @do)
+    public static void Teleport(ActionDo @do)
     {
       HandleDo(@do);
     }
 
-    private static bool HandleWhen(WarpWhen when)
+    private static bool HandleWhen(ActionWhen when)
     {
       return when.Type switch
       {
-        WarpWhenType.Obelisk => CanWarpUsingObelisk(when.Is),
-        WarpWhenType.IslandObelisk => HasIslandObelisk(when.Is),
-        WarpWhenType.MiniObelisk => HasMiniObelisk(when.Is),
-        WarpWhenType.MultipleMiniObelisk => MultipleMiniObelisks.CanWarp(),
-        WarpWhenType.Mod => when.Is != null ? IsModLoaded(when.Is) : !IsModLoaded(when.IsNot),
-        WarpWhenType.Quest => IsQuestCompleted(when.Is),
-        WarpWhenType.Event => IsEventSeen(when.Is),
+        ActionWhenType.Obelisk => CanTeleportUsingObelisk(when.Is),
+        ActionWhenType.IslandObelisk => HasIslandObelisk(when.Is),
+        ActionWhenType.MiniObelisk => HasMiniObelisk(when.Is),
+        ActionWhenType.MultipleMiniObelisk => MultipleMiniObelisks.CanTeleport(),
+        ActionWhenType.Mod => when.Is != null ? IsModLoaded(when.Is) : !IsModLoaded(when.IsNot),
+        ActionWhenType.Quest => IsQuestCompleted(when.Is),
+        ActionWhenType.Event => IsEventSeen(when.Is),
         _ => false,
       };
     }
 
-    private static void HandleDo(WarpDo @do)
+    private static void HandleDo(ActionDo @do)
     {
       switch (@do.Type)
       {
-        case WarpDoType.Farm:
-          WarpToHome(@do.Location, @do.Point);
+        case ActionDoType.Farm:
+          TeleportToHome(@do.Location, @do.Point);
           break;
-        case WarpDoType.Warp:
-          WarpUsingWand(@do.Location, @do.Point.X, @do.Point.Y);
+        case ActionDoType.Teleport:
+          TeleportUsingWand(@do.Location, @do.Point.X, @do.Point.Y);
           break;
-        case WarpDoType.Obelisk:
-          WarpUsingObelisk(@do.Name);
+        case ActionDoType.Obelisk:
+          TeleportUsingObelisk(@do.Name);
           break;
-        case WarpDoType.MiniObelisk:
-          WarpUsingMiniObelisk(@do.Location, @do.Point.X, @do.Point.Y);
+        case ActionDoType.MiniObelisk:
+          TeleportUsingMiniObelisk(@do.Location, @do.Point.X, @do.Point.Y);
           break;
-        case WarpDoType.MultipleMiniObelisk:
-          MultipleMiniObelisks.OpenWarpMenu();
+        case ActionDoType.MultipleMiniObelisk:
+          MultipleMiniObelisks.OpenTeleportMenu();
           break;
       }
     }
@@ -80,7 +80,7 @@ namespace MagicScepter.Helpers
       return LocationHelper.FindObjects(obeliskName).Count > 0;
     }
 
-    private static bool CanWarpUsingObelisk(string obelisk)
+    private static bool CanTeleportUsingObelisk(string obelisk)
     {
       return LocationHelper.FindBuilding(obelisk) != null;
     }
@@ -105,7 +105,7 @@ namespace MagicScepter.Helpers
       }
       else
       {
-        return MultiplayerManager.CanWarpToIslandFarm;
+        return MultiplayerManager.CanTeleportToIslandFarm;
       }
     }
 
@@ -124,56 +124,56 @@ namespace MagicScepter.Helpers
       return Game1.MasterPlayer.eventsSeen.Contains(eventId);
     }
 
-    private static void WarpToHome(string location, WarpDoPoint point)
+    private static void TeleportToHome(string location, ActionDoPoint point)
     {
       var home = Utility.getHomeOfFarmer(Game1.player);
       var x = home == null ? point.X : home.getFrontDoorSpot().X;
       var y = home == null ? point.Y : home.getFrontDoorSpot().Y;
-      WarpUsingWand(location, x, y);
+      TeleportUsingWand(location, x, y);
     }
 
-    private static void WarpUsingWand(string location, int x, int y)
+    private static void TeleportUsingWand(string location, int x, int y)
     {
-      BetterWand.Warp(location, x, y);
+      BetterWand.Teleport(location, x, y);
     }
 
-    private static void WarpUsingObelisk(string obeliskName)
+    private static void TeleportUsingObelisk(string obeliskName)
     {
       var obelisk = LocationHelper.FindBuilding(obeliskName);
       obelisk?.doAction(new Vector2(obelisk.tileX.Value, obelisk.tileY.Value), Game1.player);
     }
 
-    private static void WarpUsingMiniObelisk(string location, int x, int y)
+    private static void TeleportUsingMiniObelisk(string location, int x, int y)
     {
       var obeliskCoords = GetValidTile(x, y);
       if (obeliskCoords == null)
       {
-        Game1.showRedMessage(Game1.content.LoadString(PathConstants.MiniObeliskNeedsSpaceMessagePath));
+        Game1.showRedMessage(Game1.content.LoadString(AllConstants.MiniObeliskNeedsSpaceMessagePath));
         return;
       }
 
-      BetterWand.Warp(location, obeliskCoords.X, obeliskCoords.Y);
+      BetterWand.Teleport(location, obeliskCoords.X, obeliskCoords.Y);
     }
 
-    private static WarpDoPoint GetValidTile(int x, int y)
+    private static ActionDoPoint GetValidTile(int x, int y)
     {
-      var tilePoint = new WarpDoPoint(x, y + 1);
+      var tilePoint = new ActionDoPoint(x, y + 1);
 
       if (IsTileValid(tilePoint))
       {
         return tilePoint;
       }
-      tilePoint = new WarpDoPoint(x - 1, y);
+      tilePoint = new ActionDoPoint(x - 1, y);
       if (IsTileValid(tilePoint))
       {
         return tilePoint;
       }
-      tilePoint = new WarpDoPoint(x + 1, y);
+      tilePoint = new ActionDoPoint(x + 1, y);
       if (IsTileValid(tilePoint))
       {
         return tilePoint;
       }
-      tilePoint = new WarpDoPoint(x, y - 1);
+      tilePoint = new ActionDoPoint(x, y - 1);
       if (IsTileValid(tilePoint))
       {
         return tilePoint;
@@ -182,7 +182,7 @@ namespace MagicScepter.Helpers
       return null;
     }
 
-    private static bool IsTileValid(WarpDoPoint tilePoint)
+    private static bool IsTileValid(ActionDoPoint tilePoint)
     {
       return Game1.getFarm().CanItemBePlacedHere(new Vector2(tilePoint.X, tilePoint.Y));
     }

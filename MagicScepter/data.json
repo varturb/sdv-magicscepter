@@ -2,9 +2,9 @@
   {
     "ID": "MagicScepter_Farm",
     "Order": 1,
-    "TranslationKey": "WarpOptionFarm",
+    "TranslationKey": "TeleportScrollFarm",
     "SpriteOffset": 0,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Farm",
         "Location": "Farm",
@@ -18,9 +18,9 @@
   {
     "ID": "MagicScepter_Beach",
     "Order": 2,
-    "TranslationKey": "WarpOptionBeach",
+    "TranslationKey": "TeleportScrollBeach",
     "SpriteOffset": 64,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Obelisk",
         "Name": "Water Obelisk"
@@ -36,9 +36,9 @@
   {
     "ID": "MagicScepter_Mountain",
     "Order": 3,
-    "TranslationKey": "WarpOptionMountain",
+    "TranslationKey": "TeleportScrollMountain",
     "SpriteOffset": 128,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Obelisk",
         "Name": "Earth Obelisk"
@@ -54,9 +54,9 @@
   {
     "ID": "MagicScepter_Desert",
     "Order": 4,
-    "TranslationKey": "WarpOptionDesert",
+    "TranslationKey": "TeleportScrollDesert",
     "SpriteOffset": 192,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Obelisk",
         "Name": "Desert Obelisk"
@@ -72,9 +72,9 @@
   {
     "ID": "MagicScepter_Island",
     "Order": 5,
-    "TranslationKey": "WarpOptionIsland",
+    "TranslationKey": "TeleportScrollIsland",
     "SpriteOffset": 256,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Obelisk",
         "Name": "Island Obelisk"
@@ -90,11 +90,11 @@
   {
     "ID": "MagicScepter_IslandFarm",
     "Order": 6,
-    "TranslationKey": "WarpOptionIslandFarm",
+    "TranslationKey": "TeleportScrollIslandFarm",
     "SpriteOffset": 320,
-    "Warp": {
+    "Action": {
       "Do": {
-        "Type": "Warp",
+        "Type": "Teleport",
         "Location": "IslandWest",
         "Point": {
           "X": 77,
@@ -116,11 +116,11 @@
   {
     "ID": "MagicScepter_EnchantedGrave",
     "Order": 7,
-    "TranslationKey": "WarpOptionEnchantedGrave",
+    "TranslationKey": "TeleportScrollEnchantedGrave",
     "SpriteOffset": 896,
-    "Warp": {
+    "Action": {
       "Do": {
-        "Type": "Warp",
+        "Type": "Teleport",
         "Location": "Custom_EnchantedGrove",
         "Point": {
           "X": 30,
@@ -142,9 +142,9 @@
   {
     "ID": "MagicScepter_RidgesideVillage",
     "Order": 8,
-    "TranslationKey": "WarpOptionRidgesideVillage",
+    "TranslationKey": "TeleportScrollRidgesideVillage",
     "SpriteOffset": 512,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Obelisk",
         "Name": "RSV_Obelisk"
@@ -164,11 +164,11 @@
   {
     "ID": "MagicScepter_RidgesideVillageFarm",
     "Order": 9,
-    "TranslationKey": "WarpOptionRidgesideVillageFarm",
+    "TranslationKey": "TeleportScrollRidgesideVillageFarm",
     "SpriteOffset": 576,
-    "Warp": {
+    "Action": {
       "Do": {
-        "Type": "Warp",
+        "Type": "Teleport",
         "Location": "Custom_Ridgeside_SummitFarm",
         "Point": {
           "X": 18,
@@ -194,9 +194,9 @@
   {
     "ID": "MagicScepter_EastScarp",
     "Order": 10,
-    "TranslationKey": "WarpOptionEastScarp",
+    "TranslationKey": "TeleportScrollEastScarp",
     "SpriteOffset": 640,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Obelisk",
         "Name": "Scarp Obelisk"
@@ -216,11 +216,11 @@
   {
     "ID": "MagicScepter_EastScarpFarm",
     "Order": 11,
-    "TranslationKey": "WarpOptionEastScarpFarm",
+    "TranslationKey": "TeleportScrollEastScarpFarm",
     "SpriteOffset": 704,
-    "Warp": {
+    "Action": {
       "Do": {
-        "Type": "Warp",
+        "Type": "Teleport",
         "Location": "EastScarp_MeadowFarm",
         "Point": {
           "X": 44,
@@ -242,9 +242,9 @@
   {
     "ID": "MagicScepter_DowntownZuzu",
     "Order": 11,
-    "TranslationKey": "WarpOptionDowntownZuzu",
+    "TranslationKey": "TeleportScrollDowntownZuzu",
     "SpriteOffset": 768,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Obelisk",
         "Name": "DTZ.DowntownZuzuCP_Obelisk"
@@ -264,9 +264,9 @@
   {
     "ID": "MagicScepter_VisitMountVapius",
     "Order": 12,
-    "TranslationKey": "WarpOptionVisitMountVapius",
+    "TranslationKey": "TeleportScrollVisitMountVapius",
     "SpriteOffset": 832,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Obelisk",
         "Name": "Lumisteria.MtVapius_Obelisk"
@@ -286,9 +286,9 @@
   {
     "ID": "MagicScepter_DeepWoods",
     "Order": 13,
-    "TranslationKey": "WarpOptionDeepWoods",
+    "TranslationKey": "TeleportScrollDeepWoods",
     "SpriteOffset": 448,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "Obelisk",
         "Name": "Woods Obelisk"
@@ -308,9 +308,9 @@
   {
     "ID": "MagicScepter_MiniObelisk",
     "Order": 14,
-    "TranslationKey": "WarpOptionMiniObelisk",
+    "TranslationKey": "TeleportScrollMiniObelisk",
     "SpriteOffset": 384,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "MiniObelisk",
         "Name": "Mini-Obelisk",
@@ -331,9 +331,9 @@
   {
     "ID": "MagicScepter_MultipleMiniObelisk",
     "Order": 14,
-    "TranslationKey": "WarpOptionMiniObelisk",
+    "TranslationKey": "TeleportScrollMiniObelisk",
     "SpriteOffset": 384,
-    "Warp": {
+    "Action": {
       "Do": {
         "Type": "MultipleMiniObelisk"
       },

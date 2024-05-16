@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using MagicScepter.Constants;
 using MagicScepter.Handlers;
 using MagicScepter.Models;
 using Newtonsoft.Json;
@@ -11,18 +12,18 @@ namespace MagicScepter.Helpers
 {
   public static class ModDataHelper
   {
-    private static readonly string SaveDataKey = $"{ModUtility.Manifest.UniqueID}/warp-options";
+    private static readonly string saveDateKey = AllConstants.ConfigurationSaveKey;
 
     public static List<SaveDataEntry> GetSaveData()
     {
       try
       {
-        if (Context.IsMainPlayer && !Game1.player.modData.ContainsKey(SaveDataKey))
+        if (Context.IsMainPlayer && !Game1.player.modData.ContainsKey(saveDateKey))
         {
-          Game1.player.modData.Add(SaveDataKey, string.Empty);
+          Game1.player.modData.Add(saveDateKey, string.Empty);
         }
 
-        var entires = JsonConvert.DeserializeObject<List<SaveDataEntry>>(Game1.MasterPlayer.modData[SaveDataKey]);
+        var entires = JsonConvert.DeserializeObject<List<SaveDataEntry>>(Game1.MasterPlayer.modData[saveDateKey]);
         return entires ?? new List<SaveDataEntry>();
       }
       catch
@@ -31,10 +32,10 @@ namespace MagicScepter.Helpers
       }
     }
 
-    public static SaveDataEntry GetWarpLocationEntry(string id)
+    public static SaveDataEntry GetSaveDataEntry(string id)
     {
-      var warpLocations = GetSaveData();
-      return warpLocations.FirstOrDefault(x => x.ID == id);
+      var saveData = GetSaveData();
+      return saveData.FirstOrDefault(x => x.ID == id);
     }
 
     public static void UpdateSaveData()
@@ -42,13 +43,13 @@ namespace MagicScepter.Helpers
       if (!Context.IsMainPlayer)
         return;
 
-      if (!Game1.player.modData.ContainsKey(SaveDataKey))
+      if (!Game1.player.modData.ContainsKey(saveDateKey))
       {
-        Game1.player.modData.Add(SaveDataKey, string.Empty);
+        Game1.player.modData.Add(saveDateKey, string.Empty);
       }
 
       var saveData = GetEntriesToSave(new());
-      Game1.player.modData[SaveDataKey] = JsonConvert.SerializeObject(saveData);
+      Game1.player.modData[saveDateKey] = JsonConvert.SerializeObject(saveData);
     }
 
     public static void UpdateSaveData(SaveDataEntry entry)
@@ -56,13 +57,13 @@ namespace MagicScepter.Helpers
       if (!Context.IsMainPlayer)
         return;
 
-      if (!Game1.player.modData.ContainsKey(SaveDataKey))
+      if (!Game1.player.modData.ContainsKey(saveDateKey))
       {
-        Game1.player.modData.Add(SaveDataKey, string.Empty);
+        Game1.player.modData.Add(saveDateKey, string.Empty);
       }
 
       var saveData = GetEntriesToSave(new() { entry });
-      Game1.player.modData[SaveDataKey] = JsonConvert.SerializeObject(saveData);
+      Game1.player.modData[saveDateKey] = JsonConvert.SerializeObject(saveData);
     }
 
     public static void UpdateSaveData(List<SaveDataEntry> entriesToSave)
@@ -70,13 +71,13 @@ namespace MagicScepter.Helpers
       if (!Context.IsMainPlayer)
         return;
 
-      if (!Game1.player.modData.ContainsKey(SaveDataKey))
+      if (!Game1.player.modData.ContainsKey(saveDateKey))
       {
-        Game1.player.modData.Add(SaveDataKey, string.Empty);
+        Game1.player.modData.Add(saveDateKey, string.Empty);
       }
 
       var saveData = GetEntriesToSave(entriesToSave);
-      Game1.player.modData[SaveDataKey] = JsonConvert.SerializeObject(saveData);
+      Game1.player.modData[saveDateKey] = JsonConvert.SerializeObject(saveData);
     }
 
     public static void OnDayStarted(object sender, DayStartedEventArgs e)
@@ -86,12 +87,12 @@ namespace MagicScepter.Helpers
 
     private static List<SaveDataEntry> GetEntriesToSave(List<SaveDataEntry> entriesToSave)
     {
-      var warpObjects = ResponseHandler.GetWarpObjects();
+      var teleportScrolls = ResponseHandler.GetTeleportScrolls();
       var saveData = new List<SaveDataEntry>();
 
-      foreach (var wo in warpObjects)
+      foreach (var tp in teleportScrolls)
       {
-        var entry = entriesToSave.Find(x => x.ID == wo.ID) ?? wo.ConvertToSaveDataEntry();
+        var entry = entriesToSave.Find(x => x.ID == tp.ID) ?? tp.ConvertToSaveDataEntry();
         saveData.Add(entry);
       }
 

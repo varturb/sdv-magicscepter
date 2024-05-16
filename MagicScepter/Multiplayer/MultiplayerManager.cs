@@ -1,4 +1,5 @@
 using System.Linq;
+using MagicScepter.Constants;
 using MagicScepter.Handlers;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -7,8 +8,7 @@ namespace MagicScepter.Multiplayer
 {
   public static class MultiplayerManager
   {
-    public static bool CanWarpToIslandFarm { get; set; } = false;
-    private const string islandFarmID = "MagicScepter_IslandFarm";
+    public static bool CanTeleportToIslandFarm { get; set; } = false;
 
     public static void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
     {
@@ -29,7 +29,7 @@ namespace MagicScepter.Multiplayer
         if (!Context.IsMainPlayer)
         {
           var message = e.ReadAs<IslandFarmSyncResponseMessage>();
-          CanWarpToIslandFarm = message.CanWarp;
+          CanTeleportToIslandFarm = message.CanTeleport;
         }
       }
     }
@@ -38,8 +38,8 @@ namespace MagicScepter.Multiplayer
     {
       if (Context.IsMainPlayer)
       {
-        var islandWarpObject = ResponseHandler.GetWarpObjects().FirstOrDefault(x => x.ID == islandFarmID);
-        CanWarpToIslandFarm = islandWarpObject?.CanWarp ?? false;
+        var islandTeleportScroll = ResponseHandler.GetTeleportScrolls().FirstOrDefault(x => x.ID == AllConstants.IslandFarmID);
+        CanTeleportToIslandFarm = islandTeleportScroll?.CanTeleport ?? false;
       }
       else
       {
@@ -50,7 +50,7 @@ namespace MagicScepter.Multiplayer
     private static void SendSyncResponseMessage()
     {
       ModUtility.Helper.Multiplayer.SendMessage(
-        new IslandFarmSyncResponseMessage(CanWarpToIslandFarm), 
+        new IslandFarmSyncResponseMessage(CanTeleportToIslandFarm), 
         nameof(IslandFarmSyncResponseMessage), 
         modIDs: new[] { ModUtility.Manifest.UniqueID }
       );

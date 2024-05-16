@@ -6,6 +6,6 @@ namespace MagicScepter.Models
     public int Order { get; set; }
     public string TranslationKey { get; set; }
     public int SpriteOffset { get; set; }
-    public WarpDoWhen Warp { get; set; }
+    public ActionDoWhen Action { get; set; }
   }
 }

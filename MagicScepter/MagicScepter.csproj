@@ -26,7 +26,7 @@
     <Compile Include="Helpers/ModDataHelper.cs" />
     <Compile Include="Helpers/LocationHelper.cs" />
     <Compile Include="Helpers/FileHelper.cs" />
-    <Compile Include="Helpers/WarpHelper.cs" />
+    <Compile Include="Helpers/TeleportHelper.cs" />
     <Compile Include="Helpers/ExtensionsMethods.cs" />
     <Compile Include="Helpers/TranslationHelper.cs" />
     <Compile Include="Helpers/GameHelper.cs" />
@@ -34,15 +34,15 @@
   <ItemGroup>
     <Compile Include="Models/DataEntry.cs" />
     <Compile Include="Models/SaveDataEntry.cs" />
-    <Compile Include="Models/WarpDoWhen.cs" />
-    <Compile Include="Models/WarpObject.cs" />
-    <Compile Include="Models/MiniObeliskObject.cs" />
+    <Compile Include="Models/ActionDoWhen.cs" />
+    <Compile Include="Models/TeleportScroll.cs" />
+    <Compile Include="Models/MiniObeliskScroll.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants/PathConstants.cs" />
+    <Compile Include="Constants/AllConstants.cs" />
     <Compile Include="Constants/TranslatedKeys.cs" />
-    <Compile Include="Constants/WarpDoType.cs" />
-    <Compile Include="Constants/WarpWhenType.cs" />
+    <Compile Include="Constants/ActionDoType.cs" />
+    <Compile Include="Constants/ActionWhenType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tools/BetterWand.cs" />
@@ -64,8 +64,8 @@
     <Compile Include="Mods/GenericModConfigMenu/IGenericModConfigMenuApi.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI/WarpMenu.cs" />
-    <Compile Include="UI/WarpMenuConfigButton.cs" />
+    <Compile Include="UI/TeleportMenu.cs" />
+    <Compile Include="UI/TeleportMenuConfigButton.cs" />
     <Compile Include="UI/DialogConfigButton.cs" />
     <Compile Include="UI/ConfigMenu/ConfigMenu.cs" />
     <Compile Include="UI/ConfigMenu/ButtonBase.cs" />

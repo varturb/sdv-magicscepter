@@ -8,9 +8,9 @@ namespace MagicScepter.Constants
     public static string Cancel => Get("Cancel");
     public static string Save => Get("Save");
     public static string ResetToDefault => Get("ResetToDefault");
-    public static string Rename => Get("Rename");
-    public static string Hide => Get("Hide");
-    public static string Show => Get("Show");
+    public static string ChangeName => Get("ChangeName");
+    public static string Hidden => Get("Hidden");
+    public static string Visible => Get("Visible");
     public static string MoveUp => Get("MoveUp");
     public static string MoveDown => Get("MoveDown");
     public static string Configuration => Get("Configuration");

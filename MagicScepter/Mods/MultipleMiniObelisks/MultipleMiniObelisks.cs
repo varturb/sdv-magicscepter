@@ -12,7 +12,7 @@ namespace MagicScepter.Mods.MultipleMiniObelisks
     private const string modDataKey = $"{modUniqueID}/obelisk-locations";
     private const string miniObelistGameObjectId = "238";
 
-    public static void OpenWarpMenu()
+    public static void OpenTeleportMenu()
     {
       var obelisk = FindObelisk();
       if (obelisk != null)
@@ -27,7 +27,7 @@ namespace MagicScepter.Mods.MultipleMiniObelisks
       }
     }
 
-    public static bool CanWarp()
+    public static bool CanTeleport()
     {
       return FindObelisk() != null;
     }

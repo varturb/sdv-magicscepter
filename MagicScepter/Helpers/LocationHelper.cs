@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using MagicScepter.Constants;
 using MagicScepter.Mods;
 using StardewValley;
 using StardewValley.Buildings;
@@ -8,9 +9,6 @@ namespace MagicScepter.Helpers
 {
   public static class LocationHelper
   {
-    private const string EastScarpFarmLocation = "EastScarp_MeadowFarm";
-    private const string RidgesideFarmLocation = "Custom_Ridgeside_SummitFarm";
-
     public static Building FindBuilding(string name)
     {
       try
@@ -20,13 +18,13 @@ namespace MagicScepter.Helpers
 
         if (ModManager.IsModLoaded(SupportedMod.EastScarp))
         {
-          building = Game1.getLocationFromName(EastScarpFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
+          building = Game1.getLocationFromName(AllConstants.EastScarpFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
           if (building != null) return building;
         }
 
         if (ModManager.IsModLoaded(SupportedMod.RidgesideVillage))
         {
-          building = Game1.getLocationFromName(RidgesideFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
+          building = Game1.getLocationFromName(AllConstants.RidgesideFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
           if (building != null) return building;
         }
 

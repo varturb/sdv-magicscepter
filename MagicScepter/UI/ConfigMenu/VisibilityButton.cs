@@ -8,7 +8,7 @@ namespace MagicScepter.UI
 {
   public class VisibilityButton : ButtonBase
   {
-    public new string HoverText => !Hovered ? string.Empty : isHidden ? TranslatedKeys.Hide : TranslatedKeys.Show;
+    public new string HoverText => !Hovered ? string.Empty : isHidden ? TranslatedKeys.Hidden : TranslatedKeys.Visible;
 
     private readonly int index;
     private readonly ConfigMenu configMenu;
@@ -26,7 +26,7 @@ namespace MagicScepter.UI
 
     protected override void SetupTexture()
     {
-      var texture = ModUtility.Helper.ModContent.Load<Texture2D>(PathConstants.SpritesheetTexturePath);
+      var texture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
       SetTexture(texture);
     }
 
@@ -44,12 +44,12 @@ namespace MagicScepter.UI
         
       isHidden = !isHidden;
 
-      var warpObjects = configMenu.warpObjects;
-      var entryToSave = warpObjects[index].ConvertToSaveDataEntry();
+      var teleportScrolls = configMenu.teleportScrolls;
+      var entryToSave = teleportScrolls[index].ConvertToSaveDataEntry();
       entryToSave.Hidden = isHidden;
 
       ModDataHelper.UpdateSaveData(entryToSave);
-      configMenu.RefreshWarpObjects();
+      configMenu.RefreshTeleportScrolls();
       Game1.playSound("smallSelect");
     }
 

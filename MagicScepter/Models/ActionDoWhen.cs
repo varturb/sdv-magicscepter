@@ -2,34 +2,34 @@ using System.Collections.Generic;
 
 namespace MagicScepter.Models
 {
-  public class WarpDoWhen
+  public class ActionDoWhen
   {
-    public WarpDo Do { get; set; }
-    public List<WarpWhen> When { get; set; }
+    public ActionDo Do { get; set; }
+    public List<ActionWhen> When { get; set; }
   }
 
-  public class WarpDo
+  public class ActionDo
   {
     public string Type { get; set; }
     public string Name { get; set; }
     public string Location { get; set; }
-    public WarpDoPoint Point { get; set; }
+    public ActionDoPoint Point { get; set; }
   }
 
-  public class WarpDoPoint
+  public class ActionDoPoint
   {
     public int X { get; set; }
     public int Y { get; set; }
 
-    public WarpDoPoint() { }
-    public WarpDoPoint(int x, int y)
+    public ActionDoPoint() { }
+    public ActionDoPoint(int x, int y)
     {
       X = x;
       Y = y;
     }
   }
 
-  public class WarpWhen
+  public class ActionWhen
   {
     public string Type { get; set; }
     public string Is { get; set; }

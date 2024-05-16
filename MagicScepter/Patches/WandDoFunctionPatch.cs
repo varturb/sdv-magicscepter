@@ -13,7 +13,7 @@ namespace MagicScepter.Patches
       {
         if (who.IsLocalPlayer)
         {
-          ActionHandler.HandleWarpAction();
+          ActionHandler.HandleTeleportAction();
         }
 
         return false;

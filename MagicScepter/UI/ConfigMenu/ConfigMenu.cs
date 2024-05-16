@@ -15,7 +15,7 @@ namespace MagicScepter.UI
 {
   public class ConfigMenu : IClickableMenu
   {
-    public List<WarpObject> warpObjects;
+    public List<TeleportScroll> teleportScrolls;
     private readonly Texture2D spritesheetTexture;
     private readonly List<VisibilityButton> visibilityButtons = new();
     private readonly List<RenameButton> renameButtons = new();
@@ -46,16 +46,16 @@ namespace MagicScepter.UI
       xPositionOnScreen = (int)topLeft.X;
       yPositionOnScreen = (int)topLeft.Y + 32;
 
-      warpObjects = ResponseHandler.GetWarpObjects();
+      teleportScrolls = ResponseHandler.GetTeleportScrolls();
 
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(PathConstants.SpritesheetTexturePath);
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
 
       Init();
     }
 
-    public void RefreshWarpObjects()
+    public void RefreshTeleportScrolls()
     {
-      warpObjects = ResponseHandler.GetWarpObjects();
+      teleportScrolls = ResponseHandler.GetTeleportScrolls();
       CreateComponents();
       SetScrollBarToCurrentIndex();
       populateClickableComponentList();
@@ -77,7 +77,7 @@ namespace MagicScepter.UI
       renameButtons.Clear();
       rows.Clear();
 
-      for (int i = 0; i < warpObjects.Count; i++)
+      for (int i = 0; i < teleportScrolls.Count; i++)
       {
         var row = new ClickableComponent(
           new Rectangle(xPositionOnScreen + 16, yPositionOnScreen + 16 + (i - topRowIndex) * ((height - 32) / pageSize), width - 32, (height - 32) / pageSize + 4),
@@ -88,7 +88,7 @@ namespace MagicScepter.UI
           downNeighborID = i + 1,
           upNeighborID = i > 0 ? i - 1 : -1,
           rightNeighborID = i + hideButtonOffset,
-          leftNeighborID = i < warpObjects.Count - 1 ? i + moveDownButtonOffset : i + moveUpButtonOffset,
+          leftNeighborID = i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : i + moveUpButtonOffset,
           fullyImmutable = true
         };
 
@@ -101,16 +101,16 @@ namespace MagicScepter.UI
           rightID: i
         );
 
-        var moveDownButton = new MoveDownButton(i, this, skip: i == warpObjects.Count - 1);
+        var moveDownButton = new MoveDownButton(i, this, skip: i == teleportScrolls.Count - 1);
         moveDownButton.SetupIDs(
-          ID: i < warpObjects.Count - 1 ? i + moveDownButtonOffset : -7777,
+          ID: i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : -7777,
           upID: i + moveUpButtonOffset,
           downID: i + 1 + moveUpButtonOffset,
           leftID: -7777,
           rightID: i
         );
 
-        var visibilityButton = new VisibilityButton(i, warpObjects[i].Hidden, this, warpObjects[i].WarpDoWhen.Do.Type == WarpDoType.Farm);
+        var visibilityButton = new VisibilityButton(i, teleportScrolls[i].Hidden, this, teleportScrolls[i].ActionDoWhen.Do.Type == ActionDoType.Farm);
         visibilityButton.SetupIDs(
           ID: i + hideButtonOffset,
           upID: i > 0 ? i - 1 + hideButtonOffset : -1,
@@ -425,7 +425,7 @@ namespace MagicScepter.UI
         drawTextureBox(
           b,
           spritesheetTexture,
-          warpObjects[i].SpirteSource,
+          teleportScrolls[i].SpirteSource,
           row.bounds.X + 48,
           row.bounds.Y + 16,
           64,
@@ -438,7 +438,7 @@ namespace MagicScepter.UI
         // draw name
         SpriteText.drawString(
           b,
-          warpObjects[i].Text,
+          teleportScrolls[i].Text,
           row.bounds.X + 128,
           row.bounds.Y + 24
         );

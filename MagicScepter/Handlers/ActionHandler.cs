@@ -14,20 +14,20 @@ namespace MagicScepter.Handlers
     private static bool menuInitialized = false;
     private static bool drawButton = false;
 
-    public static void HandleWarpAction()
+    public static void HandleTeleportAction()
     {
       if (ModUtility.Config.UseOldDialogMenu)
       {
         InitializeDialogMenu();
-        ShowWarpDialog();
+        ShowTeleportDialog();
       }
       else
       {
-        ShowWarpMenu();
+        ShowTeleportMenu();
       }
     }
 
-    private static void ShowWarpDialog()
+    private static void ShowTeleportDialog()
     {
       var responses = ResponseHandler.GetResponses();
       if (responses.Count == 2)
@@ -51,18 +51,18 @@ namespace MagicScepter.Handlers
       ResponseHandler.HandleResponse(answer);
     }
 
-    private static void ShowWarpMenu()
+    private static void ShowTeleportMenu()
     {
-      var warpObjects = ResponseHandler.GetWarpObjects();
-      if (warpObjects.Count == 1)
+      var teleportScrolls = ResponseHandler.GetTeleportScrolls();
+      if (teleportScrolls.Count == 1)
       {
-        var farmResponse = warpObjects.First();
+        var farmResponse = teleportScrolls.First();
         ResponseHandler.HandleResponse(farmResponse.ID);
       }
       else
       {
-        warpObjects = warpObjects.FilterHiddenItems();
-        Game1.activeClickableMenu = new WarpMenu(warpObjects);
+        teleportScrolls = teleportScrolls.FilterHiddenItems();
+        Game1.activeClickableMenu = new TeleportMenu(teleportScrolls);
       }
     }
 

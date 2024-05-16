@@ -17,7 +17,7 @@ namespace MagicScepter.UI
     {
       width = 64;
       height = 64;
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(PathConstants.SpritesheetTexturePath);
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
 
       if (Game1.activeClickableMenu is DialogueBox dialogueBox && dialogueBox.responseCC?.Count > 0)
       {

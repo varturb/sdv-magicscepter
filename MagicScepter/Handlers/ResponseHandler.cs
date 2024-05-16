@@ -10,16 +10,15 @@ namespace MagicScepter.Handlers
 {
   public static class ResponseHandler
   {
-    private const string miniObeliskID = "MagicScepter_MiniObelisk";
 
     public static List<Response> GetResponses()
     {
       var responses = new List<Response>();
-      var warpObjects = GetWarpObjects().FilterHiddenItems();
+      var teleportScrolls = GetTeleportScrolls().FilterHiddenItems();
 
-      foreach (var wo in warpObjects)
+      foreach (var tp in teleportScrolls)
       {
-        responses.Add(new Response(wo.ID, wo.Text));
+        responses.Add(new Response(tp.ID, tp.Text));
       }
       responses.Add(new Response(TranslatedKeys.Cancel, TranslatedKeys.Cancel));
 
@@ -28,51 +27,51 @@ namespace MagicScepter.Handlers
 
     public static void HandleResponse(string responseKey)
     {
-      GetWarpObjects().FirstOrDefault(wo => wo.ID == responseKey)?.Warp();
+      GetTeleportScrolls().FirstOrDefault(wo => wo.ID == responseKey)?.Teleport();
     }
 
-    public static List<WarpObject> GetWarpObjects()
+    public static List<TeleportScroll> GetTeleportScrolls()
     {
       var data = FileHelper.ReadFileData<DataEntry>(@"data.json");
-      var warpDataItems = JsonConvert.DeserializeObject<List<DataEntry>>(data);
-      var warpObjects = new List<WarpObject>();
+      var teleportDataItems = JsonConvert.DeserializeObject<List<DataEntry>>(data);
+      var teleportScrolls = new List<TeleportScroll>();
 
-      foreach (var dataItem in warpDataItems)
+      foreach (var dataItem in teleportDataItems)
       {
-        if (dataItem.ID == miniObeliskID)
+        if (dataItem.ID == AllConstants.MiniObeliskID)
         {
-          var miniobelisks = GetMiniObeliskObjects(dataItem);
+          var miniobelisks = GetMiniObeliskScrolls(dataItem);
           foreach (var m in miniobelisks)
           {
-            if (m.CanWarp)
+            if (m.CanTeleport)
             {
-              warpObjects.Add(m);
+              teleportScrolls.Add(m);
             }
           }
           continue;
         }
 
-        var warpObject = new WarpObject(dataItem);
-        if (warpObject.CanWarp)
+        var teleportScroll = new TeleportScroll(dataItem);
+        if (teleportScroll.CanTeleport)
         {
-          warpObjects.Add(warpObject);
+          teleportScrolls.Add(teleportScroll);
         }
       }
 
-      return warpObjects.AdjustOrder();
+      return teleportScrolls.AdjustOrder();
     }
 
-    private static List<MiniObeliskObject> GetMiniObeliskObjects(DataEntry dataItem)
+    private static List<MiniObeliskScroll> GetMiniObeliskScrolls(DataEntry dataItem)
     {
-      var miniObeliskObjects = new List<MiniObeliskObject>();
-      var miniObelisks = LocationHelper.FindObjects(dataItem.Warp.Do.Name);
+      var miniObeliskScrolls = new List<MiniObeliskScroll>();
+      var miniObelisks = LocationHelper.FindObjects(dataItem.Action.Do.Name);
 
       for (var i = 0; i < miniObelisks.Count; i++)
       {
         var m = miniObelisks[i];
-        miniObeliskObjects.Add(new MiniObeliskObject(dataItem, i, (int)m.TileLocation.X, (int)m.TileLocation.Y));
+        miniObeliskScrolls.Add(new MiniObeliskScroll(dataItem, i, (int)m.TileLocation.X, (int)m.TileLocation.Y));
       }
-      return miniObeliskObjects;
+      return miniObeliskScrolls;
     }
   }
 }

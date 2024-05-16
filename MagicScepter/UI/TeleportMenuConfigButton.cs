@@ -6,17 +6,17 @@ using StardewValley.Menus;
 
 namespace MagicScepter.UI
 {
-  public class WarpMenuConfigButton : IClickableMenu
+  public class TeleportMenuConfigButton : IClickableMenu
   {
     private readonly Texture2D spritesheetTexture;
     private readonly ClickableTextureComponent button;
 
-    public WarpMenuConfigButton()
+    public TeleportMenuConfigButton()
     {
       width = 36;
       height = 36;
       
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(PathConstants.SpritesheetTexturePath);
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
 
       button = new ClickableTextureComponent(
         new Rectangle(0, 0, 36, 36),

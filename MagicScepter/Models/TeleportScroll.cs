@@ -4,41 +4,41 @@ using Microsoft.Xna.Framework;
 
 namespace MagicScepter.Models
 {
-  public class WarpObject
+  public class TeleportScroll
   {
     public string ID { get; protected set; }
     public int Order { get; set; }
     public string Text { get; protected set; }
     public string DefaultText { get; protected set; }
-    public bool CanWarp { get; protected set; }
+    public bool CanTeleport { get; protected set; }
     public bool Hidden { get; protected set; }
     public Rectangle SpirteSource { get; }
-    public WarpDoWhen WarpDoWhen { get; set; }
+    public ActionDoWhen ActionDoWhen { get; set; }
     
     private const int orderOffset = 100;
 
-    public WarpObject(DataEntry data)
+    public TeleportScroll(DataEntry data)
     {
       ID = data.ID;
       SpirteSource = new(data.SpriteOffset, 0, 64, 64);
-      WarpDoWhen = data.Warp.DeepCopy();
+      ActionDoWhen = data.Action.DeepCopy();
 
-      if (GetType() == typeof(WarpObject))
+      if (GetType() == typeof(TeleportScroll))
       {
-        var saveEntry = ModDataHelper.GetWarpLocationEntry(data.ID);
+        var saveEntry = ModDataHelper.GetSaveDataEntry(data.ID);
         Order = saveEntry?.Order ?? (data.Order + orderOffset);
         DefaultText = TranslationHelper.Get(data.TranslationKey);
         Text = saveEntry?.Name ?? DefaultText;
-        Hidden = WarpDoWhen.Do.Type != WarpDoType.Farm && (saveEntry?.Hidden ?? false);
-        CanWarp = WarpHelper.CanWarp(WarpDoWhen.When);
+        Hidden = ActionDoWhen.Do.Type != ActionDoType.Farm && (saveEntry?.Hidden ?? false);
+        CanTeleport = TeleportHelper.CanTeleport(ActionDoWhen.When);
       }
     }
 
-    public void Warp()
+    public void Teleport()
     {
-      if (CanWarp)
+      if (CanTeleport)
       {
-        WarpHelper.Warp(WarpDoWhen.Do);
+        TeleportHelper.Teleport(ActionDoWhen.Do);
       }
     }
   }

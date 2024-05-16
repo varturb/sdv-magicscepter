@@ -37,7 +37,7 @@ namespace MagicScepter
 
       if (!ModManager.IsModLoaded(SupportedMod.MultipleMiniObelisks))
       {
-        Helper.Events.World.ObjectListChanged += MiniObeliskObject.OnObjectListChanged;
+        Helper.Events.World.ObjectListChanged += MiniObeliskScroll.OnObjectListChanged;
       }
 
       if (ModManager.IsModLoaded(SupportedMod.GenericModConfigMenu))

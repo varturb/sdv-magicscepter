@@ -13,15 +13,15 @@ using MagicScepter.Debug;
 
 namespace MagicScepter.UI
 {
-  public class WarpMenu : IClickableMenu
+  public class TeleportMenu : IClickableMenu
   {
-    private readonly WarpMenuConfigButton configButton;
+    private readonly TeleportMenuConfigButton configButton;
     private readonly Texture2D spritesheetTexture;
-    private readonly List<WarpObject> warpObjects;
-    private List<ClickableTextureComponent> warpLocationButtons;
+    private readonly List<TeleportScroll> teleportScrolls;
+    private List<ClickableTextureComponent> teleportScrollButtons;
     private float alpha;
-    private int selectedWarpTargetIndex = -1;
-    private int oldSelectedWarpTargetIndex;
+    private int selectedTeleportScrollIndex = -1;
+    private int oldSelectedTeleportScrollIndex;
     private int age;
     private int buttonRadius;
     private readonly int expandedButtonRadius = 42;
@@ -32,45 +32,45 @@ namespace MagicScepter.UI
     private bool ignoreMouse = false;
     private bool positionHoverTextOnTop = false;
 
-    public WarpMenu(List<WarpObject> warpObjects): base(0, 0, 0, 0, false)
+    public TeleportMenu(List<TeleportScroll> teleportScrolls): base(0, 0, 0, 0, false)
     {
       width = 400;
       height = 400;
       alpha = 0f;
 
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(PathConstants.SpritesheetTexturePath);
-      configButton = new WarpMenuConfigButton();
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
+      configButton = new TeleportMenuConfigButton();
 
-      this.warpObjects = warpObjects;
+      this.teleportScrolls = teleportScrolls;
 
       SetMenuPositionOnScreen();
-      CreateWarpTargetButtons();
+      CreateTeleportScrollButtons();
       SnapToPlayerPosition();
     }
 
-    private void CreateWarpTargetButtons()
+    private void CreateTeleportScrollButtons()
     {
-      warpLocationButtons = new List<ClickableTextureComponent>();
+      teleportScrollButtons = new List<ClickableTextureComponent>();
 
       var index = 0;
-      foreach (var warpLocation in warpObjects)
+      foreach (var tp in teleportScrolls)
       {
-        warpLocationButtons.Add(new ClickableTextureComponent(
+        teleportScrollButtons.Add(new ClickableTextureComponent(
           new Rectangle(0, 0, 64, 64),
           spritesheetTexture,
-          warpLocation.SpirteSource,
+          tp.SpirteSource,
           buttonScale
         ));
         index++;
       }
     }
 
-    private void RepositionWarpTargetButtons()
+    private void RepositionTeleportScrollButtons()
     {
       var index = 0;
-      foreach (var button in warpLocationButtons)
+      foreach (var button in teleportScrollButtons)
       {
-        var num = Utility.Lerp(0f, MathF.PI * 2f, (float)index / (float)warpLocationButtons.Count);
+        var num = Utility.Lerp(0f, MathF.PI * 2f, (float)index / (float)teleportScrollButtons.Count);
         button.bounds.X = (int)((float)(xPositionOnScreen + width / 2f + (int)(-Math.Sin(num) * (double)buttonRadius) * 4) - (float)button.bounds.Width / 2f);
         button.bounds.Y = (int)((float)(yPositionOnScreen + height / 2f + (int)(-Math.Cos(num) * (double)buttonRadius) * 4) - (float)button.bounds.Height / 2f);
         index++;
@@ -83,16 +83,16 @@ namespace MagicScepter.UI
         return;
 
       SetMenuPositionOnScreen();
-      RepositionWarpTargetButtons();
+      RepositionTeleportScrollButtons();
     }
 
     private void ConfirmSelection()
     {
       exitThisMenu(false);
 
-      if (selectedWarpTargetIndex > -1)
+      if (selectedTeleportScrollIndex > -1)
       {
-        var id = warpObjects[selectedWarpTargetIndex].ID;
+        var id = teleportScrolls[selectedTeleportScrollIndex].ID;
         ResponseHandler.HandleResponse(id);
       }
     }
@@ -112,16 +112,15 @@ namespace MagicScepter.UI
       if (gamepadMode || ignoreMouse || alpha != 1f)
         return;
 
-      for (int index = 0; index < warpLocationButtons.Count; ++index)
+      for (int index = 0; index < teleportScrollButtons.Count; ++index)
       {
-        if (warpLocationButtons[index].containsPoint(x, y))
+        if (teleportScrollButtons[index].containsPoint(x, y))
         {
-          selectedWarpTargetIndex = index;
-          if (selectedWarpTargetIndex == oldSelectedWarpTargetIndex)
+          selectedTeleportScrollIndex = index;
+          if (selectedTeleportScrollIndex == oldSelectedTeleportScrollIndex)
             return;
         }
       }
-      // selectedWarpTargetIndex = -1;
     }
 
     public override void receiveKeyPress(Keys key)
@@ -144,9 +143,9 @@ namespace MagicScepter.UI
       configButton.receiveLeftClick(x, y, playSound);
       base.receiveLeftClick(x, y, playSound);
 
-      if (selectedWarpTargetIndex > -1)
+      if (selectedTeleportScrollIndex > -1)
       {
-        var wo = warpLocationButtons[selectedWarpTargetIndex];
+        var wo = teleportScrollButtons[selectedTeleportScrollIndex];
         if (wo.containsPoint(x, y))
         {
           ConfirmSelection();
@@ -202,17 +201,17 @@ namespace MagicScepter.UI
           v1.Y *= -1f;
           v1.Normalize();
           float num1 = -1f;
-          for (int index = 0; index < warpLocationButtons.Count; ++index)
+          for (int index = 0; index < teleportScrollButtons.Count; ++index)
           {
             var v2 = new Vector2(
-              warpLocationButtons[index].bounds.Center.X - (xPositionOnScreen + width / 2f),
-              warpLocationButtons[index].bounds.Center.Y - (yPositionOnScreen + height / 2f)
+              teleportScrollButtons[index].bounds.Center.X - (xPositionOnScreen + width / 2f),
+              teleportScrollButtons[index].bounds.Center.Y - (yPositionOnScreen + height / 2f)
             );
             float num2 = Vector2.Dot(v1, v2);
             if ((double)num2 > (double)num1)
             {
               num1 = num2;
-              selectedWarpTargetIndex = index;
+              selectedTeleportScrollIndex = index;
 
               FixMousePosition();
             }
@@ -220,21 +219,21 @@ namespace MagicScepter.UI
         }
       }
 
-      for (int index = 0; index < warpLocationButtons.Count; index++)
+      for (int index = 0; index < teleportScrollButtons.Count; index++)
       {
-        if (warpLocationButtons[index].scale > buttonScale)
+        if (teleportScrollButtons[index].scale > buttonScale)
         {
-          warpLocationButtons[index].scale = Utility.MoveTowards(warpLocationButtons[index].scale, buttonScale, (float)(time.ElapsedGameTime.Milliseconds / 1000f * 10f));
+          teleportScrollButtons[index].scale = Utility.MoveTowards(teleportScrollButtons[index].scale, buttonScale, (float)(time.ElapsedGameTime.Milliseconds / 1000f * 10f));
         }
       }
-      if (selectedWarpTargetIndex > -1)
+      if (selectedTeleportScrollIndex > -1)
       {
-        warpLocationButtons[selectedWarpTargetIndex].scale = selectedButtonScale;
+        teleportScrollButtons[selectedTeleportScrollIndex].scale = selectedButtonScale;
       }
 
-      if (oldSelectedWarpTargetIndex != selectedWarpTargetIndex)
+      if (oldSelectedTeleportScrollIndex != selectedTeleportScrollIndex)
       {
-        oldSelectedWarpTargetIndex = selectedWarpTargetIndex;
+        oldSelectedTeleportScrollIndex = selectedTeleportScrollIndex;
       }
 
       // selectionTime += time.ElapsedGameTime.Milliseconds;
@@ -244,24 +243,24 @@ namespace MagicScepter.UI
     public override void draw(SpriteBatch b)
     {
       SetMenuPositionOnScreen();
-      RepositionWarpTargetButtons();
+      RepositionTeleportScrollButtons();
 
       var white = Color.White;
       white.A = (byte)Utility.Lerp(0f, 255f, alpha);
       var index = 0;
-      foreach (var button in warpLocationButtons)
+      foreach (var button in teleportScrollButtons)
       {
-        if (index++ != selectedWarpTargetIndex)
+        if (index++ != selectedTeleportScrollIndex)
         {
           button.draw(b, white, 0.86f);
         }
       }
 
-      if (selectedWarpTargetIndex > -1)
+      if (selectedTeleportScrollIndex > -1)
       {
-        warpLocationButtons[selectedWarpTargetIndex].draw(b, white, 0.86f);
+        teleportScrollButtons[selectedTeleportScrollIndex].draw(b, white, 0.86f);
 
-        var text = warpObjects[selectedWarpTargetIndex].Text;
+        var text = teleportScrolls[selectedTeleportScrollIndex].Text;
         var textWidth = SpriteText.getWidthOfString(text);
         var y = positionHoverTextOnTop ? yPositionOnScreen - 100 : yPositionOnScreen + height + 40;
         var x = xPositionOnScreen + width / 2;
@@ -294,10 +293,10 @@ namespace MagicScepter.UI
       if (!Game1.options.doesInputListContain(Game1.options.moveUpButton, key))
         return;
 
-      var count = warpLocationButtons.Count;
+      var count = teleportScrollButtons.Count;
       var firstIndex = 0;
-      var lastIndex = warpLocationButtons.Count - 1;
-      ref var index = ref selectedWarpTargetIndex;
+      var lastIndex = teleportScrollButtons.Count - 1;
+      ref var index = ref selectedTeleportScrollIndex;
 
       // var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
       var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
@@ -331,10 +330,10 @@ namespace MagicScepter.UI
       if (!Game1.options.doesInputListContain(Game1.options.moveRightButton, key))
         return;
 
-      var count = warpLocationButtons.Count;
+      var count = teleportScrollButtons.Count;
       var firstIndex = 0;
-      var lastIndex = warpLocationButtons.Count - 1;
-      ref var index = ref selectedWarpTargetIndex;
+      var lastIndex = teleportScrollButtons.Count - 1;
+      ref var index = ref selectedTeleportScrollIndex;
 
       var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
       // var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
@@ -368,10 +367,10 @@ namespace MagicScepter.UI
       if (!Game1.options.doesInputListContain(Game1.options.moveDownButton, key))
         return;
 
-      var count = warpLocationButtons.Count;
+      var count = teleportScrollButtons.Count;
       var firstIndex = 0;
-      var lastIndex = warpLocationButtons.Count - 1;
-      ref var index = ref selectedWarpTargetIndex;
+      var lastIndex = teleportScrollButtons.Count - 1;
+      ref var index = ref selectedTeleportScrollIndex;
 
       // var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
       var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
@@ -405,10 +404,10 @@ namespace MagicScepter.UI
       if (!Game1.options.doesInputListContain(Game1.options.moveLeftButton, key))
         return;
 
-      var count = warpLocationButtons.Count;
+      var count = teleportScrollButtons.Count;
       var firstIndex = 0;
-      var lastIndex = warpLocationButtons.Count - 1;
-      ref var index = ref selectedWarpTargetIndex;
+      var lastIndex = teleportScrollButtons.Count - 1;
+      ref var index = ref selectedTeleportScrollIndex;
 
       var leftThreshold = (int)Math.Round((float)count / 4 - 0.01);
       // var downThreshold = (int)Math.Round((float)count / 4 * 2 - 0.01);
@@ -439,8 +438,8 @@ namespace MagicScepter.UI
 
     private void HandleScrollWheel(int direction)
     {
-      var lastItemIndex = warpLocationButtons.Count - 1;
-      ref var index = ref selectedWarpTargetIndex;
+      var lastItemIndex = teleportScrollButtons.Count - 1;
+      ref var index = ref selectedTeleportScrollIndex;
 
       if (index == -1)
       {
@@ -475,9 +474,9 @@ namespace MagicScepter.UI
     private void FixMousePosition()
     {
       return;
-      if (selectedWarpTargetIndex > -1)
+      if (selectedTeleportScrollIndex > -1)
       {
-        var button = warpLocationButtons[selectedWarpTargetIndex].bounds;
+        var button = teleportScrollButtons[selectedTeleportScrollIndex].bounds;
         var x = button.Right - button.Width / 8;
         var y = button.Bottom - button.Height / 8;
 

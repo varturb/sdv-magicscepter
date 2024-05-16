@@ -1,6 +1,6 @@
 namespace MagicScepter.Constants
 {
-  public static class WarpWhenType
+  public static class ActionWhenType
   {
     public const string Obelisk = "Obelisk";
     public const string IslandObelisk = "IslandObelisk";

@@ -34,7 +34,7 @@ namespace MagicScepter.Helpers
       return list.FindIndex(x => x.ID == id);
     }
 
-    public static List<WarpObject> AdjustOrder(this List<WarpObject> list)
+    public static List<TeleportScroll> AdjustOrder(this List<TeleportScroll> list)
     {
       var order = 1;
       var ordered = list.OrderBy(e => e.Order).ToList();
@@ -45,14 +45,14 @@ namespace MagicScepter.Helpers
       return ordered;
     }
 
-    public static List<WarpObject> FilterHiddenItems(this List<WarpObject> list)
+    public static List<TeleportScroll> FilterHiddenItems(this List<TeleportScroll> list)
     {
       return list.Where(x => !x.Hidden).ToList();
     }
 
-    public static SaveDataEntry ConvertToSaveDataEntry(this WarpObject warpObject)
+    public static SaveDataEntry ConvertToSaveDataEntry(this TeleportScroll teleportScroll)
     {
-      return new SaveDataEntry(warpObject.ID, warpObject.Text, warpObject.Order, warpObject.Hidden);
+      return new SaveDataEntry(teleportScroll.ID, teleportScroll.Text, teleportScroll.Order, teleportScroll.Hidden);
     }
   }
 }
