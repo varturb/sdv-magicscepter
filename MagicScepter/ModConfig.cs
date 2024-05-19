@@ -2,11 +2,8 @@ namespace MagicScepter
 {
   public class ModConfig
   {
-    public bool UseOldDialogMenu { get; set; }
+    public static ModConfig Defaults { get; } = new();
 
-    public ModConfig()
-    {
-      UseOldDialogMenu = false;
-    }
+    public bool UseOldDialogMenu { get; set; } = false;
   }
 }

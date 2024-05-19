@@ -7,6 +7,7 @@ using MagicScepter.Helpers;
 using MagicScepter.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
@@ -21,21 +22,26 @@ namespace MagicScepter.UI
     private readonly List<RenameButton> renameButtons = new();
     private readonly List<MoveUpButton> moveUpButtons = new();
     private readonly List<MoveDownButton> moveDownButtons = new();
-    private readonly List<ClickableTextureComponent> keybindButtons = new();
+    private readonly List<KeybindButton> keybindButtons = new();
     private readonly List<ClickableComponent> rows = new();
     private ClickableTextureComponent scrollUpButton;
     private ClickableTextureComponent scrollDownButton;
     private ClickableTextureComponent scrollBar;
+    private ClickableTextureComponent configPageButon;
+    private ClickableTextureComponent settingsPageButon;
     private Rectangle scrollBarRunner;
     private int topRowIndex = 0;
-    private const int moveUpButtonOffset = 100;
-    private const int moveDownButtonOffset = 200;
-    private const int hideButtonOffset = 300;
-    private const int renameButtonOffset = 400;
-    private const int keybindButtonOffset = 500;
+    private const int configPageButtonID = 100;
+    private const int settingsPageButtonID = 101;
+    private const int moveUpButtonOffset = 200;
+    private const int moveDownButtonOffset = 300;
+    private const int visibilityButtonOffset = 400;
+    private const int renameButtonOffset = 500;
+    private const int keybindButtonOffset = 600;
     private const int pageSize = 6;
     private string hoverText = string.Empty;
     private bool scrolling;
+    private bool shouldResetLayout = false;
 
     public ConfigMenu()
     {
@@ -46,16 +52,19 @@ namespace MagicScepter.UI
       xPositionOnScreen = (int)topLeft.X;
       yPositionOnScreen = (int)topLeft.Y + 32;
 
-      teleportScrolls = ResponseHandler.GetTeleportScrolls();
+      teleportScrolls = ScrollHandler.GetTeleportScrolls();
 
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
+
+      ModUtility.Helper.Events.Display.WindowResized += OnWindowResized;
+      exitFunction = OnExit;
 
       Init();
     }
 
     public void RefreshTeleportScrolls()
     {
-      teleportScrolls = ResponseHandler.GetTeleportScrolls();
+      teleportScrolls = ScrollHandler.GetTeleportScrolls();
       CreateComponents();
       SetScrollBarToCurrentIndex();
       populateClickableComponentList();
@@ -67,6 +76,18 @@ namespace MagicScepter.UI
       CreateComponents();
       SetScrollBarToCurrentIndex();
       populateClickableComponentList();
+    }
+
+    private void OnWindowResized(object sender, WindowResizedEventArgs e)
+    {
+      CreateComponents();
+      SetScrollBarToCurrentIndex();
+      populateClickableComponentList();
+    }
+
+    private void OnExit()
+    {
+      ModUtility.Helper.Events.Display.WindowResized -= OnWindowResized;
     }
 
     private void CreateComponents()
@@ -82,56 +103,19 @@ namespace MagicScepter.UI
         var row = new ClickableComponent(
           new Rectangle(xPositionOnScreen + 16, yPositionOnScreen + 16 + (i - topRowIndex) * ((height - 32) / pageSize), width - 32, (height - 32) / pageSize + 4),
           string.Concat(i)
-        )
-        {
-          myID = i,
-          downNeighborID = i + 1,
-          upNeighborID = i > 0 ? i - 1 : -1,
-          rightNeighborID = i + hideButtonOffset,
-          leftNeighborID = i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : i + moveUpButtonOffset,
-          fullyImmutable = true
-        };
-
-        var moveUpButton = new MoveUpButton(i, this, skip: i == 0);
-        moveUpButton.SetupIDs(
-          ID: i > 0 ? i + moveUpButtonOffset : -7777,
-          upID: i > 0 ? i - 1 + moveDownButtonOffset : -1,
-          downID: i + moveDownButtonOffset,
-          leftID: -7777,
-          rightID: i
         );
 
-        var moveDownButton = new MoveDownButton(i, this, skip: i == teleportScrolls.Count - 1);
-        moveDownButton.SetupIDs(
-          ID: i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : -7777,
-          upID: i + moveUpButtonOffset,
-          downID: i + 1 + moveUpButtonOffset,
-          leftID: -7777,
-          rightID: i
-        );
-
-        var visibilityButton = new VisibilityButton(i, teleportScrolls[i].Hidden, this, teleportScrolls[i].ActionDoWhen.Do.Type == ActionDoType.Farm);
-        visibilityButton.SetupIDs(
-          ID: i + hideButtonOffset,
-          upID: i > 0 ? i - 1 + hideButtonOffset : -1,
-          downID: i + 1 + hideButtonOffset,
-          leftID: i,
-          rightID: i + renameButtonOffset
-        );
-
-        var renameButton = new RenameButton(i, this);
-        renameButton.SetupIDs(
-          ID: i + renameButtonOffset,
-          upID: i > 0 ? i - 1 + renameButtonOffset : upperRightCloseButton_ID,
-          downID: i + 1 + renameButtonOffset,
-          leftID: i + hideButtonOffset,
-          rightID: i > 0 ? -7777 : upperRightCloseButton_ID
-        );
+        var moveUpButton = new MoveUpButton(i, teleportScrolls, this, skip: i == 0);
+        var moveDownButton = new MoveDownButton(i, teleportScrolls, this, skip: i == teleportScrolls.Count - 1);
+        var visibilityButton = new VisibilityButton(teleportScrolls[i], this, skip: IsFarmScroll(i));
+        var renameButton = new RenameButton(teleportScrolls[i], this);
+        var keybindButton = new KeybindButton(teleportScrolls[i], this);
 
         moveUpButtons.Add(moveUpButton);
         moveDownButtons.Add(moveDownButton);
         visibilityButtons.Add(visibilityButton);
         renameButtons.Add(renameButton);
+        keybindButtons.Add(keybindButton);
         rows.Add(row);
       }
 
@@ -159,9 +143,88 @@ namespace MagicScepter.UI
         scrollBar.bounds.Width,
         height - 64 - scrollUpButton.bounds.Height - 8
       );
+      configPageButon = new ClickableTextureComponent(
+        new Rectangle(xPositionOnScreen - 64 + 4, yPositionOnScreen + 24, 64, 64),
+        spritesheetTexture,
+        new Rectangle(110, 64, 32, 32),
+        2f
+      )
+      {
+        myID = configPageButtonID,
+        upNeighborID = -7777,
+        downNeighborID = settingsPageButtonID,
+        rightNeighborID = moveDownButtonOffset + topRowIndex,
+        leftNeighborID = -7777
+      };
+      settingsPageButon = new ClickableTextureComponent(
+        new Rectangle(xPositionOnScreen - 64, yPositionOnScreen + 24 + 64, 64, 64),
+        spritesheetTexture,
+        new Rectangle(142, 64, 32, 32),
+        2f
+      )
+      {
+        myID = settingsPageButtonID,
+        upNeighborID = configPageButtonID,
+        downNeighborID = -7777,
+        rightNeighborID = moveDownButtonOffset + topRowIndex,
+        leftNeighborID = -7777
+      };
 
       initializeUpperRightCloseButton();
       upperRightCloseButton.myID = upperRightCloseButton_ID;
+
+      SetupIDs();
+    }
+
+    private void SetupIDs()
+    {
+      for (int i = 0; i < teleportScrolls.Count; i++)
+      {
+        moveUpButtons[i].SetupIDs(
+          ID: i > 0 ? i + moveUpButtonOffset : -7777,
+          upID: i > 0 ? i - 1 + moveDownButtonOffset : -1,
+          downID: i + moveDownButtonOffset,
+          leftID: settingsPageButtonID,
+          rightID: IsFarmScroll(i) ? i + renameButtonOffset : i + visibilityButtonOffset
+        );
+
+        moveDownButtons[i].SetupIDs(
+          ID: i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : -7777,
+          upID: i + moveUpButtonOffset,
+          downID: i + 1 + moveUpButtonOffset,
+          leftID: settingsPageButtonID,
+          rightID: IsFarmScroll(i) ? i + renameButtonOffset : i + visibilityButtonOffset
+        );
+
+        visibilityButtons[i].SetupIDs(
+          ID: i + visibilityButtonOffset,
+          upID: i > 0 ? i - 1 + (IsFarmScroll(i - 1) ? renameButtonOffset : visibilityButtonOffset) : -1,
+          downID: i + 1 + (IsFarmScroll(i + 1) ? renameButtonOffset : visibilityButtonOffset),
+          leftID: i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : i + moveUpButtonOffset,
+          rightID: i + renameButtonOffset
+        );
+
+        renameButtons[i].SetupIDs(
+          ID: i + renameButtonOffset,
+          upID: i > 0 ? i - 1 + renameButtonOffset : -1,
+          downID: i + 1 + renameButtonOffset,
+          leftID: i + (IsFarmScroll(i) ? i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : i + moveUpButtonOffset : visibilityButtonOffset),
+          rightID: i + keybindButtonOffset
+        );
+
+        keybindButtons[i].SetupIDs(
+          ID: i + keybindButtonOffset,
+          upID: i > 0 ? i - 1 + keybindButtonOffset : upperRightCloseButton_ID,
+          downID: i + 1 + keybindButtonOffset,
+          leftID: i + renameButtonOffset,
+          rightID: i > 0 ? -7777 : upperRightCloseButton_ID
+        );
+      }
+    }
+
+    private bool IsFarmScroll(int index)
+    {
+      return index > -1 && teleportScrolls.Count > index && teleportScrolls[index].ActionDoWhen.Do.Type == ActionDoType.Farm;
     }
 
     private void SetScrollBarToCurrentIndex()
@@ -188,9 +251,13 @@ namespace MagicScepter.UI
 
         moveUpButtons[i].UpdatePosition(row.bounds.Left + 12, row.bounds.Y + 12);
         moveDownButtons[i].UpdatePosition(row.bounds.Left + 12, row.bounds.Y + row.bounds.Height / 2);
-        visibilityButtons[i].UpdatePosition(row.bounds.Right - row.bounds.Width / 12 * 2 - 12, row.bounds.Y + row.bounds.Height / 4 + 8);
-        renameButtons[i].UpdatePosition(row.bounds.Right - row.bounds.Width / 12 - 12, row.bounds.Y + row.bounds.Height / 4);
+        visibilityButtons[i].UpdatePosition(row.bounds.Right - row.bounds.Width / 12 * 3 + 12, row.bounds.Y + row.bounds.Height / 2 - 18);
+        renameButtons[i].UpdatePosition(row.bounds.Right - row.bounds.Width / 12 * 2, row.bounds.Y + row.bounds.Height / 2 - 20);
+        keybindButtons[i].UpdatePosition(row.bounds.Right - row.bounds.Width / 12 - 12, row.bounds.Y + row.bounds.Height / 2 - 24);
       }
+
+      configPageButon.rightNeighborID = topRowIndex + moveDownButtonOffset;
+      settingsPageButon.rightNeighborID = topRowIndex + moveDownButtonOffset;
     }
 
     private void UpArrowPressed()
@@ -207,11 +274,17 @@ namespace MagicScepter.UI
       SetScrollBarToCurrentIndex();
     }
 
-    public void ConstrainSelectionToVisibleSlots()
+    private void SettingsPageButtonPressed()
     {
-      if (rows.Contains(currentlySnappedComponent))
+      exitThisMenu();
+      Game1.activeClickableMenu = new SettingsMenu();
+    }
+
+    private void ConstrainSelectionToVisibleSlots()
+    {
+      if (allClickableComponents.Contains(currentlySnappedComponent))
       {
-        int index = allClickableComponents.IndexOf(currentlySnappedComponent) % rows.Count;
+        int index = allClickableComponents.IndexOf(currentlySnappedComponent) % teleportScrolls.Count;
         if (index < topRowIndex)
         {
           index = topRowIndex;
@@ -221,8 +294,8 @@ namespace MagicScepter.UI
           index = topRowIndex + pageSize - 1;
         }
 
-        currentlySnappedComponent = rows[index];
-        if (Game1.options.snappyMenus && Game1.options.gamepadControls)
+        currentlySnappedComponent = index > 0 ? visibilityButtons[index].ClickableComponent : renameButtons[index].ClickableComponent;
+        if (Game1.options.SnappyMenus)
         {
           snapCursorToCurrentSnappedComponent();
         }
@@ -247,7 +320,7 @@ namespace MagicScepter.UI
         SetScrollBarToCurrentIndex();
         UpdateRowsPositions();
 
-        if (Game1.options.snappyMenus && Game1.options.gamepadControls)
+        if (Game1.options.SnappyMenus)
         {
           snapCursorToCurrentSnappedComponent();
         }
@@ -256,6 +329,13 @@ namespace MagicScepter.UI
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
+      if (settingsPageButon.containsPoint(x, y))
+      {
+        SettingsPageButtonPressed();
+        Game1.playSound("shwip");
+        return;
+      }
+
       if (scrollUpButton.containsPoint(x, y) && topRowIndex > 0)
       {
         UpArrowPressed();
@@ -276,20 +356,13 @@ namespace MagicScepter.UI
         return;
       }
 
-      if (!scrollDownButton.containsPoint(x, y) && x > xPositionOnScreen + width && x < xPositionOnScreen + width + 128 && y > yPositionOnScreen && y < yPositionOnScreen + height)
-      {
-        scrolling = true;
-        leftClickHeld(x, y);
-        releaseLeftClick(x, y);
-        return;
-      }
-
       for (int i = topRowIndex; i < topRowIndex + pageSize && i < rows.Count; i++)
       {
         moveUpButtons[i].receiveLeftClick(x, y, playSound);
         moveDownButtons[i].receiveLeftClick(x, y, playSound);
         visibilityButtons[i].receiveLeftClick(x, y, playSound);
         renameButtons[i].receiveLeftClick(x, y, playSound);
+        keybindButtons[i].receiveLeftClick(x, y, playSound);
       }
 
       topRowIndex = Math.Max(0, Math.Min(rows.Count - pageSize, topRowIndex));
@@ -305,7 +378,7 @@ namespace MagicScepter.UI
         int y2 = scrollBar.bounds.Y;
         scrollBar.bounds.Y = Math.Min(yPositionOnScreen + height - 64 - 12 - scrollBar.bounds.Height, Math.Max(y, yPositionOnScreen + scrollUpButton.bounds.Height + 20));
         float num = (float)(y - scrollBarRunner.Y) / (float)scrollBarRunner.Height;
-        topRowIndex = Math.Min(rows.Count - pageSize, Math.Max(0, (int)((float)rows.Count * num)));
+        topRowIndex = Math.Min(Math.Max(0, rows.Count - pageSize), Math.Max(0, (int)((float)rows.Count * num)));
         SetScrollBarToCurrentIndex();
         if (y2 != scrollBar.bounds.Y)
         {
@@ -330,6 +403,7 @@ namespace MagicScepter.UI
         moveDownButtons[i].performHoverAction(x, y);
         visibilityButtons[i].performHoverAction(x, y);
         renameButtons[i].performHoverAction(x, y);
+        keybindButtons[i].performHoverAction(x, y);
       }
     }
 
@@ -354,46 +428,56 @@ namespace MagicScepter.UI
     {
       allClickableComponents ??= new();
       allClickableComponents.Clear();
-      allClickableComponents.AddRange(rows);
       allClickableComponents.AddRange(moveUpButtons.Select(b => b.ClickableComponent));
       allClickableComponents.AddRange(moveDownButtons.Select(b => b.ClickableComponent));
       allClickableComponents.AddRange(visibilityButtons.Select(b => b.ClickableComponent));
       allClickableComponents.AddRange(renameButtons.Select(b => b.ClickableComponent));
+      allClickableComponents.AddRange(keybindButtons.Select(b => b.ClickableComponent));
       allClickableComponents.Add(upperRightCloseButton);
+      allClickableComponents.Add(configPageButon);
+      allClickableComponents.Add(settingsPageButon);
     }
 
     public override void snapToDefaultClickableComponent()
     {
-      if (topRowIndex < rows.Count)
+      if (topRowIndex < teleportScrolls.Count)
       {
-        currentlySnappedComponent = rows[topRowIndex];
+        currentlySnappedComponent = topRowIndex > 0 ? visibilityButtons[topRowIndex].ClickableComponent : renameButtons[topRowIndex].ClickableComponent;
       }
 
       base.snapCursorToCurrentSnappedComponent();
     }
 
+    public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+    {
+      base.gameWindowSizeChanged(oldBounds, newBounds);
+      shouldResetLayout = true;
+    }
+
     public override void draw(SpriteBatch b)
     {
+      if (shouldResetLayout)
+      {
+        SetScrollBarToCurrentIndex();
+        shouldResetLayout = false;
+      }
+
       var color = Color.White;
 
       // draw faded background
-      b.Draw(
-        Game1.fadeToBlackRect,
-        Game1.graphics.GraphicsDevice.Viewport.Bounds,
-        Color.Black * 0.75f
-      );
+      GameHelper.DrawFadedBackground(b);
       // draw menu title
       SpriteText.drawStringWithScrollCenteredAt(
         b,
-        TranslatedKeys.Configuration,
+        I18n.ConfigurationMenu_Title(),
         xPositionOnScreen + width / 2,
         yPositionOnScreen - 64
       );
       // draw menu box
       drawTextureBox(
         b,
-        Game1.mouseCursors,
-        new Rectangle(384, 373, 18, 18),
+        spritesheetTexture,
+        new Rectangle(174, 64, 18, 18),
         xPositionOnScreen,
         yPositionOnScreen,
         width,
@@ -401,17 +485,17 @@ namespace MagicScepter.UI
         Color.White,
         4f
       );
+
       hoverText = string.Empty;
 
-      if (topRowIndex < 0) topRowIndex = 0;
       for (int i = topRowIndex; i < topRowIndex + pageSize && i < rows.Count; i++)
       {
         var row = rows[i];
         // draw row box
         drawTextureBox(
           b,
-          Game1.mouseCursors,
-          new Rectangle(384, 396, 15, 15),
+          spritesheetTexture,
+          new Rectangle(174, 82, 15, 15),
           row.bounds.X,
           row.bounds.Y,
           row.bounds.Width,
@@ -421,7 +505,7 @@ namespace MagicScepter.UI
           drawShadow: false
         );
 
-        // draw image
+        // draw scroll
         drawTextureBox(
           b,
           spritesheetTexture,
@@ -444,6 +528,17 @@ namespace MagicScepter.UI
         );
       }
 
+      // draw page buttons
+      var mouseX = Game1.getMouseX();
+      var mouseY = Game1.getMouseY();
+
+      if (configPageButon.containsPoint(mouseX, mouseY)) hoverText = I18n.ConfigurationMenu_Title();
+      configPageButon.draw(b);
+
+      if (settingsPageButon.containsPoint(mouseX, mouseY)) hoverText = I18n.SettingsMenu_Title();
+      color = hoverText == I18n.SettingsMenu_Title() ? Color.White : Color.White * 0.8f;
+      settingsPageButon.draw(b, color, GameHelper.CalculateDepth(settingsPageButon.bounds.Y));
+
       // draw scrollbar
       if (rows.Count > pageSize)
       {
@@ -460,15 +555,17 @@ namespace MagicScepter.UI
         moveDownButtons[i].draw(b);
         visibilityButtons[i].draw(b);
         renameButtons[i].draw(b);
+        keybindButtons[i].draw(b);
 
         if (moveUpButtons[i].Hovered) hoverText = moveUpButtons[i].HoverText;
         if (moveDownButtons[i].Hovered) hoverText = moveDownButtons[i].HoverText;
         if (visibilityButtons[i].Hovered) hoverText = visibilityButtons[i].HoverText;
         if (renameButtons[i].Hovered) hoverText = renameButtons[i].HoverText;
+        if (keybindButtons[i].Hovered) hoverText = keybindButtons[i].HoverText;
       }
 
       // draw hover text
-      if (!hoverText.IsEmpty()) drawHoverText(b, hoverText, Game1.smallFont);
+      if (hoverText.IsNotEmpty()) drawHoverText(b, hoverText, Game1.smallFont);
 
       base.draw(b);
       drawMouse(b);

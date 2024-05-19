@@ -18,13 +18,13 @@ namespace MagicScepter.Helpers
 
         if (ModManager.IsModLoaded(SupportedMod.EastScarp))
         {
-          building = Game1.getLocationFromName(AllConstants.EastScarpFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
+          building = Game1.getLocationFromName(ModConstants.EastScarpFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
           if (building != null) return building;
         }
 
         if (ModManager.IsModLoaded(SupportedMod.RidgesideVillage))
         {
-          building = Game1.getLocationFromName(AllConstants.RidgesideFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
+          building = Game1.getLocationFromName(ModConstants.RidgesideFarmLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
           if (building != null) return building;
         }
 

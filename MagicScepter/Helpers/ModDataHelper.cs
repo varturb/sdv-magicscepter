@@ -12,7 +12,7 @@ namespace MagicScepter.Helpers
 {
   public static class ModDataHelper
   {
-    private static readonly string saveDateKey = AllConstants.ConfigurationSaveKey;
+    private static readonly string saveDateKey = ModConstants.ConfigurationSaveKey;
 
     public static List<SaveDataEntry> GetSaveData()
     {
@@ -80,6 +80,31 @@ namespace MagicScepter.Helpers
       Game1.player.modData[saveDateKey] = JsonConvert.SerializeObject(saveData);
     }
 
+    public static void RestoreConfiguraiton()
+    {
+      Game1.player.modData[saveDateKey] = string.Empty;
+    }
+
+    public static void RestoreKeybinds()
+    {
+      var entires = GetSaveData();
+      foreach (var entry in entires)
+      {
+        entry.Keybind = null;
+      }
+      Game1.player.modData[saveDateKey] = JsonConvert.SerializeObject(entires);
+    }
+
+    public static void RestoreSettings()
+    {
+      ModUtility.Config.UseOldDialogMenu = ModConfig.Defaults.UseOldDialogMenu;
+    }
+
+    public static void SetMenuType(bool value)
+    {
+      ModUtility.Config.UseOldDialogMenu = value;
+    }
+
     public static void OnDayStarted(object sender, DayStartedEventArgs e)
     {
       UpdateSaveData();
@@ -87,7 +112,7 @@ namespace MagicScepter.Helpers
 
     private static List<SaveDataEntry> GetEntriesToSave(List<SaveDataEntry> entriesToSave)
     {
-      var teleportScrolls = ResponseHandler.GetTeleportScrolls();
+      var teleportScrolls = ScrollHandler.GetTeleportScrolls();
       var saveData = new List<SaveDataEntry>();
 
       foreach (var tp in teleportScrolls)

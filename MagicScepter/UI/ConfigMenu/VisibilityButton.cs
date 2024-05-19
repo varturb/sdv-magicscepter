@@ -1,33 +1,37 @@
 using MagicScepter.Constants;
 using MagicScepter.Helpers;
+using MagicScepter.Models;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
 namespace MagicScepter.UI
 {
   public class VisibilityButton : ButtonBase
   {
-    public new string HoverText => !Hovered ? string.Empty : isHidden ? TranslatedKeys.Hidden : TranslatedKeys.Visible;
+    public new string HoverText => !Hovered
+      ? string.Empty
+      : isHidden
+        ? I18n.ConfigurationMenu_ButtonHover_Hidden()
+        : I18n.ConfigurationMenu_ButtonHover_Visible();
 
-    private readonly int index;
-    private readonly ConfigMenu configMenu;
+    private readonly TeleportScroll teleportScroll;
+    private readonly ConfigMenu parentMenu;
     private readonly bool skip;
     private bool isHidden;
 
-    public VisibilityButton(int index, bool isHidden, ConfigMenu configMenu, bool skip = false)
-      : base(64, 48, new Rectangle(46, 64, 64, 35), 0.8f)
+    public VisibilityButton(TeleportScroll teleportScroll, ConfigMenu parentMenu, bool skip = false)
+      : base(38, 38, new Rectangle(227, 425, 9, 9), 4f)
     {
-      this.index = index;
-      this.isHidden = isHidden;
-      this.configMenu = configMenu;
+      this.teleportScroll = teleportScroll;
+      this.parentMenu = parentMenu;
       this.skip = skip;
+      isHidden = teleportScroll.Hidden;
+      ClickableComponent.visible = !skip;
     }
 
     protected override void SetupTexture()
     {
-      var texture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
-      SetTexture(texture);
+      SetTexture(Game1.mouseCursors);
     }
 
     public void UpdatePosition(int x, int y)
@@ -41,16 +45,21 @@ namespace MagicScepter.UI
     {
       if (skip)
         return;
-        
+
       isHidden = !isHidden;
 
-      var teleportScrolls = configMenu.teleportScrolls;
-      var entryToSave = teleportScrolls[index].ConvertToSaveDataEntry();
+      var entryToSave = teleportScroll.ConvertToSaveDataEntry();
       entryToSave.Hidden = isHidden;
 
       ModDataHelper.UpdateSaveData(entryToSave);
-      configMenu.RefreshTeleportScrolls();
-      Game1.playSound("smallSelect");
+
+      parentMenu.RefreshTeleportScrolls();
+
+      Game1.playSound("drumkit6");
+      var message = entryToSave.Hidden
+        ? I18n.ConfigurationMenu_Hidden_Message(entryToSave.Name)
+        : I18n.ConfigurationMenu_Visible_Message(entryToSave.Name);
+      GameHelper.ShowMessage(message, MessageType.Warn);
     }
 
     protected override void ButtonHovered(bool hovered)
@@ -64,11 +73,8 @@ namespace MagicScepter.UI
       if (skip)
         return;
 
-      ClickableComponent.draw(
-        Game1.spriteBatch, 
-        isHidden ? Color.DarkGray * 0.5f : Color.White, 
-        GameHelper.CalculateDepth(ClickableComponent.bounds.Y)
-      );
+      ClickableComponent.sourceRect.X = isHidden ? 227 : 236;
+      ClickableComponent.draw(Game1.spriteBatch);
     }
   }
 }

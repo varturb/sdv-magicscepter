@@ -148,7 +148,7 @@ namespace MagicScepter.Helpers
       var obeliskCoords = GetValidTile(x, y);
       if (obeliskCoords == null)
       {
-        Game1.showRedMessage(Game1.content.LoadString(AllConstants.MiniObeliskNeedsSpaceMessagePath));
+        Game1.showRedMessage(Game1.content.LoadString(ModConstants.MiniObeliskNeedsSpaceMessagePath));
         return;
       }
 

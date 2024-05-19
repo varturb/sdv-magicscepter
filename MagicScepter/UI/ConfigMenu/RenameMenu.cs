@@ -1,10 +1,8 @@
-﻿using MagicScepter.Constants;
-using MagicScepter.Helpers;
+﻿using MagicScepter.Helpers;
 using MagicScepter.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
@@ -18,21 +16,15 @@ namespace MagicScepter.UI
     public ClickableTextureComponent resetButtonIcon;
     public ClickableTextureComponent cancelButton;
 
-    protected TextBox textBox;
-
-    public ClickableComponent textBoxCC;
-
+    private TextBox textBox;
+    private ClickableComponent textBoxCC;
     private TextBoxEvent e;
-
-    protected int minLength = 1;
-
-    private ConfigMenu parentMenu;
-
-    private TeleportScroll teleportScroll;
-
+    private readonly int minLength = 1;
+    private readonly ConfigMenu parentMenu;
+    private readonly TeleportScroll teleportScroll;
     private string hoverText = string.Empty;
 
-    public RenameMenu(ConfigMenu parentMenu, TeleportScroll teleportScroll)
+    public RenameMenu(TeleportScroll teleportScroll, ConfigMenu parentMenu)
     {
       this.parentMenu = parentMenu;
       this.teleportScroll = teleportScroll;
@@ -42,6 +34,11 @@ namespace MagicScepter.UI
       width = Game1.uiViewport.Width;
       height = Game1.uiViewport.Height;
 
+      CreateComponents();
+    }
+
+    private void CreateComponents()
+    {
       textBox = new TextBox(null, null, Game1.dialogueFont, Game1.textColor);
       textBox.X = width / 2 - 400 / 2;
       textBox.Y = height / 2;
@@ -74,7 +71,7 @@ namespace MagicScepter.UI
         leftNeighborID = 100
       };
       cancelButton = new ClickableTextureComponent(
-        new Rectangle(textBox.X + textBox.Width + 32 + 4 + 64, Game1.uiViewport.Height / 2 - 8, 64, 64),
+        new Rectangle(textBox.X + textBox.Width + 32 + 8 + 64, Game1.uiViewport.Height / 2 - 8, 64, 64),
         Game1.mouseCursors,
         Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 47),
         1f
@@ -84,7 +81,7 @@ namespace MagicScepter.UI
         leftNeighborID = 101
       };
       resetButton = new ClickableTextureComponent(
-        new Rectangle(textBox.X - 32 + 8 - 64, Game1.uiViewport.Height / 2 - 8, 64, 64),
+        new Rectangle(textBox.X - 32 + 12 - 64, Game1.uiViewport.Height / 2 - 8, 64, 64),
         Game1.mouseCursors2,
         new Rectangle(64, 208, 16, 16),
         4f
@@ -94,7 +91,7 @@ namespace MagicScepter.UI
         rightNeighborID = 100
       };
       resetButtonIcon = new ClickableTextureComponent(
-        new Rectangle(textBox.X - 32 + 8 - 64, Game1.uiViewport.Height / 2 - 8, 64, 64),
+        new Rectangle(textBox.X - 32 + 12 - 64, Game1.uiViewport.Height / 2 - 8, 64, 64),
         Game1.mouseCursors2,
         new Rectangle(64, 240, 16, 16),
         4f
@@ -123,20 +120,17 @@ namespace MagicScepter.UI
         }
         else
         {
-          if (Context.IsMainPlayer)
-          {
-            var entryToSave = teleportScroll.ConvertToSaveDataEntry();
-            entryToSave.Name = textBox.Text;
-            ModDataHelper.UpdateSaveData(entryToSave);
-          }
-          else
-          {
-            // Notify the MasterPlayer of name change
-            // var updateMessage = new ObeliskUpdateMessage(this.obelisk);
-            // ModEntry.helper.Multiplayer.SendMessage(updateMessage, nameof(ObeliskUpdateMessage), modIDs: new[] { ModEntry.manifest.UniqueID });
-          }
-          exitThisMenu();
+          var entryToSave = teleportScroll.ConvertToSaveDataEntry();
+          entryToSave.Name = textBox.Text;
 
+          ModDataHelper.UpdateSaveData(entryToSave);
+
+          if (teleportScroll.Text != entryToSave.Name)
+          {
+            GameHelper.ShowMessage(I18n.RenameMenu_Message_Success(entryToSave.Name), MessageType.Success);
+          }
+
+          exitThisMenu();
           parentMenu.RefreshTeleportScrolls();
           Game1.activeClickableMenu = parentMenu;
         }
@@ -183,14 +177,14 @@ namespace MagicScepter.UI
       hoverText = string.Empty;
 
       saveButton?.tryHover(x, y);
-      if (saveButton?.containsPoint(x, y) ?? false) hoverText = TranslatedKeys.Save;
+      if (saveButton?.containsPoint(x, y) ?? false) hoverText = I18n.Common_Save();
 
       cancelButton?.tryHover(x, y);
-      if (cancelButton?.containsPoint(x, y) ?? false) hoverText = TranslatedKeys.Cancel;
+      if (cancelButton?.containsPoint(x, y) ?? false) hoverText = I18n.Common_Cancel();
 
-      resetButton?.tryHover(x, y, 0.2f);
-      resetButtonIcon?.tryHover(x, y, 0.2f);
-      if (resetButton?.containsPoint(x, y) ?? false) hoverText = TranslatedKeys.ResetToDefault;
+      resetButton?.tryHover(x, y, 0.4f);
+      resetButtonIcon?.tryHover(x, y, 0.4f);
+      if (resetButton?.containsPoint(x, y) ?? false) hoverText = I18n.RenameMenu_ResetToDefault();
     }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -211,14 +205,22 @@ namespace MagicScepter.UI
       {
         Game1.playSound("smallSelect");
         textBox.Text = teleportScroll.DefaultText;
+        GameHelper.ShowMessage(I18n.RenameMenu_Message_Default(), MessageType.Warn);
       }
     }
 
     public override void draw(SpriteBatch b)
     {
       base.draw(b);
-      b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
-      SpriteText.drawStringWithScrollCenteredAt(b, TranslatedKeys.ChangeName, Game1.uiViewport.Width / 2, Game1.uiViewport.Height / 2 - 128, TranslatedKeys.ChangeName);
+
+      GameHelper.DrawFadedBackground(b);
+      SpriteText.drawStringWithScrollCenteredAt(
+        b,
+        I18n.RenameMenu_Title(),
+        Game1.uiViewport.Width / 2,
+        Game1.uiViewport.Height / 2 - 86,
+        I18n.RenameMenu_Title()
+      );
       textBox.Draw(b);
 
       saveButton.draw(b);

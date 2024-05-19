@@ -38,7 +38,7 @@ namespace MagicScepter.Multiplayer
     {
       if (Context.IsMainPlayer)
       {
-        var islandTeleportScroll = ResponseHandler.GetTeleportScrolls().FirstOrDefault(x => x.ID == AllConstants.IslandFarmID);
+        var islandTeleportScroll = ScrollHandler.GetTeleportScrolls().FirstOrDefault(x => x.ID == ModConstants.IslandFarmID);
         CanTeleportToIslandFarm = islandTeleportScroll?.CanTeleport ?? false;
       }
       else
@@ -50,8 +50,8 @@ namespace MagicScepter.Multiplayer
     private static void SendSyncResponseMessage()
     {
       ModUtility.Helper.Multiplayer.SendMessage(
-        new IslandFarmSyncResponseMessage(CanTeleportToIslandFarm), 
-        nameof(IslandFarmSyncResponseMessage), 
+        new IslandFarmSyncResponseMessage(CanTeleportToIslandFarm),
+        nameof(IslandFarmSyncResponseMessage),
         modIDs: new[] { ModUtility.Manifest.UniqueID }
       );
     }
@@ -59,8 +59,8 @@ namespace MagicScepter.Multiplayer
     private static void SendSyncRequestMessage()
     {
       ModUtility.Helper.Multiplayer.SendMessage(
-        new IslandFarmSyncRequestMessage(), 
-        nameof(IslandFarmSyncRequestMessage), 
+        new IslandFarmSyncRequestMessage(),
+        nameof(IslandFarmSyncRequestMessage),
         modIDs: new[] { ModUtility.Manifest.UniqueID }
       );
     }

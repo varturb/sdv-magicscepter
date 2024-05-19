@@ -44,6 +44,8 @@ namespace MagicScepter
       {
         Helper.Events.GameLoop.GameLaunched += GenericModConfigMenu.OnGameLaunched;
       }
+
+      I18n.Init(Helper.Translation);      
     }
   }
 }

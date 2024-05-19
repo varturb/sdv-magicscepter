@@ -4,8 +4,10 @@ using MagicScepter.UI;
 using StardewValley.Menus;
 using StardewModdingAPI.Events;
 using System;
-using MagicScepter.Constants;
 using MagicScepter.Helpers;
+using System.Collections.Generic;
+using StardewModdingAPI;
+using MagicScepter.Models;
 
 namespace MagicScepter.Handlers
 {
@@ -13,6 +15,7 @@ namespace MagicScepter.Handlers
   {
     private static bool menuInitialized = false;
     private static bool drawButton = false;
+    private static List<TeleportScroll> teleportScrollsWithKeybinds = new();
 
     public static void HandleTeleportAction()
     {
@@ -29,35 +32,37 @@ namespace MagicScepter.Handlers
 
     private static void ShowTeleportDialog()
     {
-      var responses = ResponseHandler.GetResponses();
-      if (responses.Count == 2)
+      var teleportScrolls = ScrollHandler.GetTeleportScrolls();
+      if (teleportScrolls.Count == 1)
       {
-        var farmResponseKey = responses.First().responseKey;
-        ResponseHandler.HandleResponse(farmResponseKey);
+        var farmResponse = teleportScrolls.First();
+        ScrollHandler.HandleResponse(farmResponse.ID);
         return;
       }
 
-      drawButton = true;
+      drawButton = Context.IsMainPlayer;
       Game1.player.currentLocation.createQuestionDialogue(
-        TranslatedKeys.Title,
-        responses.ToArray(),
+        I18n.Dialog_Title(),
+        teleportScrolls.FilterHiddenItems().ToResponses(),
         HandleAnswer
       );
+      teleportScrollsWithKeybinds = teleportScrolls.FilterHiddenItems().FilterItemsWithoutKeybind();
     }
 
     private static void HandleAnswer(Farmer farmer, string answer)
     {
       drawButton = false;
-      ResponseHandler.HandleResponse(answer);
+      teleportScrollsWithKeybinds = new();
+      ScrollHandler.HandleResponse(answer);
     }
 
     private static void ShowTeleportMenu()
     {
-      var teleportScrolls = ResponseHandler.GetTeleportScrolls();
+      var teleportScrolls = ScrollHandler.GetTeleportScrolls();
       if (teleportScrolls.Count == 1)
       {
         var farmResponse = teleportScrolls.First();
-        ResponseHandler.HandleResponse(farmResponse.ID);
+        ScrollHandler.HandleResponse(farmResponse.ID);
       }
       else
       {
@@ -68,7 +73,7 @@ namespace MagicScepter.Handlers
 
     private static void InitializeDialogMenu()
     {
-      if (!menuInitialized)
+      if (Context.IsMainPlayer && !menuInitialized)
       {
         menuInitialized = true;
         ModUtility.Helper.Events.Display.MenuChanged += MenuChanged;
@@ -91,7 +96,7 @@ namespace MagicScepter.Handlers
     {
       if (drawButton)
       {
-        var button = new DialogConfigButton();
+        var button = new DialogConfigButton(teleportScrollsWithKeybinds);
         button.draw(Game1.spriteBatch);
       }
     }

@@ -1,6 +1,7 @@
 using System.Linq;
 using MagicScepter.Constants;
 using MagicScepter.Helpers;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
 namespace MagicScepter.Models
@@ -12,10 +13,11 @@ namespace MagicScepter.Models
       ID = $"{ID}#{index + 1}";
 
       var saveEntry = ModDataHelper.GetSaveDataEntry(ID);
-      Order = saveEntry?.Order ?? (data.Order + AllConstants.TeleportScrollOrderOffset + index);
+      Order = saveEntry?.Order ?? (data.Order + ModConstants.TeleportScrollOrderOffset + index);
       DefaultText = $"{TranslationHelper.Get(data.TranslationKey)} #{index + 1}";
       Text = saveEntry?.Name ?? DefaultText;
       Hidden = saveEntry?.Hidden ?? false;
+      Keybind = saveEntry?.Keybind.MapToSButton() ?? SButton.None;
 
       ActionDoWhen.Do.Point = new ActionDoPoint(x, y);
       CanTeleport = TeleportHelper.CanTeleport(ActionDoWhen.When);
@@ -24,7 +26,7 @@ namespace MagicScepter.Models
     public static void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
     {
       var shouldUpdateSaveData = e.Added.Concat(e.Removed)
-        .Where(x => x.Value.Name ==  AllConstants.MiniObeliskObjectName)
+        .Where(x => x.Value.Name == ModConstants.MiniObeliskObjectName)
         .Any();
       if (shouldUpdateSaveData)
       {

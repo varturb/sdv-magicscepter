@@ -7,21 +7,21 @@ using StardewValley;
 
 namespace MagicScepter.UI
 {
-  public class RenameButton : ButtonBase
+  public class KeybindButton : ButtonBase
   {
-    private readonly TeleportScroll teleportScroll;
     private readonly ConfigMenu parentMenu;
+    private readonly TeleportScroll teleportScroll;
 
-    public RenameButton(TeleportScroll teleportScroll, ConfigMenu parentMenu)
-      : base(40, 40, new Rectangle(64, 16, 16, 16), 2.5f, I18n.ConfigurationMenu_ButtonHover_Rename())
+    public KeybindButton(TeleportScroll teleportScroll, ConfigMenu parentMenu)
+      : base(48, 48, new Rectangle(192, 64, 12, 12), 4f, I18n.ConfigurationMenu_ButtonHover_Keybind())
     {
-      this.teleportScroll = teleportScroll;
       this.parentMenu = parentMenu;
+      this.teleportScroll = teleportScroll;
     }
 
     protected override void SetupTexture()
     {
-      var texture = Game1.temporaryContent.Load<Texture2D>(ModConstants.EmoteMenuTexturePath);
+      var texture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
       SetTexture(texture);
     }
 
@@ -35,14 +35,14 @@ namespace MagicScepter.UI
     protected override void ButtonPressed()
     {
       Game1.playSound("smallSelect");
-      Game1.activeClickableMenu = new RenameMenu(teleportScroll, parentMenu);
+      Game1.activeClickableMenu = new KeybindMenu(parentMenu, teleportScroll);
     }
 
     protected override void Draw()
     {
       ClickableComponent.draw(
         Game1.spriteBatch, 
-        Color.White * 0.8f, 
+        Color.White, 
         GameHelper.CalculateDepth(ClickableComponent.bounds.Y)
       );
     }

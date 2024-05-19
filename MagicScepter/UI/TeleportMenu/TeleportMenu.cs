@@ -9,7 +9,9 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using MagicScepter.Constants;
-using MagicScepter.Debug;
+using StardewModdingAPI;
+using System.Linq;
+using MagicScepter.Helpers;
 
 namespace MagicScepter.UI
 {
@@ -32,13 +34,13 @@ namespace MagicScepter.UI
     private bool ignoreMouse = false;
     private bool positionHoverTextOnTop = false;
 
-    public TeleportMenu(List<TeleportScroll> teleportScrolls): base(0, 0, 0, 0, false)
+    public TeleportMenu(List<TeleportScroll> teleportScrolls) : base(0, 0, 0, 0, false)
     {
       width = 400;
       height = 400;
       alpha = 0f;
 
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
       configButton = new TeleportMenuConfigButton();
 
       this.teleportScrolls = teleportScrolls;
@@ -93,191 +95,8 @@ namespace MagicScepter.UI
       if (selectedTeleportScrollIndex > -1)
       {
         var id = teleportScrolls[selectedTeleportScrollIndex].ID;
-        ResponseHandler.HandleResponse(id);
+        ScrollHandler.HandleResponse(id);
       }
-    }
-
-    public override void applyMovementKey(int direction)
-    {
-    }
-
-    protected override void cleanupBeforeExit()
-    {
-      Game1.exitActiveMenu();
-      base.cleanupBeforeExit();
-    }
-
-    public override void performHoverAction(int x, int y)
-    {
-      if (gamepadMode || ignoreMouse || alpha != 1f)
-        return;
-
-      for (int index = 0; index < teleportScrollButtons.Count; ++index)
-      {
-        if (teleportScrollButtons[index].containsPoint(x, y))
-        {
-          selectedTeleportScrollIndex = index;
-          if (selectedTeleportScrollIndex == oldSelectedTeleportScrollIndex)
-            return;
-        }
-      }
-    }
-
-    public override void receiveKeyPress(Keys key)
-    {
-      HandleUseToolButton(key);
-      SetMenuPositionOnScreen();
-      HandleUpButton(key);
-      HandleRightButton(key);
-      HandleDownButton(key);
-      HandleLeftButton(key);
-
-      base.receiveKeyPress(key);
-    }
-
-    public override void receiveLeftClick(int x, int y, bool playSound = true)
-    {
-      x = (int)Utility.ModifyCoordinateFromUIScale(x);
-      y = (int)Utility.ModifyCoordinateFromUIScale(y);
-
-      configButton.receiveLeftClick(x, y, playSound);
-      base.receiveLeftClick(x, y, playSound);
-
-      if (selectedTeleportScrollIndex > -1)
-      {
-        var wo = teleportScrollButtons[selectedTeleportScrollIndex];
-        if (wo.containsPoint(x, y))
-        {
-          ConfirmSelection();
-        }
-      }
-
-    }
-
-    public override void receiveScrollWheelAction(int direction)
-    {
-      HandleScrollWheel(direction);
-
-      base.receiveScrollWheelAction(direction);
-    }
-
-
-    public override void update(GameTime time)
-    {
-      // var mousePosition = Game1.input.GetMouseState();
-      // var oldMouseState = Game1.oldMouseState;
-      // if (mousePosition != oldMouseState)
-      // {
-      //   ignoreMouse = false;
-      // }
-
-      age += time.ElapsedGameTime.Milliseconds;
-
-      if (age > expandTime)
-      {
-        age = expandTime;
-      }
-
-      var rightThumbStickUsed = (double)Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Right.X) > 0.5 || (double)Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Right.Y) > 0.5;
-      var leftThumbStickUsed = (double)Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Left.X) > 0.5 || (double)Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Left.Y) > 0.5;
-
-      if (!gamepadMode && Game1.options.gamepadControls && (rightThumbStickUsed || leftThumbStickUsed))
-      {
-        gamepadMode = true;
-      }
-
-      alpha = (float)age / (float)expandTime;
-      buttonRadius = (int)((float)age / (float)expandTime * (float)expandedButtonRadius);
-      SnapToPlayerPosition();
-
-      var v1 = new Vector2();
-      if (gamepadMode)
-      {
-        if (rightThumbStickUsed || leftThumbStickUsed)
-        {
-          v1 = rightThumbStickUsed
-            ? new Vector2(Game1.input.GetGamePadState().ThumbSticks.Right.X, Game1.input.GetGamePadState().ThumbSticks.Right.Y)
-            : new Vector2(Game1.input.GetGamePadState().ThumbSticks.Left.X, Game1.input.GetGamePadState().ThumbSticks.Left.Y);
-          v1.Y *= -1f;
-          v1.Normalize();
-          float num1 = -1f;
-          for (int index = 0; index < teleportScrollButtons.Count; ++index)
-          {
-            var v2 = new Vector2(
-              teleportScrollButtons[index].bounds.Center.X - (xPositionOnScreen + width / 2f),
-              teleportScrollButtons[index].bounds.Center.Y - (yPositionOnScreen + height / 2f)
-            );
-            float num2 = Vector2.Dot(v1, v2);
-            if ((double)num2 > (double)num1)
-            {
-              num1 = num2;
-              selectedTeleportScrollIndex = index;
-
-              FixMousePosition();
-            }
-          }
-        }
-      }
-
-      for (int index = 0; index < teleportScrollButtons.Count; index++)
-      {
-        if (teleportScrollButtons[index].scale > buttonScale)
-        {
-          teleportScrollButtons[index].scale = Utility.MoveTowards(teleportScrollButtons[index].scale, buttonScale, (float)(time.ElapsedGameTime.Milliseconds / 1000f * 10f));
-        }
-      }
-      if (selectedTeleportScrollIndex > -1)
-      {
-        teleportScrollButtons[selectedTeleportScrollIndex].scale = selectedButtonScale;
-      }
-
-      if (oldSelectedTeleportScrollIndex != selectedTeleportScrollIndex)
-      {
-        oldSelectedTeleportScrollIndex = selectedTeleportScrollIndex;
-      }
-
-      // selectionTime += time.ElapsedGameTime.Milliseconds;
-      base.update(time);
-    }
-
-    public override void draw(SpriteBatch b)
-    {
-      SetMenuPositionOnScreen();
-      RepositionTeleportScrollButtons();
-
-      var white = Color.White;
-      white.A = (byte)Utility.Lerp(0f, 255f, alpha);
-      var index = 0;
-      foreach (var button in teleportScrollButtons)
-      {
-        if (index++ != selectedTeleportScrollIndex)
-        {
-          button.draw(b, white, 0.86f);
-        }
-      }
-
-      if (selectedTeleportScrollIndex > -1)
-      {
-        teleportScrollButtons[selectedTeleportScrollIndex].draw(b, white, 0.86f);
-
-        var text = teleportScrolls[selectedTeleportScrollIndex].Text;
-        var textWidth = SpriteText.getWidthOfString(text);
-        var y = positionHoverTextOnTop ? yPositionOnScreen - 100 : yPositionOnScreen + height + 40;
-        var x = xPositionOnScreen + width / 2;
-        configButton.xPositionOnScreen = x + textWidth / 2 - 4;
-        configButton.yPositionOnScreen = y + 8;
-        var textOffset = "  ";
-        
-        SpriteText.drawStringWithScrollCenteredAt(b, text + textOffset, x, y);
-        configButton.draw(b);
-      }
-
-      // if (!ignoreMouse)
-      // if (!gamepadMode)
-      drawMouse(b);
-
-      // var debug = new ScreenDebug(this);
-      // debug.DrawDebug();
     }
 
     private void HandleUseToolButton(Keys key)
@@ -436,6 +255,21 @@ namespace MagicScepter.UI
       FixMousePosition();
     }
 
+    private void HandleKeybind(Keys key)
+    {
+      if (!Context.IsMainPlayer)
+        return;
+
+      var sButton = key.ToSButton();
+      var tpScroll = teleportScrolls.FirstOrDefault(tp => tp.Keybind == sButton);
+      if (tpScroll != null && tpScroll.CanTeleport && !tpScroll.Hidden)
+      {
+        selectedTeleportScrollIndex = teleportScrolls.IndexOf(tpScroll);
+        exitThisMenu(false);
+        tpScroll.Teleport();
+      }
+    }
+
     private void HandleScrollWheel(int direction)
     {
       var lastItemIndex = teleportScrollButtons.Count - 1;
@@ -540,6 +374,200 @@ namespace MagicScepter.UI
         return true;
 
       return false;
+    }
+
+    public override void applyMovementKey(int direction)
+    {
+    }
+
+    protected override void cleanupBeforeExit()
+    {
+      Game1.exitActiveMenu();
+      base.cleanupBeforeExit();
+    }
+
+    public override void performHoverAction(int x, int y)
+    {
+      if (gamepadMode || ignoreMouse || alpha != 1f)
+        return;
+
+      for (int index = 0; index < teleportScrollButtons.Count; ++index)
+      {
+        if (teleportScrollButtons[index].containsPoint(x, y))
+        {
+          selectedTeleportScrollIndex = index;
+          if (selectedTeleportScrollIndex == oldSelectedTeleportScrollIndex)
+            return;
+        }
+      }
+    }
+
+    public override void receiveKeyPress(Keys key)
+    {
+      HandleKeybind(key);
+
+      HandleUseToolButton(key);
+      SetMenuPositionOnScreen();
+      HandleUpButton(key);
+      HandleRightButton(key);
+      HandleDownButton(key);
+      HandleLeftButton(key);
+
+      base.receiveKeyPress(key);
+    }
+
+    public override void receiveLeftClick(int x, int y, bool playSound = true)
+    {
+      x = (int)Utility.ModifyCoordinateFromUIScale(x);
+      y = (int)Utility.ModifyCoordinateFromUIScale(y);
+
+      if (Context.IsMainPlayer)
+        configButton.receiveLeftClick(x, y, playSound);
+
+      base.receiveLeftClick(x, y, playSound);
+
+      if (selectedTeleportScrollIndex > -1)
+      {
+        var wo = teleportScrollButtons[selectedTeleportScrollIndex];
+        if (wo.containsPoint(x, y))
+        {
+          ConfirmSelection();
+        }
+      }
+    }
+
+    public override void receiveScrollWheelAction(int direction)
+    {
+      HandleScrollWheel(direction);
+
+      base.receiveScrollWheelAction(direction);
+    }
+
+    public override void update(GameTime time)
+    {
+      // var mousePosition = Game1.input.GetMouseState();
+      // var oldMouseState = Game1.oldMouseState;
+      // if (mousePosition != oldMouseState)
+      // {
+      //   ignoreMouse = false;
+      // }
+
+      age += time.ElapsedGameTime.Milliseconds;
+
+      if (age > expandTime)
+      {
+        age = expandTime;
+      }
+
+      var rightThumbStickUsed = (double)Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Right.X) > 0.5 || (double)Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Right.Y) > 0.5;
+      var leftThumbStickUsed = (double)Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Left.X) > 0.5 || (double)Math.Abs(Game1.input.GetGamePadState().ThumbSticks.Left.Y) > 0.5;
+
+      if (!gamepadMode && Game1.options.gamepadControls && (rightThumbStickUsed || leftThumbStickUsed))
+      {
+        gamepadMode = true;
+      }
+
+      alpha = (float)age / (float)expandTime;
+      buttonRadius = (int)((float)age / (float)expandTime * (float)expandedButtonRadius);
+      SnapToPlayerPosition();
+
+      var v1 = new Vector2();
+      if (gamepadMode)
+      {
+        if (rightThumbStickUsed || leftThumbStickUsed)
+        {
+          v1 = rightThumbStickUsed
+            ? new Vector2(Game1.input.GetGamePadState().ThumbSticks.Right.X, Game1.input.GetGamePadState().ThumbSticks.Right.Y)
+            : new Vector2(Game1.input.GetGamePadState().ThumbSticks.Left.X, Game1.input.GetGamePadState().ThumbSticks.Left.Y);
+          v1.Y *= -1f;
+          v1.Normalize();
+          float num1 = -1f;
+          for (int index = 0; index < teleportScrollButtons.Count; ++index)
+          {
+            var v2 = new Vector2(
+              teleportScrollButtons[index].bounds.Center.X - (xPositionOnScreen + width / 2f),
+              teleportScrollButtons[index].bounds.Center.Y - (yPositionOnScreen + height / 2f)
+            );
+            float num2 = Vector2.Dot(v1, v2);
+            if ((double)num2 > (double)num1)
+            {
+              num1 = num2;
+              selectedTeleportScrollIndex = index;
+
+              FixMousePosition();
+            }
+          }
+        }
+      }
+
+      for (int index = 0; index < teleportScrollButtons.Count; index++)
+      {
+        if (teleportScrollButtons[index].scale > buttonScale)
+        {
+          teleportScrollButtons[index].scale = Utility.MoveTowards(teleportScrollButtons[index].scale, buttonScale, (float)(time.ElapsedGameTime.Milliseconds / 1000f * 10f));
+        }
+      }
+      if (selectedTeleportScrollIndex > -1)
+      {
+        teleportScrollButtons[selectedTeleportScrollIndex].scale = selectedButtonScale;
+      }
+
+      if (oldSelectedTeleportScrollIndex != selectedTeleportScrollIndex)
+      {
+        oldSelectedTeleportScrollIndex = selectedTeleportScrollIndex;
+      }
+
+      // selectionTime += time.ElapsedGameTime.Milliseconds;
+      base.update(time);
+    }
+
+    public override void draw(SpriteBatch b)
+    {
+      SetMenuPositionOnScreen();
+      RepositionTeleportScrollButtons();
+
+      GameHelper.DrawFadedBackground(b, 0.2f);
+
+      var white = Color.White;
+      white.A = (byte)Utility.Lerp(0f, 255f, alpha);
+      var index = 0;
+      foreach (var button in teleportScrollButtons)
+      {
+        if (index++ != selectedTeleportScrollIndex)
+        {
+          button.draw(b, white, 0.86f);
+        }
+      }
+
+      if (selectedTeleportScrollIndex > -1)
+      {
+        teleportScrollButtons[selectedTeleportScrollIndex].draw(b, white, 0.86f);
+
+        var text = teleportScrolls[selectedTeleportScrollIndex].Text;
+        var y = positionHoverTextOnTop ? yPositionOnScreen - 100 : yPositionOnScreen + height + 40;
+        var x = xPositionOnScreen + width / 2;
+
+        if (Context.IsMainPlayer)
+        {
+          var textWidth = SpriteText.getWidthOfString(text);
+          configButton.xPositionOnScreen = x + textWidth / 2 - 4;
+          configButton.yPositionOnScreen = y + 8;
+          var textOffset = "  ";
+          SpriteText.drawStringWithScrollCenteredAt(b, text + textOffset, x, y);
+          configButton.draw(b);
+        }
+        else
+        {
+          SpriteText.drawStringWithScrollCenteredAt(b, text, x, y);
+        }
+      }
+
+      // if (!ignoreMouse)
+      // if (!gamepadMode)
+      drawMouse(b);
+
+      // var debug = new ScreenDebug(this);
+      // debug.DrawDebug();
     }
   }
 }

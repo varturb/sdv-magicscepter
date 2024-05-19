@@ -16,7 +16,7 @@ namespace MagicScepter.UI
       width = 36;
       height = 36;
       
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
 
       button = new ClickableTextureComponent(
         new Rectangle(0, 0, 36, 36),
@@ -53,7 +53,7 @@ namespace MagicScepter.UI
       button.bounds.Y = yPositionOnScreen;
       button.draw(b, white, 1f);
 
-      if (hovered) drawHoverText(Game1.spriteBatch, TranslatedKeys.Configuration, Game1.smallFont);
+      if (hovered) drawHoverText(Game1.spriteBatch, I18n.ConfigurationMenu_Title(), Game1.smallFont);
 
       base.draw(b);
     }

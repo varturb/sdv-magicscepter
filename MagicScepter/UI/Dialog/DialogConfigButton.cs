@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
 using MagicScepter.Constants;
+using MagicScepter.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -12,12 +15,15 @@ namespace MagicScepter.UI
   {
     private readonly Texture2D spritesheetTexture;
     private readonly ClickableTextureComponent button;
+    private readonly List<TeleportScroll> teleportScrolls;
 
-    public DialogConfigButton(): base(0, 0, 0, 0, true)
+    public DialogConfigButton(List<TeleportScroll> teleportScrolls) : base(0, 0, 0, 0, true)
     {
       width = 64;
       height = 64;
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(AllConstants.SpritesheetTexturePath);
+      this.teleportScrolls = teleportScrolls;
+
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
 
       if (Game1.activeClickableMenu is DialogueBox dialogueBox && dialogueBox.responseCC?.Count > 0)
       {
@@ -44,7 +50,7 @@ namespace MagicScepter.UI
 
     public void OnButtonPressed(object sender, ButtonPressedEventArgs e)
     {
-      if (e.Button == SButton.MouseLeft || e.Button == SButton.ControllerA)
+      if (e.Button == SButton.MouseLeft || e.Button == SButton.ControllerA || e.Button == SButton.ControllerX)
       {
         var x = (int)Utility.ModifyCoordinateForUIScale(e.Cursor.ScreenPixels.X);
         var y = (int)Utility.ModifyCoordinateForUIScale(e.Cursor.ScreenPixels.Y);
@@ -52,6 +58,23 @@ namespace MagicScepter.UI
         {
           OpenConfigMenu();
           base.receiveLeftClick(x, y);
+        }
+      }
+      else
+      {
+        HandleKeybind(e.Button);
+      }
+    }
+
+    private void HandleKeybind(SButton sButton)
+    {
+      if (Context.IsMainPlayer && Game1.activeClickableMenu is DialogueBox dialogueBox && KeybindListener.IsKeyValid(sButton))
+      {
+        var tpScroll = teleportScrolls.FirstOrDefault(tp => tp.Keybind == sButton);
+        if (tpScroll != null && tpScroll.CanTeleport && !tpScroll.Hidden)
+        {
+          dialogueBox.closeDialogue();
+          tpScroll.Teleport();
         }
       }
     }
@@ -79,7 +102,7 @@ namespace MagicScepter.UI
 
         if (hovered)
         {
-          drawHoverText(Game1.spriteBatch, TranslatedKeys.Configuration, Game1.smallFont);
+          drawHoverText(Game1.spriteBatch, I18n.ConfigurationMenu_Title(), Game1.smallFont);
         }
 
         drawMouse(b);

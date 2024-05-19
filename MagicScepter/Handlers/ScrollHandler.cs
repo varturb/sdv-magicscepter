@@ -4,27 +4,11 @@ using MagicScepter.Constants;
 using MagicScepter.Models;
 using MagicScepter.Helpers;
 using Newtonsoft.Json;
-using StardewValley;
 
 namespace MagicScepter.Handlers
 {
-  public static class ResponseHandler
+  public static class ScrollHandler
   {
-
-    public static List<Response> GetResponses()
-    {
-      var responses = new List<Response>();
-      var teleportScrolls = GetTeleportScrolls().FilterHiddenItems();
-
-      foreach (var tp in teleportScrolls)
-      {
-        responses.Add(new Response(tp.ID, tp.Text));
-      }
-      responses.Add(new Response(TranslatedKeys.Cancel, TranslatedKeys.Cancel));
-
-      return responses;
-    }
-
     public static void HandleResponse(string responseKey)
     {
       GetTeleportScrolls().FirstOrDefault(wo => wo.ID == responseKey)?.Teleport();
@@ -38,7 +22,7 @@ namespace MagicScepter.Handlers
 
       foreach (var dataItem in teleportDataItems)
       {
-        if (dataItem.ID == AllConstants.MiniObeliskID)
+        if (dataItem.ID == ModConstants.MiniObeliskID)
         {
           var miniobelisks = GetMiniObeliskScrolls(dataItem);
           foreach (var m in miniobelisks)

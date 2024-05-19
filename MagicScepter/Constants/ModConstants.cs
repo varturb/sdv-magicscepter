@@ -1,6 +1,6 @@
 namespace MagicScepter.Constants
 {
-  public static class AllConstants
+  public static class ModConstants
   {
     public static readonly string ConfigurationSaveKey = $"{ModUtility.Manifest.UniqueID}/configuration";
     public static readonly string SettingsSaveKey = $"{ModUtility.Manifest.UniqueID}/settings";

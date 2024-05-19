@@ -6,24 +6,45 @@ using StardewValley.Menus;
 
 namespace MagicScepter.Debug
 {
-  public class ScreenDebug
+  public static class ScreenDebug
   {
-    private readonly int width;
-    private readonly int height;
-    private readonly int xPositionOnScreen;
-    private readonly int yPositionOnScreen;
     public const int ButtonBorderWidth = 4 * Game1.pixelZoom;
 
-    public ScreenDebug(IClickableMenu menu)
+    public static void DrawBox(int x, int y, int width, int height, int order = 0, Color? color = null)
     {
-      width = menu.width;
-      height = menu.height;
-      xPositionOnScreen = menu.xPositionOnScreen;
-      yPositionOnScreen = menu.yPositionOnScreen;
+      DrawBox(new Rectangle(x, y, width, height), order, color);
     }
 
-    public void DrawDebug()
+    public static void DrawBox(Rectangle bounds, int order = 0, Color? color = null)
     {
+      var b = Game1.spriteBatch;
+      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y), new Vector2(bounds.X + bounds.Width, bounds.Y), color??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X + bounds.Width, bounds.Y), new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height), color??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y), new Vector2(bounds.X, bounds.Y + bounds.Height), color??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y + bounds.Height), new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height), color??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y), new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height), color??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X + bounds.Width, bounds.Y), new Vector2(bounds.X, bounds.Y + bounds.Height), color??= Color.Red);
+
+      if (order == -1)
+        return;
+
+      var i = order;
+      var x = 5;
+      var y = 60;
+      DrawTab($"X: {bounds.X} Y: {bounds.Y} W: {bounds.Width} H: {bounds.Height}", x, y + i++ * 60);
+    }
+
+    public static void DrawMouse()
+    {
+      DrawTab($"X:{Game1.getMouseX()} Y:{Game1.getMouseY()}", Game1.getMousePosition().X + 32, Game1.getMousePosition().Y - 64, drawShadow: false);
+    }
+
+    public static void DrawDebug(IClickableMenu menu)
+    {
+      var xPositionOnScreen = menu.xPositionOnScreen;
+      var yPositionOnScreen = menu.yPositionOnScreen;
+      var width = menu.width;
+      var height = menu.height;
       var b = Game1.spriteBatch;
       var x = 5;
       var y = 60;
@@ -48,7 +69,7 @@ namespace MagicScepter.Debug
       DrawTab($"Player location: {Utility.ModifyCoordinatesForUIScale(pl)}", x, y + h * i++);
       // DrawDot(b, Utility.ModifyCoordinatesForUIScale(pl), Color.Pink);
 
-      var menuPosition = GetMenuPositionOnScreen();
+      var menuPosition = GetMenuPositionOnScreen(width, height);
       DrawTab($"Menu position: X:{menuPosition.X} Y:{menuPosition.Y}", x, y + h * i++);
       DrawTab($"Menu position raw: X:{xPositionOnScreen} Y:{yPositionOnScreen}", x, y + h * i++);
       // DrawDot(b, new Vector2(menuPosition.X, menuPosition.Y), Color.Yellow);
@@ -56,7 +77,8 @@ namespace MagicScepter.Debug
 
       DrawTab($"Mouse: X:{Game1.getMousePosition().X} Y:{Game1.getMousePosition().Y}", x, y + h * i++);
       // DrawDot(b, new Vector2(Game1.getMousePosition().X, Game1.getMousePosition().Y), Color.LightBlue);
-      DrawTab($"X:{Game1.getMouseX()} Y:{Game1.getMouseY()}", Game1.getMousePosition().X + 32, Game1.getMousePosition().Y - 32);
+      // DrawTab($"X:{Game1.getMouseX()} Y:{Game1.getMouseY()}", Game1.getMousePosition().X + 32, Game1.getMousePosition().Y - 32);
+      DrawMouse();
 
       var playerStandingPosition = Game1.player.getStandingPosition();
       var playerYOffset = Utility.ModifyCoordinateForUIScale(-48);
@@ -213,7 +235,7 @@ namespace MagicScepter.Debug
       return texture;
     }
 
-    private Vector2 GetMenuPositionOnScreen()
+    private static Vector2 GetMenuPositionOnScreen(int width, int height)
     {
       var playerStandingPosition = Game1.player.getStandingPosition();
       var offset = new Vector2(-width / 2f, -height / 2f);
@@ -224,41 +246,5 @@ namespace MagicScepter.Debug
 
       return playerCenterPositionOnScreen + offset;
     }
-
-
-    /*public override void receiveGamePadButton(Buttons b)
-    {
-      if (b == Buttons.DPadUp || b == Buttons.DPadRight)
-      {
-        if (selectedWarpTargetIndex >= 0 && selectedWarpTargetIndex < (warpLocationButtons.Count - 1))
-        {
-          selectedWarpTargetIndex++;
-        }
-        else
-        {
-          selectedWarpTargetIndex = 0;
-        }
-      }
-      if (b == Buttons.DPadDown || b == Buttons.DPadLeft)
-      {
-        if (selectedWarpTargetIndex <= warpLocationButtons.Count && selectedWarpTargetIndex > 0)
-        {
-          selectedWarpTargetIndex--;
-        }
-        else if (selectedWarpTargetIndex == 0)
-        {
-          selectedWarpTargetIndex = warpLocationButtons.Count - 1;
-        }
-        else
-        {
-          selectedWarpTargetIndex = 0;
-        }
-      }
-
-      Game1.setMousePosition(
-        warpLocationButtons[selectedWarpTargetIndex].bounds.Right - warpLocationButtons[selectedWarpTargetIndex].bounds.Width / 8,
-        warpLocationButtons[selectedWarpTargetIndex].bounds.Bottom - warpLocationButtons[selectedWarpTargetIndex].bounds.Height / 8
-      );
-    }*/
   }
 }

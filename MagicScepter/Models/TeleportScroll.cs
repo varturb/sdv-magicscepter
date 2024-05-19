@@ -1,6 +1,7 @@
 using MagicScepter.Constants;
 using MagicScepter.Helpers;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 
 namespace MagicScepter.Models
 {
@@ -14,7 +15,8 @@ namespace MagicScepter.Models
     public bool Hidden { get; protected set; }
     public Rectangle SpirteSource { get; }
     public ActionDoWhen ActionDoWhen { get; set; }
-    
+    public SButton Keybind { get; set; }
+
     private const int orderOffset = 100;
 
     public TeleportScroll(DataEntry data)
@@ -31,6 +33,7 @@ namespace MagicScepter.Models
         Text = saveEntry?.Name ?? DefaultText;
         Hidden = ActionDoWhen.Do.Type != ActionDoType.Farm && (saveEntry?.Hidden ?? false);
         CanTeleport = TeleportHelper.CanTeleport(ActionDoWhen.When);
+        Keybind = saveEntry?.Keybind.MapToSButton() ?? SButton.None;
       }
     }
 

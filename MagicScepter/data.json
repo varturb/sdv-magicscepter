@@ -2,7 +2,7 @@
   {
     "ID": "MagicScepter_Farm",
     "Order": 1,
-    "TranslationKey": "TeleportScrollFarm",
+    "TranslationKey": "teleport-scroll.farm",
     "SpriteOffset": 0,
     "Action": {
       "Do": {
@@ -18,7 +18,7 @@
   {
     "ID": "MagicScepter_Beach",
     "Order": 2,
-    "TranslationKey": "TeleportScrollBeach",
+    "TranslationKey": "teleport-scroll.beach",
     "SpriteOffset": 64,
     "Action": {
       "Do": {
@@ -36,7 +36,7 @@
   {
     "ID": "MagicScepter_Mountain",
     "Order": 3,
-    "TranslationKey": "TeleportScrollMountain",
+    "TranslationKey": "teleport-scroll.mountain",
     "SpriteOffset": 128,
     "Action": {
       "Do": {
@@ -54,7 +54,7 @@
   {
     "ID": "MagicScepter_Desert",
     "Order": 4,
-    "TranslationKey": "TeleportScrollDesert",
+    "TranslationKey": "teleport-scroll.desert",
     "SpriteOffset": 192,
     "Action": {
       "Do": {
@@ -72,7 +72,7 @@
   {
     "ID": "MagicScepter_Island",
     "Order": 5,
-    "TranslationKey": "TeleportScrollIsland",
+    "TranslationKey": "teleport-scroll.island",
     "SpriteOffset": 256,
     "Action": {
       "Do": {
@@ -90,7 +90,7 @@
   {
     "ID": "MagicScepter_IslandFarm",
     "Order": 6,
-    "TranslationKey": "TeleportScrollIslandFarm",
+    "TranslationKey": "teleport-scroll.island-farm",
     "SpriteOffset": 320,
     "Action": {
       "Do": {
@@ -116,7 +116,7 @@
   {
     "ID": "MagicScepter_EnchantedGrave",
     "Order": 7,
-    "TranslationKey": "TeleportScrollEnchantedGrave",
+    "TranslationKey": "teleport-scroll.enchanted-grave",
     "SpriteOffset": 896,
     "Action": {
       "Do": {
@@ -142,7 +142,7 @@
   {
     "ID": "MagicScepter_RidgesideVillage",
     "Order": 8,
-    "TranslationKey": "TeleportScrollRidgesideVillage",
+    "TranslationKey": "teleport-scroll.ridgeside-village",
     "SpriteOffset": 512,
     "Action": {
       "Do": {
@@ -164,7 +164,7 @@
   {
     "ID": "MagicScepter_RidgesideVillageFarm",
     "Order": 9,
-    "TranslationKey": "TeleportScrollRidgesideVillageFarm",
+    "TranslationKey": "teleport-scroll.ridgeside-village-farm",
     "SpriteOffset": 576,
     "Action": {
       "Do": {
@@ -194,7 +194,7 @@
   {
     "ID": "MagicScepter_EastScarp",
     "Order": 10,
-    "TranslationKey": "TeleportScrollEastScarp",
+    "TranslationKey": "teleport-scroll.east-scarp",
     "SpriteOffset": 640,
     "Action": {
       "Do": {
@@ -216,7 +216,7 @@
   {
     "ID": "MagicScepter_EastScarpFarm",
     "Order": 11,
-    "TranslationKey": "TeleportScrollEastScarpFarm",
+    "TranslationKey": "teleport-scroll.east-scarp-farm",
     "SpriteOffset": 704,
     "Action": {
       "Do": {
@@ -242,7 +242,7 @@
   {
     "ID": "MagicScepter_DowntownZuzu",
     "Order": 11,
-    "TranslationKey": "TeleportScrollDowntownZuzu",
+    "TranslationKey": "teleport-scroll.downtown-zuzu",
     "SpriteOffset": 768,
     "Action": {
       "Do": {
@@ -264,7 +264,7 @@
   {
     "ID": "MagicScepter_VisitMountVapius",
     "Order": 12,
-    "TranslationKey": "TeleportScrollVisitMountVapius",
+    "TranslationKey": "teleport-scroll.visit-mount-vapius",
     "SpriteOffset": 832,
     "Action": {
       "Do": {
@@ -286,7 +286,7 @@
   {
     "ID": "MagicScepter_DeepWoods",
     "Order": 13,
-    "TranslationKey": "TeleportScrollDeepWoods",
+    "TranslationKey": "teleport-scroll.deep-woods",
     "SpriteOffset": 448,
     "Action": {
       "Do": {
@@ -308,7 +308,7 @@
   {
     "ID": "MagicScepter_MiniObelisk",
     "Order": 14,
-    "TranslationKey": "TeleportScrollMiniObelisk",
+    "TranslationKey": "teleport-scroll.mini-obelisk",
     "SpriteOffset": 384,
     "Action": {
       "Do": {
@@ -331,7 +331,7 @@
   {
     "ID": "MagicScepter_MultipleMiniObelisk",
     "Order": 14,
-    "TranslationKey": "TeleportScrollMiniObelisk",
+    "TranslationKey": "teleport-scroll.mini-obelisk",
     "SpriteOffset": 384,
     "Action": {
       "Do": {

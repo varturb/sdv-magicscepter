@@ -1,0 +1,137 @@
+using MagicScepter.Constants;
+using MagicScepter.Helpers;
+using MagicScepter.Models;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
+using StardewValley;
+using StardewValley.BellsAndWhistles;
+using StardewValley.Menus;
+
+namespace MagicScepter.UI
+{
+  public class KeybindMenu : IClickableMenu
+  {
+    private readonly Texture2D spritesheetTexture;
+    private readonly ConfigMenu parentMenu;
+    private readonly TeleportScroll teleportScroll;
+
+    private KeybindListener keyListener;
+
+    public KeybindMenu(ConfigMenu parentMenu, TeleportScroll teleportScroll)
+    {
+      width = 640;
+      height = 128;
+
+      this.parentMenu = parentMenu;
+      this.teleportScroll = teleportScroll;
+
+      exitFunction = delegate
+      {
+        parentMenu.RefreshTeleportScrolls();
+        Game1.activeClickableMenu = parentMenu;
+      };
+
+      var topLeft = Utility.getTopLeftPositionForCenteringOnScreen(width, height);
+      xPositionOnScreen = (int)topLeft.X;
+      yPositionOnScreen = (int)topLeft.Y + 32;
+
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
+
+      CreateComponents();
+    }
+
+    private void CreateComponents()
+    {
+      keyListener = new KeybindListener(
+        teleportScroll.Text,
+        new Rectangle(xPositionOnScreen, yPositionOnScreen, width, height),
+        teleportScroll.Keybind,
+        setValue: SetKeybind,
+        clearToButton: SButton.None
+      );
+      keyListener.SetButton.upNeighborID = upperRightCloseButton_ID;
+
+      initializeUpperRightCloseButton();
+      upperRightCloseButton.myID = upperRightCloseButton_ID;
+      upperRightCloseButton.downNeighborID = keyListener.SetButton.myID;
+
+      populateClickableComponentList();
+    }
+
+    public override void populateClickableComponentList()
+    {
+
+      allClickableComponents ??= new();
+      allClickableComponents.Clear();
+      allClickableComponents.Add(keyListener.SetButton);
+      allClickableComponents.Add(upperRightCloseButton);
+    }
+
+    private void SetKeybind(SButton key)
+    {
+
+      teleportScroll.Keybind = key;
+      var entryToSave = teleportScroll.ConvertToSaveDataEntry();
+      ModDataHelper.UpdateSaveData(entryToSave);
+
+      if (key != SButton.None)
+      {
+        var message = I18n.KeybindMenu_Message_Success(entryToSave.Keybind, teleportScroll.Text);
+        GameHelper.ShowMessage(message, MessageType.Success);
+
+        exitThisMenu();
+        parentMenu.RefreshTeleportScrolls();
+        Game1.activeClickableMenu = parentMenu;
+      }
+    }
+
+    public override void receiveLeftClick(int x, int y, bool playSound = true)
+    {
+      base.receiveLeftClick(x, y, playSound);
+      keyListener.receiveLeftClick(x, y);
+    }
+
+    public override void receiveKeyPress(Keys key)
+    {
+      keyListener.receiveKeyPress(key);
+      if (!keyListener.IsListening)
+      {
+        base.receiveKeyPress(key);
+      }
+    }
+
+    public override void draw(SpriteBatch b)
+    {
+      // draw faded background
+      GameHelper.DrawFadedBackground(b);
+      // draw menu title
+      SpriteText.drawStringWithScrollCenteredAt(
+        b,
+        teleportScroll.Text,
+        xPositionOnScreen + width / 2,
+        yPositionOnScreen - 64
+      );
+      // draw menu box
+      drawTextureBox(
+        b,
+        spritesheetTexture,
+        new Rectangle(174, 64, 18, 18),
+        xPositionOnScreen,
+        yPositionOnScreen,
+        width,
+        height,
+        Color.White,
+        4f
+      );
+
+      upperRightCloseButton.visible = !keyListener.IsListening;
+
+      keyListener.Draw(b);
+
+      base.draw(b);
+      drawMouse(b);
+    }
+  }
+}
