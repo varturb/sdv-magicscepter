@@ -103,6 +103,7 @@
     <None Include="i18n/it.json" />
     <None Include="i18n/ja.json" />
     <None Include="i18n/ko.json" />
+    <None Include="i18n/pl.json" />
     <None Include="i18n/pt.json" />
     <None Include="i18n/ru.json" />
     <None Include="i18n/tr.json" />

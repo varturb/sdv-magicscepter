@@ -1,20 +1,26 @@
 {
-  "Title": "Escolha um local:",
-  "Cancel": "Cancelar",
-  "Configuration": "Configuração",
-  "Settings": "Configurações",
-  "Save": "Salvar",
-  "ChangeName": "Alterar nome",
-  "Hidden": "Oculto",
-  "Visible": "Visível",
-  "MoveUp": "Mover para cima",
-  "MoveDown": "Mover para baixo",
-  "ResetToDefault": "Restaurar padrão",
-  "TeleportScrollFarm": "A Fazenda",
-  "TeleportScrollBeach": "A Praia",
-  "TeleportScrollMountain": "A Montanha",
-  "TeleportScrollDesert": "O Deserto",
-  "TeleportScrollIsland": "Ilha Gengibre",
-  "TeleportScrollIslandFarm": "Casa de Fazenda da Ilha",
-  "TeleportScrollMiniObelisk": "Mini Obelisco"
+  "dialog.title": "Escolha um local:",
+  
+  "common.save": "Salvar",
+  "common.cancel": "Cancelar",
+  
+  "configuration-menu.title": "Configuração",
+  
+  "settings-menu.title": "Configurações",
+  
+  "configuration-menu.button-hover.rename": "Alterar nome",
+  "configuration-menu.button-hover.hidden": "Oculto",
+  "configuration-menu.button-hover.visible": "Visível",
+  "configuration-menu.button-hover.move-up": "Mover para cima",
+  "configuration-menu.button-hover.move-down": "Mover para baixo",
+  
+  "rename-menu.reset-to-default": "Restaurar padrão",
+  
+  "teleport-scroll.farm": "A Fazenda",
+  "teleport-scroll.beach": "A Praia",
+  "teleport-scroll.mountain": "A Montanha",
+  "teleport-scroll.desert": "O Deserto",
+  "teleport-scroll.island": "Ilha Gengibre",
+  "teleport-scroll.island-farm": "Casa de Fazenda da Ilha",
+  "teleport-scroll.mini-obelisk": "Mini Obelisco"
 }

@@ -1,20 +1,26 @@
 {
-  "Title": "Konumu Seç:",
-  "Cancel": "Vazgeç",
-  "Configuration": "Yapılandırma",
-  "Settings": "Ayarlar",
-  "Save": "Kaydet",
-  "ChangeName": "İsmi Değiştir",
-  "Hidden": "Gizli",
-  "Visible": "Görünür",
-  "MoveUp": "Yukarı Taşı",
-  "MoveDown": "Aşağı Taşı",
-  "ResetToDefault": "Varsayılana Sıfırla",
-  "TeleportScrollFarm": "Çiftlik",
-  "TeleportScrollBeach": "Kumsal",
-  "TeleportScrollMountain": "Dağ",
-  "TeleportScrollDesert": "Çöl",
-  "TeleportScrollIsland": "Zencefil Adası",
-  "TeleportScrollIslandFarm": "Ada Çiftliği",
-  "TeleportScrollMiniObelisk": "Küçük Dikilitaş"
+  "dialog.title": "Konumu Seç:",
+  
+  "common.save": "Kaydet",
+  "common.cancel": "Vazgeç",
+  
+  "configuration-menu.title": "Yapılandırma",
+  
+  "settings-menu.title": "Ayarlar",
+  
+  "configuration-menu.button-hover.rename": "İsmi Değiştir",
+  "configuration-menu.button-hover.hidden": "Gizli",
+  "configuration-menu.button-hover.visible": "Görünür",
+  "configuration-menu.button-hover.move-up": "Yukarı Taşı",
+  "configuration-menu.button-hover.move-down": "Aşağı Taşı",
+  
+  "rename-menu.reset-to-default": "Varsayılana Sıfırla",
+  
+  "teleport-scroll.farm": "Çiftlik",
+  "teleport-scroll.beach": "Kumsal",
+  "teleport-scroll.mountain": "Dağ",
+  "teleport-scroll.desert": "Çöl",
+  "teleport-scroll.island": "Zencefil Adası",
+  "teleport-scroll.island-farm": "Ada Çiftliği",
+  "teleport-scroll.mini-obelisk": "Küçük Dikilitaş"
 }

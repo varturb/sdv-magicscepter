@@ -1,20 +1,26 @@
 {
-  "Title": "위치를 선택해주세요:",
-  "Cancel": "취소",
-  "Configuration": "설정",
-  "Settings": "설정",
-  "Save": "저장 ",
-  "ChangeName": "이름 변경",
-  "Hidden": "숨김",
-  "Visible": "보이는",
-  "MoveUp": "위로 이동",
-  "MoveDown": "아래로 이동",
-  "ResetToDefault": "기본값으로 재설정",
-  "TeleportScrollFarm": "농장",
-  "TeleportScrollBeach": "해변",
-  "TeleportScrollMountain": "산맥",
-  "TeleportScrollDesert": "칼리코 사막",
-  "TeleportScrollIsland": "진저 섬",
-  "TeleportScrollIslandFarm": "섬 농장",
-  "TeleportScrollMiniObelisk": "미니 오벨리스크"
+  "dialog.title": "위치를 선택해주세요:",
+  
+  "common.save": "저장 ",
+  "common.cancel": "취소",
+  
+  "configuration-menu.title": "설정",
+  
+  "settings-menu.title": "설정",
+  
+  "configuration-menu.button-hover.rename": "이름 변경",
+  "configuration-menu.button-hover.hidden": "숨김",
+  "configuration-menu.button-hover.visible": "보이는",
+  "configuration-menu.button-hover.move-up": "위로 이동",
+  "configuration-menu.button-hover.move-down": "아래로 이동",
+  
+  "rename-menu.reset-to-default": "기본값으로 재설정",
+  
+  "teleport-scroll.farm": "농장",
+  "teleport-scroll.beach": "해변",
+  "teleport-scroll.mountain": "산맥",
+  "teleport-scroll.desert": "칼리코 사막",
+  "teleport-scroll.island": "진저 섬",
+  "teleport-scroll.island-farm": "섬 농장",
+  "teleport-scroll.mini-obelisk": "미니 오벨리스크"
 }

@@ -1,20 +1,26 @@
 {
-  "Title": "Scegli una posizion:",
-  "Cancel": "Annulla",
-  "Configuration": "Configurazione",
-  "Settings": "Impostazioni",
-  "Save": "Salva",
-  "ChangeName": "Cambia nome",
-  "Hidden": "Nascosto",
-  "Visible": "Visible",
-  "MoveUp": "Su",
-  "MoveDown": "Giù",
-  "ResetToDefault": "Ripristinare il nome predefinito",
-  "TeleportScrollFarm": "La fattoria",
-  "TeleportScrollBeach": "La spiaggia",
-  "TeleportScrollMountain": "Le montagne",
-  "TeleportScrollDesert": "Il deserto",
-  "TeleportScrollIsland": "Isola Zenzero",
-  "TeleportScrollIslandFarm": "Fattoria dell'isola",
-  "TeleportScrollMiniObelisk": "Mini-obelisco"
+  "dialog.title": "Scegli una posizion:",
+  
+  "common.save": "Salva",
+  "common.cancel": "Annulla",
+  
+  "configuration-menu.title": "Configurazione",
+  
+  "settings-menu.title": "Impostazioni",
+  
+  "configuration-menu.button-hover.rename": "Cambia nome",
+  "configuration-menu.button-hover.hidden": "Nascosto",
+  "configuration-menu.button-hover.visible": "configuration-menu.button-hover.visible",
+  "configuration-menu.button-hover.move-up": "Su",
+  "configuration-menu.button-hover.move-down": "Giù",
+  
+  "rename-menu.reset-to-default": "Ripristinare il nome predefinito",
+  
+  "teleport-scroll.farm": "La fattoria",
+  "teleport-scroll.beach": "La spiaggia",
+  "teleport-scroll.mountain": "Le montagne",
+  "teleport-scroll.desert": "Il deserto",
+  "teleport-scroll.island": "Isola Zenzero",
+  "teleport-scroll.island-farm": "Fattoria dell'isola",
+  "teleport-scroll.mini-obelisk": "Mini-obelisco"
 }

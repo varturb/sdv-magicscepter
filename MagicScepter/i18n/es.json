@@ -1,20 +1,26 @@
 {
-  "Title": "Elige la ubicación:",
-  "Cancel": "Cancelar",
-  "Configuration": "Configuración",
-  "Settings": "Ajustes",
-  "Save": "Guardar",
-  "ChangeName": "Cambiar nombre",
-  "Hidden": "Oculto",
-  "Visible": "Visible",
-  "MoveUp": "Mover hacia arriba",
-  "MoveDown": "Mover hacia abajo",
-  "ResetToDefault": "Establecer nombre predeterminado",
-  "TeleportScrollFarm": "La granja",
-  "TeleportScrollBeach": "La playa",
-  "TeleportScrollMountain": "La montaña",
-  "TeleportScrollDesert": "Desierto de Calico",
-  "TeleportScrollIsland": "Isla Jengibre",
-  "TeleportScrollIslandFarm": "Granja Isleña",
-  "TeleportScrollMiniObelisk": "Mini obelisco"
+  "dialog.title": "Elige la ubicación:",
+  
+  "common.save": "Guardar",
+  "common.cancel": "Cancelar",
+  
+  "configuration-menu.title": "Configuración",
+  
+  "settings-menu.title": "Ajustes",
+  
+  "configuration-menu.button-hover.rename": "Cambiar nombre",
+  "configuration-menu.button-hover.hidden": "Oculto",
+  "configuration-menu.button-hover.visible": "configuration-menu.button-hover.visible",
+  "configuration-menu.button-hover.move-up": "Mover hacia arriba",
+  "configuration-menu.button-hover.move-down": "Mover hacia abajo",
+  
+  "rename-menu.reset-to-default": "Establecer nombre predeterminado",
+  
+  "teleport-scroll.farm": "La granja",
+  "teleport-scroll.beach": "La playa",
+  "teleport-scroll.mountain": "La montaña",
+  "teleport-scroll.desert": "Desierto de Calico",
+  "teleport-scroll.island": "Isla Jengibre",
+  "teleport-scroll.island-farm": "Granja Isleña",
+  "teleport-scroll.mini-obelisk": "Mini obelisco"
 }
