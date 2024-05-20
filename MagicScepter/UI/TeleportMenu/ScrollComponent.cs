@@ -12,13 +12,13 @@ namespace MagicScepter.UI
   {
     public string ID;
     public bool Hovered = false;
-    private int count;
     private static readonly Texture2D spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
     private int buttonRadius = 0;
-    private TeleportScroll teleportScroll;
     private float ageMS = 0;
     private float alpha = 0f;
     private readonly Action<string> action;
+    private readonly TeleportScroll teleportScroll;
+    private readonly int count;
     private const int endButtonRadius = 42;
     private const float endScale = 1f;
     private const float selectedScale = 1.5f;

@@ -82,6 +82,11 @@ namespace MagicScepter.Helpers
       return list.Where(x => x.Keybind != SButton.None).ToList();
     }
 
+    public static TeleportScroll FindScrollWithKeybind(this List<TeleportScroll> list, SButton sButton)
+    {
+      return list.FirstOrDefault(x => x.Keybind == sButton);
+    }
+
     public static string GetNextScrollID(this List<TeleportScroll> list, int currOrder)
     {
       var nextOrder = list.Count < (currOrder + 1) ? 1 : (currOrder + 1);

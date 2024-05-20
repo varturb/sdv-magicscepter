@@ -241,7 +241,8 @@ namespace MagicScepter.UI
     {
       base.draw(b);
 
-      // GameHelper.DrawFadedBackground(b);
+      GameHelper.DrawFadedBackground(b, 0.2f);
+      
       SpriteText.drawStringWithScrollCenteredAt(
         b,
         I18n.RenameMenu_Title(),

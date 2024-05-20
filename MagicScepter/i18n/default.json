@@ -22,6 +22,7 @@
   "keybind-menu.message.success": "Key {{key}} has been binded to {{name}}",
   "keybind-menu.message.clear": "Key has been cleared",
   "keybind-menu.message.invalid-key": "You can't bind this key",
+  "keybind-menu.message.key-already-exists": "This key is already binded to {{name}}",
 
   "rename-menu.title": "Set new name",
   "rename-menu.reset-to-default": "Restore default name",

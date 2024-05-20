@@ -13,7 +13,7 @@ namespace MagicScepter.UI
     private readonly Action<SpriteBatch, string> drawAction;
 
     public TeleportMenuConfigButton(int x, int y, Action<SpriteBatch, string> drawAction)
-      : base(new Rectangle(x, y, 36, 36), spritesheetTexture, new Rectangle(34, 64, 12, 12), 3f)
+      : base(new Rectangle(x, y, 36, 36), spritesheetTexture, new Rectangle(116, 64, 12, 12), 3f)
     {
       this.drawAction = drawAction;
     }

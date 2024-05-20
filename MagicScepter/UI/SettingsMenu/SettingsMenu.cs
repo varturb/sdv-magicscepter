@@ -54,7 +54,7 @@ namespace MagicScepter.UI
       configPageButon = new ClickableTextureComponent(
         new Rectangle(xPositionOnScreen - 64, yPositionOnScreen + 24, 64, 64),
         spritesheetTexture,
-        new Rectangle(110, 64, 32, 32),
+        new Rectangle(66, 64, 32, 32),
         2f
       )
       {
@@ -65,7 +65,7 @@ namespace MagicScepter.UI
       settingsPageButon = new ClickableTextureComponent(
         new Rectangle(xPositionOnScreen - 64 + 4, yPositionOnScreen + 24 + 64, 64, 64),
         spritesheetTexture,
-        new Rectangle(142, 64, 32, 32),
+        new Rectangle(34, 64, 32, 32),
         2f
       )
       {
@@ -217,7 +217,7 @@ namespace MagicScepter.UI
     public override void draw(SpriteBatch b)
     {
       // draw faded background
-      // GameHelper.DrawFadedBackground(b);
+      GameHelper.DrawFadedBackground(b, 0.2f);
       // draw menu title
       SpriteText.drawStringWithScrollCenteredAt(
         b,
@@ -229,7 +229,7 @@ namespace MagicScepter.UI
       drawTextureBox(
         b,
         spritesheetTexture,
-        new Rectangle(174, 64, 18, 18),
+        new Rectangle(98, 64, 18, 18),
         xPositionOnScreen,
         yPositionOnScreen,
         width,

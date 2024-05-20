@@ -218,7 +218,7 @@ namespace MagicScepter.UI
       }
 
       var sButton = key.ToSButton();
-      var tpScroll = teleportScrolls.FirstOrDefault(tp => tp.Keybind == sButton);
+      var tpScroll = teleportScrolls.FindScrollWithKeybind(sButton);
       if (tpScroll != null && tpScroll.CanTeleport && !tpScroll.Hidden)
       {
         exitThisMenu(false);
@@ -327,8 +327,6 @@ namespace MagicScepter.UI
 
     public override void draw(SpriteBatch b)
     {
-      GameHelper.DrawFadedBackground(b, 0.2f);
-
       scrollComponents.ForEach(s =>
       {
         if (!CheckIfSelected(s.ID))

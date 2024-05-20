@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using MagicScepter.Handlers;
 using MagicScepter.Helpers;
 using MagicScepter.Models;
 using Microsoft.Xna.Framework;
@@ -50,7 +52,10 @@ namespace MagicScepter.UI
 
     public bool IsListening { get; private set; }
 
-    public KeybindListener(string label, Rectangle bounds, SButton value, Action<SButton> setValue, SButton clearToButton = SButton.None)
+    private readonly string teleportScrollID;
+    private readonly List<TeleportScroll> teleportScrolls;
+
+    public KeybindListener(string id, string label, Rectangle bounds, SButton value, Action<SButton> setValue, SButton clearToButton = SButton.None)
       : base(label, -1, -1, bounds.Width, bounds.Height)
     {
       base.bounds = bounds;
@@ -65,6 +70,19 @@ namespace MagicScepter.UI
       this.value = value;
       this.setValue = setValue;
       this.clearToButton = clearToButton;
+      teleportScrollID = id;
+      teleportScrolls = ScrollHandler.GetTeleportScrolls();
+    }
+
+    private bool TryGetScrollWithKeybind(SButton sButton, out string text)
+    {
+      text = teleportScrolls
+        .Where(x => x.ID != teleportScrollID)
+        .ToList()
+        .FindScrollWithKeybind(sButton)
+        ?.Text;
+      
+      return text != null;
     }
 
     public static bool IsKeyValid(SButton sButton)
@@ -94,6 +112,13 @@ namespace MagicScepter.UI
           || invalidButtons.Contains(button))
       {
         GameHelper.ShowMessage(I18n.KeybindMenu_Message_InvalidKey(), MessageType.Error);
+        IsListening = false;
+        return;
+      }
+
+      if (TryGetScrollWithKeybind(button, out var text))
+      {
+        GameHelper.ShowMessage(I18n.KeybindMenu_Message_KeyAlreadyExists(text), MessageType.Error);
         IsListening = false;
         return;
       }

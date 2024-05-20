@@ -56,6 +56,7 @@ namespace MagicScepter.UI
     private void CreateComponents()
     {
       keyListener = new KeybindListener(
+        teleportScroll.ID,
         teleportScroll.Text,
         new Rectangle(xPositionOnScreen, yPositionOnScreen, width, height),
         teleportScroll.Keybind,
@@ -127,7 +128,7 @@ namespace MagicScepter.UI
     public override void draw(SpriteBatch b)
     {
       // draw faded background
-      // GameHelper.DrawFadedBackground(b);
+      GameHelper.DrawFadedBackground(b, 0.2f);
       // draw menu title
       SpriteText.drawStringWithScrollCenteredAt(
         b,
@@ -139,7 +140,7 @@ namespace MagicScepter.UI
       drawTextureBox(
         b,
         spritesheetTexture,
-        new Rectangle(174, 64, 18, 18),
+        new Rectangle(98, 64, 18, 18),
         xPositionOnScreen,
         yPositionOnScreen,
         width,

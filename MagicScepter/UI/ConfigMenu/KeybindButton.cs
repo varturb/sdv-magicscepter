@@ -13,7 +13,7 @@ namespace MagicScepter.UI
     private readonly TeleportScroll teleportScroll;
 
     public KeybindButton(TeleportScroll teleportScroll, ConfigMenu parentMenu)
-      : base(48, 48, new Rectangle(192, 64, 12, 12), 4f, I18n.ConfigurationMenu_ButtonHover_Keybind())
+      : base(48, 48, new Rectangle(116, 76, 12, 12), 4f, I18n.ConfigurationMenu_ButtonHover_Keybind())
     {
       this.parentMenu = parentMenu;
       this.teleportScroll = teleportScroll;
