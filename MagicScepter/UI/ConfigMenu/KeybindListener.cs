@@ -60,10 +60,7 @@ namespace MagicScepter.UI
         new Rectangle(294, 428, 21, 11),
         Game1.pixelZoom,
         true
-      )
-      {
-        myID = 100
-      };
+      );
 
       this.value = value;
       this.setValue = setValue;

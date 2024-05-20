@@ -7,7 +7,6 @@ using MagicScepter.Helpers;
 using MagicScepter.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
@@ -41,53 +40,45 @@ namespace MagicScepter.UI
     private const int pageSize = 6;
     private string hoverText = string.Empty;
     private bool scrolling;
-    private bool shouldResetLayout = false;
 
     public ConfigMenu()
     {
       width = 832;
       height = 576;
 
-      var topLeft = Utility.getTopLeftPositionForCenteringOnScreen(width, height);
-      xPositionOnScreen = (int)topLeft.X;
-      yPositionOnScreen = (int)topLeft.Y + 32;
-
       teleportScrolls = ScrollHandler.GetTeleportScrolls();
 
       spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
 
-      ModUtility.Helper.Events.Display.WindowResized += OnWindowResized;
-      exitFunction = OnExit;
+      topRowIndex = 0;
+      ResetLayout();
 
-      Init();
+      if (Game1.options.SnappyMenus)
+      {
+        currentlySnappedComponent = renameButtons.First().ClickableComponent;
+        base.snapCursorToCurrentSnappedComponent();
+      }
+    }
+
+    public void ResetLayout()
+    {
+      SetPosition();
+      CreateComponents();
+      SetScrollBarToCurrentIndex();
+      populateClickableComponentList();
+    }
+
+    public void SetPosition()
+    {
+      var topLeft = Utility.getTopLeftPositionForCenteringOnScreen(width, height);
+      xPositionOnScreen = (int)topLeft.X;
+      yPositionOnScreen = (int)topLeft.Y + 32;
     }
 
     public void RefreshTeleportScrolls()
     {
       teleportScrolls = ScrollHandler.GetTeleportScrolls();
-      CreateComponents();
-      SetScrollBarToCurrentIndex();
-      populateClickableComponentList();
-    }
-
-    private void Init()
-    {
-      topRowIndex = 0;
-      CreateComponents();
-      SetScrollBarToCurrentIndex();
-      populateClickableComponentList();
-    }
-
-    private void OnWindowResized(object sender, WindowResizedEventArgs e)
-    {
-      CreateComponents();
-      SetScrollBarToCurrentIndex();
-      populateClickableComponentList();
-    }
-
-    private void OnExit()
-    {
-      ModUtility.Helper.Events.Display.WindowResized -= OnWindowResized;
+      ResetLayout();
     }
 
     private void CreateComponents()
@@ -151,10 +142,11 @@ namespace MagicScepter.UI
       )
       {
         myID = configPageButtonID,
-        upNeighborID = -7777,
+        upNeighborID = -1,
         downNeighborID = settingsPageButtonID,
         rightNeighborID = moveDownButtonOffset + topRowIndex,
-        leftNeighborID = -7777
+        leftNeighborID = -1,
+        fullyImmutable = true
       };
       settingsPageButon = new ClickableTextureComponent(
         new Rectangle(xPositionOnScreen - 64, yPositionOnScreen + 24 + 64, 64, 64),
@@ -165,13 +157,17 @@ namespace MagicScepter.UI
       {
         myID = settingsPageButtonID,
         upNeighborID = configPageButtonID,
-        downNeighborID = -7777,
+        downNeighborID = -1,
         rightNeighborID = moveDownButtonOffset + topRowIndex,
-        leftNeighborID = -7777
+        leftNeighborID = -1,
+        fullyImmutable = true
       };
 
       initializeUpperRightCloseButton();
       upperRightCloseButton.myID = upperRightCloseButton_ID;
+      upperRightCloseButton.leftNeighborID = keybindButtonOffset + topRowIndex;
+      upperRightCloseButton.downNeighborID = keybindButtonOffset + topRowIndex;
+      upperRightCloseButton.fullyImmutable = true;
 
       SetupIDs();
     }
@@ -181,7 +177,7 @@ namespace MagicScepter.UI
       for (int i = 0; i < teleportScrolls.Count; i++)
       {
         moveUpButtons[i].SetupIDs(
-          ID: i > 0 ? i + moveUpButtonOffset : -7777,
+          ID: i > 0 ? i + moveUpButtonOffset : -500,
           upID: i > 0 ? i - 1 + moveDownButtonOffset : -1,
           downID: i + moveDownButtonOffset,
           leftID: settingsPageButtonID,
@@ -189,7 +185,7 @@ namespace MagicScepter.UI
         );
 
         moveDownButtons[i].SetupIDs(
-          ID: i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : -7777,
+          ID: i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : -500,
           upID: i + moveUpButtonOffset,
           downID: i + 1 + moveUpButtonOffset,
           leftID: settingsPageButtonID,
@@ -206,7 +202,7 @@ namespace MagicScepter.UI
 
         renameButtons[i].SetupIDs(
           ID: i + renameButtonOffset,
-          upID: i > 0 ? i - 1 + renameButtonOffset : -1,
+          upID: i > 0 ? i - 1 + renameButtonOffset : -500,
           downID: i + 1 + renameButtonOffset,
           leftID: i + (IsFarmScroll(i) ? i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : i + moveUpButtonOffset : visibilityButtonOffset),
           rightID: i + keybindButtonOffset
@@ -217,7 +213,7 @@ namespace MagicScepter.UI
           upID: i > 0 ? i - 1 + keybindButtonOffset : upperRightCloseButton_ID,
           downID: i + 1 + keybindButtonOffset,
           leftID: i + renameButtonOffset,
-          rightID: i > 0 ? -7777 : upperRightCloseButton_ID
+          rightID: i > 0 ? -1 : upperRightCloseButton_ID
         );
       }
     }
@@ -450,22 +446,15 @@ namespace MagicScepter.UI
 
     public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
     {
-      base.gameWindowSizeChanged(oldBounds, newBounds);
-      shouldResetLayout = true;
+      ResetLayout();
     }
 
     public override void draw(SpriteBatch b)
     {
-      if (shouldResetLayout)
-      {
-        SetScrollBarToCurrentIndex();
-        shouldResetLayout = false;
-      }
-
       var color = Color.White;
 
       // draw faded background
-      GameHelper.DrawFadedBackground(b);
+      // GameHelper.DrawFadedBackground(b);
       // draw menu title
       SpriteText.drawStringWithScrollCenteredAt(
         b,

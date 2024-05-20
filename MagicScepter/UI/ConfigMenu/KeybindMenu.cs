@@ -16,6 +16,7 @@ namespace MagicScepter.UI
     private readonly Texture2D spritesheetTexture;
     private readonly ConfigMenu parentMenu;
     private readonly TeleportScroll teleportScroll;
+    private const int setButtonID = 100;
 
     private KeybindListener keyListener;
 
@@ -33,13 +34,23 @@ namespace MagicScepter.UI
         Game1.activeClickableMenu = parentMenu;
       };
 
+      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
+      
+      SetPosition();
+      CreateComponents();
+
+      if (Game1.options.SnappyMenus)
+      {
+        currentlySnappedComponent = getComponentWithID(keyListener.SetButton.myID);
+        snapCursorToCurrentSnappedComponent();
+      }
+    }
+
+    private void SetPosition()
+    {
       var topLeft = Utility.getTopLeftPositionForCenteringOnScreen(width, height);
       xPositionOnScreen = (int)topLeft.X;
       yPositionOnScreen = (int)topLeft.Y + 32;
-
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
-
-      CreateComponents();
     }
 
     private void CreateComponents()
@@ -51,22 +62,18 @@ namespace MagicScepter.UI
         setValue: SetKeybind,
         clearToButton: SButton.None
       );
+      keyListener.SetButton.myID = setButtonID;
       keyListener.SetButton.upNeighborID = upperRightCloseButton_ID;
+      keyListener.SetButton.rightNeighborID = upperRightCloseButton_ID;
+      keyListener.SetButton.fullyImmutable = true;
 
       initializeUpperRightCloseButton();
       upperRightCloseButton.myID = upperRightCloseButton_ID;
-      upperRightCloseButton.downNeighborID = keyListener.SetButton.myID;
+      upperRightCloseButton.downNeighborID = setButtonID;
+      upperRightCloseButton.leftNeighborID = setButtonID;
+      upperRightCloseButton.fullyImmutable = true;
 
       populateClickableComponentList();
-    }
-
-    public override void populateClickableComponentList()
-    {
-
-      allClickableComponents ??= new();
-      allClickableComponents.Clear();
-      allClickableComponents.Add(keyListener.SetButton);
-      allClickableComponents.Add(upperRightCloseButton);
     }
 
     private void SetKeybind(SButton key)
@@ -87,6 +94,21 @@ namespace MagicScepter.UI
       }
     }
 
+    public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+    {
+      SetPosition();
+      CreateComponents();
+    }
+
+    public override void populateClickableComponentList()
+    {
+
+      allClickableComponents ??= new();
+      allClickableComponents.Clear();
+      allClickableComponents.Add(keyListener.SetButton);
+      allClickableComponents.Add(upperRightCloseButton);
+    }
+
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
       base.receiveLeftClick(x, y, playSound);
@@ -105,7 +127,7 @@ namespace MagicScepter.UI
     public override void draw(SpriteBatch b)
     {
       // draw faded background
-      GameHelper.DrawFadedBackground(b);
+      // GameHelper.DrawFadedBackground(b);
       // draw menu title
       SpriteText.drawStringWithScrollCenteredAt(
         b,

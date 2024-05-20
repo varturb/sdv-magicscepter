@@ -9,9 +9,9 @@ namespace MagicScepter.Handlers
 {
   public static class ScrollHandler
   {
-    public static void HandleResponse(string responseKey)
+    public static void TeleportByID(string scrollID)
     {
-      GetTeleportScrolls().FirstOrDefault(wo => wo.ID == responseKey)?.Teleport();
+      GetTeleportScrolls().FirstOrDefault(tp => tp.ID == scrollID)?.Teleport();
     }
 
     public static List<TeleportScroll> GetTeleportScrolls()

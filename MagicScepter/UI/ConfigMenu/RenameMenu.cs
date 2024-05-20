@@ -19,22 +19,34 @@ namespace MagicScepter.UI
     private TextBox textBox;
     private ClickableComponent textBoxCC;
     private TextBoxEvent e;
-    private readonly int minLength = 1;
     private readonly ConfigMenu parentMenu;
     private readonly TeleportScroll teleportScroll;
     private string hoverText = string.Empty;
-
+    private const int minLength = 1;
+    private const int textBoxID = 100;
+    private const int resetButtonID = 101;
+    private const int saveButtonID = 102;
+    private const int cancelButtonID = 103;
     public RenameMenu(TeleportScroll teleportScroll, ConfigMenu parentMenu)
     {
       this.parentMenu = parentMenu;
       this.teleportScroll = teleportScroll;
 
+      SetPosition();
+      CreateComponents();
+
+      if (Game1.options.SnappyMenus)
+      {
+        snapToDefaultClickableComponent();
+      }
+    }
+
+    private void SetPosition()
+    {
       xPositionOnScreen = 0;
       yPositionOnScreen = 0;
-      width = Game1.uiViewport.Width;
-      height = Game1.uiViewport.Height;
-
-      CreateComponents();
+      width = (int)Utility.ModifyCoordinateForUIScale(Game1.viewport.Width);
+      height = (int)Utility.ModifyCoordinateForUIScale(Game1.viewport.Height);
     }
 
     private void CreateComponents()
@@ -46,8 +58,8 @@ namespace MagicScepter.UI
       textBox.Height = 192;
       e = TextBoxEnter;
       textBox.OnEnterPressed += e;
-      Game1.keyboardDispatcher.Subscriber = textBox;
       textBox.Text = teleportScroll.Text;
+      Game1.keyboardDispatcher.Subscriber = textBox;
       textBox.Selected = true;
 
       textBoxCC = new ClickableComponent(
@@ -55,9 +67,10 @@ namespace MagicScepter.UI
         string.Empty
       )
       {
-        myID = 100,
-        rightNeighborID = 101,
-        leftNeighborID = 103
+        myID = textBoxID,
+        rightNeighborID = saveButtonID,
+        leftNeighborID = resetButtonID,
+        fullyImmutable = true
       };
       saveButton = new ClickableTextureComponent(
         new Rectangle(textBox.X + textBox.Width + 32 + 4, Game1.uiViewport.Height / 2 - 8, 64, 64),
@@ -66,9 +79,10 @@ namespace MagicScepter.UI
         1f
       )
       {
-        myID = 101,
-        rightNeighborID = 102,
-        leftNeighborID = 100
+        myID = saveButtonID,
+        rightNeighborID = cancelButtonID,
+        leftNeighborID = textBoxID,
+        fullyImmutable = true
       };
       cancelButton = new ClickableTextureComponent(
         new Rectangle(textBox.X + textBox.Width + 32 + 8 + 64, Game1.uiViewport.Height / 2 - 8, 64, 64),
@@ -77,8 +91,9 @@ namespace MagicScepter.UI
         1f
       )
       {
-        myID = 102,
-        leftNeighborID = 101
+        myID = cancelButtonID,
+        leftNeighborID = saveButtonID,
+        fullyImmutable = true
       };
       resetButton = new ClickableTextureComponent(
         new Rectangle(textBox.X - 32 + 12 - 64, Game1.uiViewport.Height / 2 - 8, 64, 64),
@@ -87,8 +102,9 @@ namespace MagicScepter.UI
         4f
       )
       {
-        myID = 103,
-        rightNeighborID = 100
+        myID = resetButtonID,
+        rightNeighborID = textBoxID,
+        fullyImmutable = true
       };
       resetButtonIcon = new ClickableTextureComponent(
         new Rectangle(textBox.X - 32 + 12 - 64, Game1.uiViewport.Height / 2 - 8, 64, 64),
@@ -97,17 +113,7 @@ namespace MagicScepter.UI
         4f
       );
 
-      if (Game1.options.SnappyMenus)
-      {
-        base.populateClickableComponentList();
-        snapToDefaultClickableComponent();
-      }
-    }
-
-    public override void snapToDefaultClickableComponent()
-    {
-      currentlySnappedComponent = getComponentWithID(100);
-      snapCursorToCurrentSnappedComponent();
+      populateClickableComponentList();
     }
 
     private void TextBoxEnter(TextBox sender)
@@ -135,6 +141,28 @@ namespace MagicScepter.UI
           Game1.activeClickableMenu = parentMenu;
         }
       }
+    }
+
+    public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+    {
+      SetPosition();
+      CreateComponents();
+    }
+
+    public override void populateClickableComponentList()
+    {
+      allClickableComponents ??= new();
+      allClickableComponents.Clear();
+      allClickableComponents.Add(textBoxCC);
+      allClickableComponents.Add(resetButton);
+      allClickableComponents.Add(saveButton);
+      allClickableComponents.Add(cancelButton);
+    }
+
+    public override void snapToDefaultClickableComponent()
+    {
+      currentlySnappedComponent = getComponentWithID(textBoxID);
+      snapCursorToCurrentSnappedComponent();
     }
 
     public override void receiveGamePadButton(Buttons b)
@@ -213,7 +241,7 @@ namespace MagicScepter.UI
     {
       base.draw(b);
 
-      GameHelper.DrawFadedBackground(b);
+      // GameHelper.DrawFadedBackground(b);
       SpriteText.drawStringWithScrollCenteredAt(
         b,
         I18n.RenameMenu_Title(),

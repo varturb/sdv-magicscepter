@@ -49,6 +49,6 @@ namespace MagicScepter.Helpers
 
       b.End();
       b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-    }; 
+    };
   }
 }

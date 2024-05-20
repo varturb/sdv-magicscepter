@@ -2,7 +2,6 @@ using MagicScepter.Constants;
 using MagicScepter.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
@@ -31,32 +30,23 @@ namespace MagicScepter.UI
       width = 832;
       height = 576;
 
-      var topLeft = Utility.getTopLeftPositionForCenteringOnScreen(width, height);
-      xPositionOnScreen = (int)topLeft.X;
-      yPositionOnScreen = (int)topLeft.Y + 32;
-
       spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
 
-      ModUtility.Helper.Events.Display.WindowResized += OnWindowResized;
-      exitFunction = OnExit;
-
+      ResetLayout();
       CreateComponents();
 
       if (Game1.options.SnappyMenus)
       {
         currentlySnappedComponent = settingsPageButon;
-        base.snapToDefaultClickableComponent();
+        base.snapCursorToCurrentSnappedComponent();
       }
     }
 
-    private void OnWindowResized(object sender, WindowResizedEventArgs e)
+    private void ResetLayout()
     {
-      CreateComponents();
-    }
-    
-    private void OnExit()
-    {
-      ModUtility.Helper.Events.Display.WindowResized -= OnWindowResized;
+      var topLeft = Utility.getTopLeftPositionForCenteringOnScreen(width, height);
+      xPositionOnScreen = (int)topLeft.X;
+      yPositionOnScreen = (int)topLeft.Y + 32;
     }
 
     private void CreateComponents()
@@ -167,9 +157,22 @@ namespace MagicScepter.UI
       GameHelper.ShowMessage(I18n.SettingsMenu_Option_ResetKeybinds_Message(), Models.MessageType.Warn);
     }
 
+    private void ConfigPageButtonPressed()
+    {
+      exitThisMenu();
+      Game1.activeClickableMenu = new ConfigMenu();
+    }
+
+    public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+    {
+      ResetLayout();
+      CreateComponents();
+    }
+
     public override void populateClickableComponentList()
     {
       allClickableComponents ??= new();
+      allClickableComponents.Clear();
       allClickableComponents.Add(configPageButon);
       allClickableComponents.Add(settingsPageButon);
       allClickableComponents.Add(menuTypeCheckbox.ClickableComponent);
@@ -202,12 +205,6 @@ namespace MagicScepter.UI
       base.receiveLeftClick(x, y, playSound);
     }
 
-    private void ConfigPageButtonPressed()
-    {
-      exitThisMenu();
-      Game1.activeClickableMenu = new ConfigMenu();
-    }
-
     public override void performHoverAction(int x, int y)
     {
       menuTypeCheckbox.performHoverAction(x, y);
@@ -220,7 +217,7 @@ namespace MagicScepter.UI
     public override void draw(SpriteBatch b)
     {
       // draw faded background
-      GameHelper.DrawFadedBackground(b);
+      // GameHelper.DrawFadedBackground(b);
       // draw menu title
       SpriteText.drawStringWithScrollCenteredAt(
         b,

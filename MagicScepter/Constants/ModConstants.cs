@@ -13,5 +13,6 @@ namespace MagicScepter.Constants
     public const string MiniObeliskObjectName = "Mini-Obelisk";
     public const string IslandFarmID = "MagicScepter_IslandFarm";
     public const int TeleportScrollOrderOffset = 100;
+    public const float DefaultLayerDepth = 0.86f;
   }
 }

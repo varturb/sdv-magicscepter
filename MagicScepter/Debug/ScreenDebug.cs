@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -18,12 +19,12 @@ namespace MagicScepter.Debug
     public static void DrawBox(Rectangle bounds, int order = 0, Color? color = null)
     {
       var b = Game1.spriteBatch;
-      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y), new Vector2(bounds.X + bounds.Width, bounds.Y), color??= Color.Red);
-      DrawLineBetween(b, new Vector2(bounds.X + bounds.Width, bounds.Y), new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height), color??= Color.Red);
-      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y), new Vector2(bounds.X, bounds.Y + bounds.Height), color??= Color.Red);
-      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y + bounds.Height), new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height), color??= Color.Red);
-      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y), new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height), color??= Color.Red);
-      DrawLineBetween(b, new Vector2(bounds.X + bounds.Width, bounds.Y), new Vector2(bounds.X, bounds.Y + bounds.Height), color??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y), new Vector2(bounds.X + bounds.Width, bounds.Y), color ??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X + bounds.Width, bounds.Y), new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height), color ??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y), new Vector2(bounds.X, bounds.Y + bounds.Height), color ??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y + bounds.Height), new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height), color ??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X, bounds.Y), new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height), color ??= Color.Red);
+      DrawLineBetween(b, new Vector2(bounds.X + bounds.Width, bounds.Y), new Vector2(bounds.X, bounds.Y + bounds.Height), color ??= Color.Red);
 
       if (order == -1)
         return;
@@ -36,11 +37,35 @@ namespace MagicScepter.Debug
 
     public static void DrawMouse()
     {
-      DrawTab($"X:{Game1.getMouseX()} Y:{Game1.getMouseY()}", Game1.getMousePosition().X + 32, Game1.getMousePosition().Y - 64, drawShadow: false);
+      var width = Game1.getMousePosition().X + 32;
+      var height = Game1.getMousePosition().Y + 32;
+      var x = Game1.getMouseX();
+      var y = Game1.getMouseY();
+      var vpWidth = (int)Utility.ModifyCoordinateForUIScale(Game1.viewport.Width);
+      var vpHeight = (int)Utility.ModifyCoordinateForUIScale(Game1.viewport.Height);
+      DrawTab($"X:{x} Y:{y}", width, height, drawShadow: false);
+      DrawLineBetween(Game1.spriteBatch, new Vector2(0, y), new Vector2(vpWidth, y), Color.Yellow, 1);
+      DrawLineBetween(Game1.spriteBatch, new Vector2(x, 0), new Vector2(x, vpHeight), Color.Yellow, 1);
+      x = (int)Utility.ModifyCoordinateFromUIScale(x);
+      y = (int)Utility.ModifyCoordinateFromUIScale(y);
+      DrawTab($"X:{x} Y:{y} (from ui)", width, height + 48, drawShadow: false);
+      x = (int)Utility.ModifyCoordinateForUIScale(Game1.getMouseX());
+      y = (int)Utility.ModifyCoordinateForUIScale(Game1.getMouseY());
+      DrawTab($"X:{x} Y:{y} (for ui)", width, height + 96, drawShadow: false);
     }
 
-    public static void DrawDebug(IClickableMenu menu)
+    public static void DrawClickables(List<ClickableComponent> list)
     {
+      foreach (var item in list ?? new())
+      {
+        DrawBox(item.bounds, -1);
+      }
+    }
+
+    public static void DrawInfo(IClickableMenu menu)
+    {
+      var vpWidth = (int)Utility.ModifyCoordinateForUIScale(Game1.viewport.Width);
+      var vpHeight = (int)Utility.ModifyCoordinateForUIScale(Game1.viewport.Height);
       var xPositionOnScreen = menu.xPositionOnScreen;
       var yPositionOnScreen = menu.yPositionOnScreen;
       var width = menu.width;
@@ -60,25 +85,25 @@ namespace MagicScepter.Debug
       DrawLineBetween(b, new Vector2(xPositionOnScreen, yPositionOnScreen), new Vector2(xPositionOnScreen + width, yPositionOnScreen + height), Color.Red);
       DrawLineBetween(b, new Vector2(xPositionOnScreen + width, yPositionOnScreen), new Vector2(xPositionOnScreen, yPositionOnScreen + height), Color.Red);
 
-      DrawTab($"Viewport: {Game1.viewport.Width}/{Game1.viewport.Height}", x, y + h * i++);
+      DrawTab($"Viewport: {Game1.viewport.Width}/{Game1.viewport.Height} - {vpWidth}/{vpHeight}", x, y + h * i++);
       DrawTab($"Viewport position: X:{Game1.viewport.X} Y:{Game1.viewport.Y}", x, y + h * i++);
-      DrawTab($"Zoom level: {Game1.options.zoomLevel}", x, y + h * i++);
-      DrawTab($"UI scale: {Game1.options.uiScale}", x, y + h * i++);
-      DrawTab($"Zoom - UI: {Game1.options.zoomLevel - Game1.options.uiScale}", x, y + h * i++);
+      DrawTab($"Zoom: {Game1.options.zoomLevel} Scale: {Game1.options.uiScale}", x, y + h * i++);
+      // DrawTab($"Zoom - UI: {Game1.options.zoomLevel - Game1.options.uiScale}", x, y + h * i++);
+      // DrawTab($"Pixel zoom: {Game1.pixelZoom}", x, y + h * i++);
 
       DrawTab($"Player location: {Utility.ModifyCoordinatesForUIScale(pl)}", x, y + h * i++);
       // DrawDot(b, Utility.ModifyCoordinatesForUIScale(pl), Color.Pink);
 
-      var menuPosition = GetMenuPositionOnScreen(width, height);
-      DrawTab($"Menu position: X:{menuPosition.X} Y:{menuPosition.Y}", x, y + h * i++);
-      DrawTab($"Menu position raw: X:{xPositionOnScreen} Y:{yPositionOnScreen}", x, y + h * i++);
+      // var menuPosition = GetMenuPositionOnScreen(width, height);
+      // DrawTab($"Menu position: X:{(int)menuPosition.X} Y:{(int)menuPosition.Y}", x, y + h * i++);
+      DrawTab($"Menu position: X:{xPositionOnScreen} Y:{yPositionOnScreen}", x, y + h * i++);
       // DrawDot(b, new Vector2(menuPosition.X, menuPosition.Y), Color.Yellow);
       // DrawDot(b, new Vector2(xPositionOnScreen, yPositionOnScreen), Color.Orange);
 
-      DrawTab($"Mouse: X:{Game1.getMousePosition().X} Y:{Game1.getMousePosition().Y}", x, y + h * i++);
+      // DrawTab($"Mouse: X:{Game1.getMousePosition().X} Y:{Game1.getMousePosition().Y}", x, y + h * i++);
       // DrawDot(b, new Vector2(Game1.getMousePosition().X, Game1.getMousePosition().Y), Color.LightBlue);
       // DrawTab($"X:{Game1.getMouseX()} Y:{Game1.getMouseY()}", Game1.getMousePosition().X + 32, Game1.getMousePosition().Y - 32);
-      DrawMouse();
+      // DrawMouse();
 
       var playerStandingPosition = Game1.player.getStandingPosition();
       var playerYOffset = Utility.ModifyCoordinateForUIScale(-48);
@@ -138,6 +163,7 @@ namespace MagicScepter.Debug
       // Create a texture as wide as the distance between two points and as high as
       // the desired thickness of the line.
       var distance = (int)Vector2.Distance(startPos, endPos);
+      if (distance == 0) return;
       var texture = new Texture2D(spriteBatch.GraphicsDevice, distance, thickness);
 
       // Fill texture with given color.

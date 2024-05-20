@@ -43,12 +43,11 @@ namespace MagicScepter.UI
       button.downNeighborID = downID;
       button.leftNeighborID = leftID;
       button.rightNeighborID = rightID;
+      button.fullyImmutable = true;
     }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
-      x = (int)Utility.ModifyCoordinateForUIScale(x);
-      y = (int)Utility.ModifyCoordinateForUIScale(y);
       if (isWithinBounds(x, y))
       {
         ButtonPressed();

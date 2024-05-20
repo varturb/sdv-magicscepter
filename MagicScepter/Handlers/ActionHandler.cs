@@ -36,7 +36,7 @@ namespace MagicScepter.Handlers
       if (teleportScrolls.Count == 1)
       {
         var farmResponse = teleportScrolls.First();
-        ScrollHandler.HandleResponse(farmResponse.ID);
+        ScrollHandler.TeleportByID(farmResponse.ID);
         return;
       }
 
@@ -49,11 +49,11 @@ namespace MagicScepter.Handlers
       teleportScrollsWithKeybinds = teleportScrolls.FilterHiddenItems().FilterItemsWithoutKeybind();
     }
 
-    private static void HandleAnswer(Farmer farmer, string answer)
+    private static void HandleAnswer(Farmer farmer, string responseID)
     {
       drawButton = false;
       teleportScrollsWithKeybinds = new();
-      ScrollHandler.HandleResponse(answer);
+      ScrollHandler.TeleportByID(responseID);
     }
 
     private static void ShowTeleportMenu()
@@ -62,7 +62,7 @@ namespace MagicScepter.Handlers
       if (teleportScrolls.Count == 1)
       {
         var farmResponse = teleportScrolls.First();
-        ScrollHandler.HandleResponse(farmResponse.ID);
+        ScrollHandler.TeleportByID(farmResponse.ID);
       }
       else
       {

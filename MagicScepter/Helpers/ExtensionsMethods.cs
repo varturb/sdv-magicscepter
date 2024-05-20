@@ -82,6 +82,18 @@ namespace MagicScepter.Helpers
       return list.Where(x => x.Keybind != SButton.None).ToList();
     }
 
+    public static string GetNextScrollID(this List<TeleportScroll> list, int currOrder)
+    {
+      var nextOrder = list.Count < (currOrder + 1) ? 1 : (currOrder + 1);
+      return list.First(x => x.Order == nextOrder).ID;
+    }
+
+    public static string GetPreviousScrollID(this List<TeleportScroll> list, int currOrder)
+    {
+      var prevOrder = (currOrder - 1) < 1 ? list.Count : (currOrder - 1);
+      return list.First(x => x.Order == prevOrder).ID;
+    }
+
     public static SaveDataEntry ConvertToSaveDataEntry(this TeleportScroll teleportScroll)
     {
       return new SaveDataEntry(teleportScroll.ID, teleportScroll.Text, teleportScroll.Order, teleportScroll.Hidden, teleportScroll.Keybind.MapToString());
