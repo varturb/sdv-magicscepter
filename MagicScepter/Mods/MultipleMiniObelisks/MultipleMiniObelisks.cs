@@ -34,8 +34,15 @@ namespace MagicScepter.Mods.MultipleMiniObelisks
 
     private static MiniObelisk FindObelisk()
     {
-      var obelisks = JsonConvert.DeserializeObject<List<MiniObelisk>>(Game1.MasterPlayer.modData[modDataKey]);
-      return obelisks.Count > 0 ? obelisks.First() : null;
+      try
+      {
+        var obelisks = JsonConvert.DeserializeObject<List<MiniObelisk>>(Game1.MasterPlayer.modData[modDataKey]);
+        return obelisks.Count > 0 ? obelisks.First() : null;
+      }
+      catch
+      {
+        return null;
+      }
     }
   }
 }
