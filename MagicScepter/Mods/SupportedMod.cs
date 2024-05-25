@@ -9,6 +9,7 @@ namespace MagicScepter.Mods
     DeepWoods,
     VisitMountVapius,
     StardewValleyExpanded,
-    GenericModConfigMenu
+    GenericModConfigMenu,
+    PelicanTownObelisk
   }
 }

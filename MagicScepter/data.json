@@ -347,5 +347,27 @@
         }
       ]
     }
+  },
+  {
+    "ID": "MagicScepter_PelicanTownObelisk",
+    "Order": 15,
+    "TranslationKey": "teleport-scroll.pelican-town-obelisk",
+    "SpriteOffset": 960,
+    "Action": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "Tikamin557.CP.PelicanTownObelisk_NEW_PelicanTownObelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "Tikamin557.CP.PelicanTownObelisk_NEW"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "Tikamin557.CP.PelicanTownObelisk_NEW_PelicanTownObelisk"
+        }
+      ]
+    }
   }
 ]
