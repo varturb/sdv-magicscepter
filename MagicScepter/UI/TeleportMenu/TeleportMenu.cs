@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using StardewModdingAPI;
 using System.Linq;
 using MagicScepter.Helpers;
+using System;
 
 namespace MagicScepter.UI
 {
@@ -247,6 +248,44 @@ namespace MagicScepter.UI
       }
     }
 
+    private void HandleThumbstics()
+    {
+      if (!Game1.options.SnappyMenus)
+      {
+        return;
+      }
+
+      var gamepadStateTS = Game1.input.GetGamePadState().ThumbSticks;
+      var rightThumbStickUsed = (double)Math.Abs(gamepadStateTS.Right.X) > 0.5 || (double)Math.Abs(gamepadStateTS.Right.Y) > 0.5;
+      var leftThumbStickUsed = (double)Math.Abs(gamepadStateTS.Left.X) > 0.5 || (double)Math.Abs(gamepadStateTS.Left.Y) > 0.5;
+
+      if (!(leftThumbStickUsed || rightThumbStickUsed))
+      {
+        return;
+      }
+
+      var thumbstickPosition = rightThumbStickUsed
+           ? new Vector2(gamepadStateTS.Right.X, gamepadStateTS.Right.Y)
+           : new Vector2(gamepadStateTS.Left.X, gamepadStateTS.Left.Y);
+      thumbstickPosition.Y *= -1f;
+      thumbstickPosition.Normalize();
+
+      var temp = -1f;
+      scrollComponents.ForEach(s =>
+      {
+        var scrollCenterPosition = new Vector2(
+          s.bounds.Center.X - (xPositionOnScreen + width / 2f),
+          s.bounds.Center.Y - (yPositionOnScreen + height / 2f)
+        );
+        var dot = Vector2.Dot(thumbstickPosition, scrollCenterPosition);
+        if ((double)dot > (double)temp)
+        {
+          temp = dot;
+          selectedID = s.ID;
+        }
+      });
+    }
+
     public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
     {
       ResetLayout();
@@ -313,6 +352,8 @@ namespace MagicScepter.UI
 
     public override void update(GameTime time)
     {
+      HandleThumbstics();
+
       scrollComponents.ForEach(s => s.Update(time, CheckIfSelected(s.ID), Bounds));
 
       var y = positionHoverTextOnTop ? yPositionOnScreen - 100 : yPositionOnScreen + height + 40;
@@ -322,6 +363,10 @@ namespace MagicScepter.UI
       if (TryGetSelectedScrollComponent(out var scroll))
       {
         currentlySnappedComponent = scroll;
+        if (Game1.options.SnappyMenus)
+        {
+          base.snapCursorToCurrentSnappedComponent();
+        }
       }
     }
 

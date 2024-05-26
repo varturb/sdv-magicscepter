@@ -94,8 +94,11 @@ namespace MagicScepter.UI
 
     public override void tryHover(int x, int y, float maxScaleIncrease = 0.1f)
     {
-      Hovered = containsPoint(x, y);
-      base.tryHover(x, y, selectedScale);
+      if (alpha == 1f)
+      {
+        Hovered = containsPoint(x, y);
+        base.tryHover(x, y, selectedScale);
+      }
     }
 
 
