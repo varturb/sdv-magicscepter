@@ -40,6 +40,11 @@ namespace MagicScepter.Helpers
       Utility.drawTextWithShadow(b, text, Game1.dialogueFont, position, Game1.textColor, 1f, 0.15f);
     }
 
+    public static void DrawSmallText(SpriteBatch b, string text, Vector2 position)
+    {
+      Utility.drawTextWithShadow(b, text, Game1.smallFont, position, Game1.textColor, 1f, 0.15f);
+    }
+
     public static Action<SpriteBatch, Action> DrawBackToFront => (SpriteBatch b, Action action) =>
     {
       try { b.End(); } catch { }

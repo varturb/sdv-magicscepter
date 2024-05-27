@@ -1,3 +1,5 @@
+using System;
+using MagicScepter.Constants;
 using StardewModdingAPI;
 
 namespace MagicScepter
@@ -14,7 +16,42 @@ namespace MagicScepter
       Helper = helper;
       Monitor = monitor;
       Manifest = manifest;
-      Config = helper.ReadConfig<ModConfig>();
+      Config = ValidateConfig(helper.ReadConfig<ModConfig>());
+    }
+
+    private static ModConfig ValidateConfig(ModConfig config)
+    {
+      try
+      {
+        var radiusRange = ModConstants.ScrollsRadiusRange;
+        config.Radius = Math.Max(radiusRange.Min, Math.Min(radiusRange.Max, config.Radius));
+      }
+      catch
+      {
+        config.Radius = ModConstants.DefaultScrollsRadius;
+      }
+
+      try
+      {
+        var scaleRange = ModConstants.ScrollsScaleRange;
+        config.Scale = Math.Max(scaleRange.Min, Math.Min(scaleRange.Max, config.Scale));
+      }
+      catch
+      {
+        config.Scale = ModConstants.DefaultScrollsScale;
+      }
+
+      try
+      {
+        var selecectScaleRange = ModConstants.SelectedScrollScaleRange;
+        config.SelectedScale = Math.Max(selecectScaleRange.Min, Math.Min(selecectScaleRange.Max, config.SelectedScale));
+      }
+      catch
+      {
+        config.SelectedScale = ModConstants.DefaultSelectedScrollScale;
+      }
+
+      return config;
     }
   }
 }

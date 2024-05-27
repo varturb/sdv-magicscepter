@@ -97,12 +97,41 @@ namespace MagicScepter.Helpers
 
     public static void RestoreSettings()
     {
-      ModUtility.Config.UseOldDialogMenu = ModConfig.Defaults.UseOldDialogMenu;
+      ModUtility.Config = new ModConfig();
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
     }
 
     public static void SetMenuType(bool value)
     {
       ModUtility.Config.UseOldDialogMenu = value;
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
+    }
+
+    public static void SetRadius(int value)
+    {
+      ModUtility.Config.Radius = value;
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
+    }
+
+    public static void SetScale(float value)
+    {
+      ModUtility.Config.Scale = value;
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
+    }
+
+    public static void SetSelectedScale(float value)
+    {
+      ModUtility.Config.SelectedScale = value;
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
+    }
+
+    public static void ResetScrollsSettings()
+    {
+      var defaultConfig = new ModConfig();
+      ModUtility.Config.Radius = defaultConfig.Radius;
+      ModUtility.Config.Scale = defaultConfig.Scale;
+      ModUtility.Config.SelectedScale = defaultConfig.SelectedScale;
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
     }
 
     public static void OnDayStarted(object sender, DayStartedEventArgs e)

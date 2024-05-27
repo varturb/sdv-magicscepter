@@ -14,9 +14,10 @@ namespace MagicScepter.UI
     private readonly string label;
     private readonly Action action;
     private readonly string hoverText;
+    private readonly bool isSmallFont;
     private bool hovered;
 
-    public OptionComponent(Rectangle bounds, Action action, string label, string hoverText = "")
+    public OptionComponent(Rectangle bounds, Action action, string label, string hoverText = "", bool isSmallFont = false)
     {
       width = bounds.Width;
       height = bounds.Height;
@@ -25,12 +26,14 @@ namespace MagicScepter.UI
       this.action = action;
       this.label = label;
       this.hoverText = hoverText;
+      this.isSmallFont = isSmallFont;
 
+      var fontModifier = isSmallFont ? 3 : 4;
       button = new ClickableTextureComponent(
-        new Rectangle(bounds.X + bounds.Width - 21 * 4, bounds.Y + bounds.Height / 2 - 22 - 8, 21 * 4, 11 * 4),
+        new Rectangle(bounds.X + bounds.Width - 21 * fontModifier, bounds.Y + bounds.Height / 2 - 22 - 8, 21 * fontModifier, 11 * fontModifier),
         Game1.mouseCursors,
         new Rectangle(294, 428, 21, 11),
-        4f,
+        fontModifier,
         true
       );
     }
@@ -62,7 +65,15 @@ namespace MagicScepter.UI
 
     public override void draw(SpriteBatch b)
     {
-      GameHelper.DrawText(b, label, new Vector2(xPositionOnScreen, button.bounds.Y));
+      if (isSmallFont)
+      {
+        GameHelper.DrawSmallText(b, label, new Vector2(xPositionOnScreen, button.bounds.Y));
+      }
+      else
+      {
+        GameHelper.DrawText(b, label, new Vector2(xPositionOnScreen, button.bounds.Y));
+      }
+
       button.draw(b);
 
       if (hoverText.IsNotEmpty() && hovered) drawHoverText(b, hoverText, Game1.smallFont);

@@ -12,6 +12,7 @@ namespace MagicScepter.UI
   {
     private ClickableTextureComponent configPageButon;
     private ClickableTextureComponent settingsPageButon;
+    private OptionComponent adjustTeleportMenuOption;
     private OptionComponent resetConfigurationOption;
     // private OptionComponent resetSettingsOption;
     private OptionComponent resetKeybindsOption;
@@ -22,6 +23,7 @@ namespace MagicScepter.UI
     private const int resetConfigurationOptionID = 103;
     private const int resetKeybindsOptionID = 104;
     // private const int resetSettingsOptionID = 105;
+    private const int adjustTeleportMenuOptionID = 106;
     private readonly Texture2D spritesheetTexture;
     private string hoverText = string.Empty;
 
@@ -52,9 +54,9 @@ namespace MagicScepter.UI
     private void CreateComponents()
     {
       configPageButon = new ClickableTextureComponent(
-        new Rectangle(xPositionOnScreen - 64, yPositionOnScreen + 24, 64, 64),
+        new(xPositionOnScreen - 64, yPositionOnScreen + 24, 64, 64),
         spritesheetTexture,
-        new Rectangle(66, 64, 32, 32),
+        new(66, 64, 32, 32),
         2f
       )
       {
@@ -63,9 +65,9 @@ namespace MagicScepter.UI
         rightNeighborID = menuTypeCheckboxID,
       };
       settingsPageButon = new ClickableTextureComponent(
-        new Rectangle(xPositionOnScreen - 64 + 4, yPositionOnScreen + 24 + 64, 64, 64),
+        new(xPositionOnScreen - 64 + 4, yPositionOnScreen + 24 + 64, 64, 64),
         spritesheetTexture,
-        new Rectangle(34, 64, 32, 32),
+        new(34, 64, 32, 32),
         2f
       )
       {
@@ -74,8 +76,10 @@ namespace MagicScepter.UI
         rightNeighborID = menuTypeCheckboxID,
       };
 
+      // top section
+      var slot = 0;
       menuTypeCheckbox = new CheckboxComponent(
-        new Rectangle(xPositionOnScreen + 24, yPositionOnScreen + 32, width - 48, 64),
+        new(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
         SetMenuType,
         I18n.SettingsMenu_Option_OldDialog_Label(),
         ModUtility.Config.UseOldDialogMenu
@@ -83,25 +87,41 @@ namespace MagicScepter.UI
       menuTypeCheckbox.SetupIDs(
         ID: menuTypeCheckboxID,
         upID: upperRightCloseButton_ID,
-        downID: resetConfigurationOptionID,
+        downID: adjustTeleportMenuOptionID,
         leftID: configPageButtonID,
         rightID: upperRightCloseButton_ID
       );
 
+      adjustTeleportMenuOption = new OptionComponent(
+        new(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
+        OpenTeleportMenuSettings,
+        I18n.SettingsMenu_Option_AdjustTeleportMenu_Label()
+      );
+      adjustTeleportMenuOption.SetupIDs(
+        ID: adjustTeleportMenuOptionID,
+        upID: menuTypeCheckboxID,
+        downID: resetConfigurationOptionID,
+        leftID: configPageButtonID,
+        rightID: -1
+      );
+
+      // bottom section
+      slot = 2;
       resetConfigurationOption = new OptionComponent(
-        new Rectangle(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * 2, width - 48, 64),
+        new(xPositionOnScreen + 24, yPositionOnScreen + height - 16 - 64 * slot--, width - 48, 64),
         ResetConfiguration,
         I18n.SettingsMenu_Option_ResetConfiguration_Label()
       );
       resetConfigurationOption.SetupIDs(
         ID: resetConfigurationOptionID,
-        upID: menuTypeCheckboxID,
+        upID: adjustTeleportMenuOptionID,
         downID: resetKeybindsOptionID,
         leftID: configPageButtonID,
         rightID: -1
       );
+ 
       resetKeybindsOption = new OptionComponent(
-        new Rectangle(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * 3, width - 48, 64),
+        new(xPositionOnScreen + 24, yPositionOnScreen + height - 16 - 64 * slot--, width - 48, 64),
         ResetKeybinds,
         I18n.SettingsMenu_Option_ResetKeybinds_Label()
       );
@@ -114,7 +134,7 @@ namespace MagicScepter.UI
       );
 
       // resetSettingsOption = new OptionComponent(
-      //   new Rectangle(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * 2, width - 48, 64),
+      //   new Rectangle(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
       //   ResetSettings,
       //   I18n.SettingsMenu_Option_ResetSettings_Label()
       // );
@@ -139,9 +159,16 @@ namespace MagicScepter.UI
       ModDataHelper.SetMenuType(value);
     }
 
+    private void OpenTeleportMenuSettings()
+    {
+      exitThisMenu();
+      Game1.activeClickableMenu = new TeleportMenuSettings();
+    }
+
     private void ResetConfiguration()
     {
       ModDataHelper.RestoreConfiguraiton();
+      Game1.playSound("shwip");
       GameHelper.ShowMessage(I18n.SettingsMenu_Option_ResetConfiguration_Message(), Models.MessageType.Warn);
     }
 
@@ -154,6 +181,7 @@ namespace MagicScepter.UI
     private void ResetKeybinds()
     {
       ModDataHelper.RestoreKeybinds();
+      Game1.playSound("shwip");
       GameHelper.ShowMessage(I18n.SettingsMenu_Option_ResetKeybinds_Message(), Models.MessageType.Warn);
     }
 
@@ -176,6 +204,7 @@ namespace MagicScepter.UI
       allClickableComponents.Add(configPageButon);
       allClickableComponents.Add(settingsPageButon);
       allClickableComponents.Add(menuTypeCheckbox.ClickableComponent);
+      allClickableComponents.Add(adjustTeleportMenuOption.ClickableComponent);
       allClickableComponents.Add(resetConfigurationOption.ClickableComponent);
       allClickableComponents.Add(resetKeybindsOption.ClickableComponent);
       // allClickableComponents.Add(resetSettingsOption.ClickableComponent);
@@ -193,11 +222,11 @@ namespace MagicScepter.UI
       if (configPageButon.containsPoint(x, y))
       {
         ConfigPageButtonPressed();
-        Game1.playSound("shwip");
         return;
       }
 
       menuTypeCheckbox.receiveLeftClick(x, y);
+      adjustTeleportMenuOption.receiveLeftClick(x, y);
       resetConfigurationOption.receiveLeftClick(x, y);
       resetKeybindsOption.receiveLeftClick(x, y);
       // resetSettingsOption.receiveLeftClick(x, y);
@@ -208,6 +237,7 @@ namespace MagicScepter.UI
     public override void performHoverAction(int x, int y)
     {
       menuTypeCheckbox.performHoverAction(x, y);
+      adjustTeleportMenuOption.performHoverAction(x, y);
       resetConfigurationOption.performHoverAction(x, y);
       resetKeybindsOption.performHoverAction(x, y);
       // resetSettingsOption.performHoverAction(x, y);
@@ -253,6 +283,7 @@ namespace MagicScepter.UI
 
       // draw options
       menuTypeCheckbox.draw(b);
+      adjustTeleportMenuOption.draw(b);
       resetConfigurationOption.draw(b);
       resetKeybindsOption.draw(b);
       // resetSettingsOption.draw(b);

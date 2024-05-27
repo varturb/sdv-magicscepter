@@ -19,17 +19,20 @@ namespace MagicScepter.UI
     private readonly Action<string> action;
     private readonly TeleportScroll teleportScroll;
     private readonly int count;
-    private const int endButtonRadius = 42;
-    private const float endScale = 1f;
-    private const float selectedScale = 1.5f;
+    private static int ScrollsRadius => ModUtility.Config.Radius;
+    private static float ScrollScale => ModUtility.Config.Scale;
+    private static float SelectedScrollScale => ModUtility.Config.SelectedScale;
+    private readonly bool previewMode = false;
     private const float expandTimeMS = 200f;
 
-    public ScrollComponent(TeleportScroll teleportScroll, int count, int x, int y, Rectangle source, Action<string> action)
-      : base(new Rectangle(x, y, 64, 64), spritesheetTexture, source, endScale)
+    public ScrollComponent(TeleportScroll teleportScroll, int count, int x, int y, Rectangle source, Action<string> action, bool previewMode = false)
+      : base(new Rectangle(x, y, 64, 64), spritesheetTexture, source, 1f)
     {
       this.count = count;
       this.teleportScroll = teleportScroll;
       this.action = action;
+      this.previewMode = previewMode;
+      scale = ScrollScale;
       ID = teleportScroll.ID;
       myID = teleportScroll.Order;
     }
@@ -51,21 +54,21 @@ namespace MagicScepter.UI
         ageMS = expandTimeMS;
       }
 
-      alpha = ageMS / expandTimeMS;
-      buttonRadius = (int)(ageMS / expandTimeMS * endButtonRadius);
+      alpha = !previewMode ? ageMS / expandTimeMS : 1f;
+      buttonRadius = !previewMode ? (int)(ageMS / expandTimeMS * ScrollsRadius) : ScrollsRadius;
 
-      if (scale > endScale)
+      if (scale > ScrollScale)
       {
-        scale = Utility.MoveTowards(scale, endScale, (float)(time.ElapsedGameTime.Milliseconds / 1000f * 10f));
+        scale = Utility.MoveTowards(scale, ScrollScale, (float)(time.ElapsedGameTime.Milliseconds / 1000f * 10f));
       }
       else
       {
-        scale = ageMS / expandTimeMS * endScale;
+        scale = !previewMode ? ageMS / expandTimeMS * ScrollScale : ScrollScale;
       }
 
       if (selected)
       {
-        scale = selectedScale;
+        scale = SelectedScrollScale;
       }
 
       var idx = teleportScroll.Order - 1;
@@ -87,7 +90,7 @@ namespace MagicScepter.UI
       var contains = base.containsPoint(x, y);
       if (contains)
       {
-        scale = selectedScale;
+        scale = SelectedScrollScale;
       }
       return contains;
     }
@@ -97,10 +100,9 @@ namespace MagicScepter.UI
       if (alpha == 1f)
       {
         Hovered = containsPoint(x, y);
-        base.tryHover(x, y, selectedScale);
+        base.tryHover(x, y, SelectedScrollScale);
       }
     }
-
 
     public override void draw(SpriteBatch b)
     {

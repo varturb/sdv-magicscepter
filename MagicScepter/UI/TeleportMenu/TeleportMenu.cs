@@ -22,10 +22,18 @@ namespace MagicScepter.UI
     private bool positionHoverTextOnTop = false;
     private Rectangle Bounds => new(xPositionOnScreen, yPositionOnScreen, width, height);
     private Point lastMousePos;
+    private const int scrollLabelOffset = 40;
+    private readonly bool previewMode = false;
+    private static int Width => (400 * ModUtility.Config.Radius / (float)(new ModConfig().Radius)).ToInt();
+    private static int Height => (400 * ModUtility.Config.Radius / (float)(new ModConfig().Radius)).ToInt();
 
-    public TeleportMenu(List<TeleportScroll> teleportScrolls) : base(0, 0, 400, 400, false)
+    public TeleportMenu(bool previewMode = false) : base(0, 0, 400, 400, false)
     {
-      this.teleportScrolls = teleportScrolls;
+      width = Width;
+      height = Height;
+
+      this.previewMode = previewMode;
+      teleportScrolls = ScrollHandler.GetTeleportScrolls().FilterHiddenItems().AdjustOrder();
 
       ResetLayout();
       CreateComponents();
@@ -34,10 +42,17 @@ namespace MagicScepter.UI
       {
         snapToDefaultClickableComponent();
       }
+
+      if (previewMode)
+      {
+        selectedID = scrollComponents.First().ID;
+      }
     }
 
     private void ResetLayout()
     {
+      width = Width;
+      height = Height;
       var menuPositiononScreen = GetMenuPositionOnScreen();
       xPositionOnScreen = (int)menuPositiononScreen.X;
       yPositionOnScreen = (int)menuPositiononScreen.Y;
@@ -55,9 +70,9 @@ namespace MagicScepter.UI
         xPositionOnScreen -= xPositionOnScreen;
       }
 
-      if (yPositionOnScreen + height > vpHeight)
+      if (yPositionOnScreen + height - scrollLabelOffset > vpHeight)
       { // bottom off screen
-        yPositionOnScreen -= yPositionOnScreen + height - vpHeight + 5;
+        yPositionOnScreen -= yPositionOnScreen + height - scrollLabelOffset - vpHeight + 5;
       }
 
       if (yPositionOnScreen < 0)
@@ -90,7 +105,8 @@ namespace MagicScepter.UI
           xPositionOnScreen + width / 2,
           yPositionOnScreen + height / 2,
           tp.SpirteSource,
-          TeleportByID
+          TeleportByID,
+          previewMode
         );
 
         var n = Neighbourhood.GetNeighbourhood(tp.Order, teleportScrolls.Count, ScrollLabelComponent.ComponentID, positionHoverTextOnTop);
@@ -103,9 +119,9 @@ namespace MagicScepter.UI
         return scroll;
       }).ToList();
 
-      scrollLabelComponent = new ScrollLabelComponent(DrawHoverText)
+      scrollLabelComponent = new ScrollLabelComponent(DrawHoverText, previewMode)
       {
-        visible = false
+        visible = previewMode
       };
 
       var threshold = Neighbourhood.CalculateThreshold(teleportScrolls.Count);
@@ -250,7 +266,7 @@ namespace MagicScepter.UI
 
     private void HandleThumbstics()
     {
-      if (!Game1.options.SnappyMenus)
+      if (!Game1.options.SnappyMenus || previewMode)
       {
         return;
       }
@@ -265,8 +281,8 @@ namespace MagicScepter.UI
       }
 
       var thumbstickPosition = rightThumbStickUsed
-           ? new Vector2(gamepadStateTS.Right.X, gamepadStateTS.Right.Y)
-           : new Vector2(gamepadStateTS.Left.X, gamepadStateTS.Left.Y);
+        ? new Vector2(gamepadStateTS.Right.X, gamepadStateTS.Right.Y)
+        : new Vector2(gamepadStateTS.Left.X, gamepadStateTS.Left.Y);
       thumbstickPosition.Y *= -1f;
       thumbstickPosition.Normalize();
 
@@ -331,6 +347,11 @@ namespace MagicScepter.UI
 
     public override void receiveKeyPress(Keys key)
     {
+      if (previewMode)
+      {
+        return;
+      }
+
       HandleKeybind(key);
       HandleUseToolButton(key);
       HandleMoveKeys(key);
@@ -339,12 +360,22 @@ namespace MagicScepter.UI
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
+      if (previewMode)
+      {
+        return;
+      }
+
       scrollComponents.ForEach(s => s.OnClick(x, y));
       scrollLabelComponent.OnClick(x, y);
     }
 
     public override void receiveScrollWheelAction(int direction)
     {
+      if (previewMode)
+      {
+        return;
+      }
+
       HandleScrollWheel(direction);
 
       base.receiveScrollWheelAction(direction);
@@ -356,11 +387,12 @@ namespace MagicScepter.UI
 
       scrollComponents.ForEach(s => s.Update(time, CheckIfSelected(s.ID), Bounds));
 
-      var y = positionHoverTextOnTop ? yPositionOnScreen - 100 : yPositionOnScreen + height + 40;
+      ResetLayout();
+      var y = positionHoverTextOnTop ? yPositionOnScreen - 60 - scrollLabelOffset : yPositionOnScreen + height + scrollLabelOffset;
       var x = xPositionOnScreen + width / 2;
       scrollLabelComponent.UpdatePosition(x, y);
 
-      if (TryGetSelectedScrollComponent(out var scroll))
+      if (!previewMode && TryGetSelectedScrollComponent(out var scroll))
       {
         currentlySnappedComponent = scroll;
         if (Game1.options.SnappyMenus)

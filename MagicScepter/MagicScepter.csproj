@@ -40,6 +40,8 @@
     <Compile Include="Models/MiniObeliskScroll.cs" />
     <Compile Include="Models/OrderThreshold.cs" />
     <Compile Include="Models/Neighbourhood.cs" />
+    <Compile Include="Models/MinMax.cs" />
+    <Compile Include="Models/MinMaxFloat.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants/ModConstants.cs" />
@@ -82,8 +84,10 @@
     <Compile Include="UI/ConfigMenu/MoveDownButton.cs" />
     <Compile Include="UI/ConfigMenu/VisibilityButton.cs" />
     <Compile Include="UI/SettingsMenu/SettingsMenu.cs" />
+    <Compile Include="UI/SettingsMenu/TeleportMenuSettings.cs" />
     <Compile Include="UI/SettingsMenu/OptionComponent.cs" />
     <Compile Include="UI/SettingsMenu/CheckboxComponent.cs" />
+    <Compile Include="UI/SettingsMenu/SliderComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers/ActionHandler.cs" />
@@ -109,11 +113,11 @@
     <None Include="i18n/tr.json" />
     <None Include="i18n/zh.json" />
   </ItemGroup>
-  <ItemGroup>
+  <!-- <ItemGroup>
     <None Include="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
+  </ItemGroup> -->
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />

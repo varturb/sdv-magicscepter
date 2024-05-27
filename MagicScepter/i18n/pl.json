@@ -22,6 +22,7 @@
   "keybind-menu.message.success": "Skrót {{key}} został przypisan do {{name}}",
   "keybind-menu.message.clear": "Skrót został wyczyszczony",
   "keybind-menu.message.invalid-key": "Nie możesz użyć tego skrótu",
+  "keybind-menu.message.key-already-exists": "Skrót jest już przypisany do {{name}}",
 
   "rename-menu.title": "Ustaw nową nazwę",
   "rename-menu.reset-to-default": "Przywróć nazwę domyślną",
@@ -30,12 +31,20 @@
   
   "settings-menu.title": "Ustawienia",
   "settings-menu.option.old-dialog.label": "Użyj trybu menu dialogowego",
+  "settings-menu.option.adjust-teleport-menu.label": "Dostosuj menu teleportacji",
   "settings-menu.option.reset-settings.label": "Zresetuj ustawienia",
   "settings-menu.option.reset-settings.message": "Ustawienia zostały zresetowane",
   "settings-menu.option.reset-configuration.label": "Zresetuj konfigurację",
   "settings-menu.option.reset-configuration.message": "Konfiguracja została zresetowana",
   "settings-menu.option.reset-keybinds.label": "Zresetuj skróty",
   "settings-menu.option.reset-keybinds.message": "Skróty zostały zresetowane",
+
+  "teleport-menu-settings.title": "Ustawienia menu teleportacji",
+  "teleport-menu-settings.radius": "Promień",
+  "teleport-menu-settings.scale": "Skala",
+  "teleport-menu-settings.selected-scale": "Skala zaznaczonego zwoju",
+  "teleport-menu-settings.reset.label": "Zresetuj ustawienia",
+  "teleport-menu-settings.reset.message": "Ustawienia menu teleportacji zostały zresetowane",
 
   "teleport-menu.title": "Wybierz zwój",
 

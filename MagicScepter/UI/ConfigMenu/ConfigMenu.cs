@@ -328,7 +328,6 @@ namespace MagicScepter.UI
       if (settingsPageButon.containsPoint(x, y))
       {
         SettingsPageButtonPressed();
-        Game1.playSound("shwip");
         return;
       }
 

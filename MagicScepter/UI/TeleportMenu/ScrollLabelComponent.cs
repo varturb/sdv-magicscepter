@@ -19,10 +19,12 @@ namespace MagicScepter.UI
     private const int configButtonID = 501;
     private const string textOffset = "  ";
     private readonly static string defaultLabel = I18n.TeleportMenu_Title();
+    private readonly bool previewMode;
 
-    public ScrollLabelComponent(Action<SpriteBatch, string> drawAction)
-    : base(new Rectangle(0, 0, 0, 36), "")
+    public ScrollLabelComponent(Action<SpriteBatch, string> drawAction, bool previewMode = false)
+      : base(new Rectangle(0, 0, 0, 36), "")
     {
+      this.previewMode = previewMode;
       configButton = new TeleportMenuConfigButton(0, 0, drawAction);
       passByComponent = new ClickableComponent(default, string.Empty);
     }
@@ -98,7 +100,7 @@ namespace MagicScepter.UI
         return;
       }
 
-      if (Context.IsMainPlayer)
+      if (Context.IsMainPlayer && !previewMode)
       {
         SpriteText.drawStringWithScrollCenteredAt(b, label + textOffset, bounds.X, bounds.Y);
         configButton.draw(b);
@@ -107,7 +109,6 @@ namespace MagicScepter.UI
       {
         SpriteText.drawStringWithScrollCenteredAt(b, label, bounds.X, bounds.Y);
       }
-
     }
   }
 }

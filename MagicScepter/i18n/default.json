@@ -31,12 +31,20 @@
   
   "settings-menu.title": "Settings",
   "settings-menu.option.old-dialog.label": "Use Old Dialog Menu",
+  "settings-menu.option.adjust-teleport-menu.label": "Adjust Teleport Menu",
   "settings-menu.option.reset-settings.label": "Reset Settings",
   "settings-menu.option.reset-settings.message": "Settings has been reset",
   "settings-menu.option.reset-configuration.label": "Reset Configuration",
   "settings-menu.option.reset-configuration.message": "Configuration has been reset",
   "settings-menu.option.reset-keybinds.label": "Reset Keybinds",
   "settings-menu.option.reset-keybinds.message": "Keybinds has been reset",
+
+  "teleport-menu-settings.title": "Teleport Menu Settings",
+  "teleport-menu-settings.radius": "Radius",
+  "teleport-menu-settings.scale": "Scale",
+  "teleport-menu-settings.selected-scale": "Selected scale",
+  "teleport-menu-settings.reset.label": "Reset to default",
+  "teleport-menu-settings.reset.message": "Teleport Menu settings have been reset",
 
   "teleport-menu.title": "Pick a Scroll",
 

@@ -66,8 +66,7 @@ namespace MagicScepter.Handlers
       }
       else
       {
-        teleportScrolls = teleportScrolls.FilterHiddenItems().AdjustOrder();
-        Game1.activeClickableMenu = new TeleportMenu(teleportScrolls);
+        Game1.activeClickableMenu = new TeleportMenu();
       }
     }
 

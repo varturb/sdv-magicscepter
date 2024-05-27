@@ -163,5 +163,60 @@ namespace MagicScepter.Helpers
         return SButton.None;
       }
     }
+
+    public static float ToFloat(this int value, int divider = 1)
+    {
+      return (float)(value / (float)divider);
+    }
+
+    public static int ToInt(this float value, float multiplier = 1)
+    {
+      return (int)(value * multiplier);
+    }
+
+    public static float ToPercentage<T>(this T value, T min, T max)
+    {
+      if (value is int iValue && min is int iMin && max is int iMax)
+      {
+        return (float)((iValue - iMin) / (float)(iMax - iMin));
+      }
+
+      if (value is float fValue && min is float fMin && max is float fMax)
+      {
+        return (float)((fValue - fMin) / (fMax - fMin));
+      }
+
+      return 0;
+    }
+
+    public static T Clamp<T>(this T value, T min, T max)
+    {
+      if (value is int iValue && min is int iMin && max is int iMax)
+      {
+        return (T)(object)Math.Min(iMax, Math.Max(iMin, iValue));
+      }
+
+      if (value is float fValue && min is float fMin && max is float fMax)
+      {
+        return (T)(object)Math.Min(fMax, Math.Max(fMin, fValue));
+      }
+
+      return value;
+    }
+
+    public static T Adjust<T>(this T value, T interval)
+    {
+      if (value is float fValue && interval is float fInterval)
+      {
+        value = (T)(object)(float)((decimal)fValue - ((decimal)fValue % (decimal)fInterval));
+      }
+
+      if (value is int iValue && interval is int iInterval)
+      {
+        value = (T)(object)(iValue - iValue % iInterval);
+      }
+
+      return value;
+    }
   }
 }
