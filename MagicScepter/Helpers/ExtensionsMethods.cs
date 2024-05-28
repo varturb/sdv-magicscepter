@@ -27,6 +27,11 @@ namespace MagicScepter.Helpers
       return text.Length > 0;
     }
 
+    public static string DefaultIfEmpty(this string text, string defaultText)
+    {
+      return text != null && text.IsNotEmpty() ? text : defaultText;
+    }
+
     public static bool IsOneOf(this string text, List<string> strings)
     {
       return strings.Where(x => x == text).Any();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MagicScepter.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -22,7 +23,7 @@ namespace MagicScepter.UI
     private readonly bool previewMode;
 
     public ScrollLabelComponent(Action<SpriteBatch, string> drawAction, bool previewMode = false)
-      : base(new Rectangle(0, 0, 0, 36), "")
+      : base(new Rectangle(0, 0, 0, 36), defaultLabel)
     {
       this.previewMode = previewMode;
       configButton = new TeleportMenuConfigButton(0, 0, drawAction);
@@ -59,7 +60,7 @@ namespace MagicScepter.UI
     {
       bounds.X = x;
       bounds.Y = y;
-      bounds.Width = SpriteText.getWidthOfString(label);
+      bounds.Width = SpriteText.getWidthOfString(label.DefaultIfEmpty(defaultLabel));
 
       if (Context.IsMainPlayer)
       {
