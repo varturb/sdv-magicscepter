@@ -365,6 +365,12 @@ namespace MagicScepter.UI
       base.receiveLeftClick(x, y, playSound);
     }
 
+    public override void releaseLeftClick(int x, int y)
+    {
+      base.releaseLeftClick(x, y);
+      scrolling = false;
+    }
+
     public override void leftClickHeld(int x, int y)
     {
       base.leftClickHeld(x, y);
