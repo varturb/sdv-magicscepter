@@ -10,13 +10,11 @@ namespace MagicScepter.UI
   public class RenameButton : ButtonBase
   {
     private readonly TeleportScroll teleportScroll;
-    private readonly ConfigMenu parentMenu;
 
-    public RenameButton(TeleportScroll teleportScroll, ConfigMenu parentMenu)
+    public RenameButton(TeleportScroll teleportScroll)
       : base(40, 40, new Rectangle(64, 16, 16, 16), 2.5f, I18n.ConfigurationMenu_ButtonHover_Rename())
     {
       this.teleportScroll = teleportScroll;
-      this.parentMenu = parentMenu;
     }
 
     protected override void SetupTexture()
@@ -35,7 +33,7 @@ namespace MagicScepter.UI
     protected override void ButtonPressed()
     {
       Game1.playSound("smallSelect");
-      Game1.activeClickableMenu = new RenameMenu(teleportScroll, parentMenu);
+      Game1.activeClickableMenu = new RenameMenu(teleportScroll);
     }
 
     protected override void Draw()

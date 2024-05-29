@@ -14,24 +14,21 @@ namespace MagicScepter.UI
   public class KeybindMenu : IClickableMenu
   {
     private readonly Texture2D spritesheetTexture;
-    private readonly ConfigMenu parentMenu;
     private readonly TeleportScroll teleportScroll;
     private const int setButtonID = 100;
 
     private KeybindListener keyListener;
 
-    public KeybindMenu(ConfigMenu parentMenu, TeleportScroll teleportScroll)
+    public KeybindMenu(TeleportScroll teleportScroll)
     {
       width = 640;
       height = 128;
 
-      this.parentMenu = parentMenu;
       this.teleportScroll = teleportScroll;
 
       exitFunction = delegate
       {
-        parentMenu.RefreshTeleportScrolls();
-        Game1.activeClickableMenu = parentMenu;
+        Game1.activeClickableMenu = new ConfigMenu();
       };
 
       spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
@@ -90,8 +87,6 @@ namespace MagicScepter.UI
         GameHelper.ShowMessage(message, MessageType.Success);
 
         exitThisMenu();
-        parentMenu.RefreshTeleportScrolls();
-        Game1.activeClickableMenu = parentMenu;
       }
     }
 

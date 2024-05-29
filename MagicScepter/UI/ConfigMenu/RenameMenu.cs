@@ -19,7 +19,6 @@ namespace MagicScepter.UI
     private TextBox textBox;
     private ClickableComponent textBoxCC;
     private TextBoxEvent e;
-    private readonly ConfigMenu parentMenu;
     private readonly TeleportScroll teleportScroll;
     private string hoverText = string.Empty;
     private const int minLength = 1;
@@ -27,13 +26,17 @@ namespace MagicScepter.UI
     private const int resetButtonID = 101;
     private const int saveButtonID = 102;
     private const int cancelButtonID = 103;
-    public RenameMenu(TeleportScroll teleportScroll, ConfigMenu parentMenu)
+    public RenameMenu(TeleportScroll teleportScroll)
     {
-      this.parentMenu = parentMenu;
       this.teleportScroll = teleportScroll;
 
       SetPosition();
       CreateComponents();
+
+      exitFunction = delegate
+      {
+        Game1.activeClickableMenu = new ConfigMenu();
+      };
 
       if (Game1.options.SnappyMenus)
       {
@@ -137,8 +140,6 @@ namespace MagicScepter.UI
           }
 
           exitThisMenu();
-          parentMenu.RefreshTeleportScrolls();
-          Game1.activeClickableMenu = parentMenu;
         }
       }
     }
@@ -191,7 +192,6 @@ namespace MagicScepter.UI
       if (Game1.options.doesInputListContain(Game1.options.menuButton, key))
       {
         exitThisMenu();
-        Game1.activeClickableMenu = parentMenu;
       }
       else if (!textBox.Selected && !Game1.options.doesInputListContain(Game1.options.menuButton, key))
       {
@@ -227,7 +227,6 @@ namespace MagicScepter.UI
       if (cancelButton.containsPoint(x, y))
       {
         exitThisMenu();
-        Game1.activeClickableMenu = parentMenu;
       }
       if (resetButton.containsPoint(x, y))
       {

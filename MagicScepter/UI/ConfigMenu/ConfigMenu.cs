@@ -99,8 +99,8 @@ namespace MagicScepter.UI
         var moveUpButton = new MoveUpButton(i, teleportScrolls, this, skip: i == 0);
         var moveDownButton = new MoveDownButton(i, teleportScrolls, this, skip: i == teleportScrolls.Count - 1);
         var visibilityButton = new VisibilityButton(teleportScrolls[i], this, skip: IsFarmScroll(i));
-        var renameButton = new RenameButton(teleportScrolls[i], this);
-        var keybindButton = new KeybindButton(teleportScrolls[i], this);
+        var renameButton = new RenameButton(teleportScrolls[i]);
+        var keybindButton = new KeybindButton(teleportScrolls[i]);
 
         moveUpButtons.Add(moveUpButton);
         moveDownButtons.Add(moveDownButton);

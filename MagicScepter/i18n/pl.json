@@ -9,6 +9,7 @@
   "configuration-menu.button-hover.visible": "Widoczny",
   "configuration-menu.button-hover.rename": "Zmień nazwę",
   "configuration-menu.button-hover.keybind": "Dodaj skrót",
+  "configuration-menu.button-hover.keybind-current": "Obecny: {{key}}",
   "configuration-menu.button-hover.move-up": "Do góry",
   "configuration-menu.button-hover.move-down": "W dół",
   "configuration-menu.move-up.message": "Zwój {{name}} został przesnięty w górę",
