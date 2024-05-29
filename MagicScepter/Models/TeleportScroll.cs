@@ -30,7 +30,7 @@ namespace MagicScepter.Models
         var saveEntry = ModDataHelper.GetSaveDataEntry(data.ID);
         Order = saveEntry?.Order ?? (data.Order + orderOffset);
         DefaultText = TranslationHelper.Get(data.TranslationKey);
-        Text = saveEntry?.Name.DefaultIfEmpty(DefaultText);
+        Text = saveEntry?.Name.DefaultIfEmpty(DefaultText) ?? DefaultText;
         Hidden = ActionDoWhen.Do.Type != ActionDoType.Farm && (saveEntry?.Hidden ?? false);
         CanTeleport = TeleportHelper.CanTeleport(ActionDoWhen.When);
         Keybind = saveEntry?.Keybind.MapToSButton() ?? SButton.None;
