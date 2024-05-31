@@ -162,7 +162,7 @@ namespace MagicScepter.UI
 
     public override void snapToDefaultClickableComponent()
     {
-      currentlySnappedComponent = getComponentWithID(textBoxID);
+      currentlySnappedComponent = saveButton;
       snapCursorToCurrentSnappedComponent();
     }
 
@@ -189,7 +189,7 @@ namespace MagicScepter.UI
 
     public override void receiveKeyPress(Keys key)
     {
-      if (Game1.options.doesInputListContain(Game1.options.menuButton, key))
+      if (key == Keys.Escape || (Game1.options.SnappyMenus && Game1.options.doesInputListContain(Game1.options.menuButton, key)))
       {
         exitThisMenu();
       }
