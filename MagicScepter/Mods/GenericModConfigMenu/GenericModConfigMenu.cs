@@ -37,6 +37,13 @@ namespace MagicScepter.Mods.GenericModConfigMenu
         text: () => I18n.TeleportMenuSettings_Title()
       );
 
+      configMenu.AddBoolOption(
+        mod: ModUtility.Manifest,
+        name: () => I18n.TeleportMenuSettings_PlaySound(),
+        getValue: () => ModUtility.Config.PlaySound,
+        setValue: value => ModUtility.Config.PlaySound = value
+      );
+
       configMenu.AddNumberOption(
         mod: ModUtility.Manifest,
         name: () => I18n.TeleportMenuSettings_Radius(),

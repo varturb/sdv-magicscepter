@@ -15,10 +15,12 @@ namespace MagicScepter.UI
     private readonly string label;
     private readonly Action<bool> action;
     private readonly string hoverText;
+    private readonly bool smallFont;
+    private readonly bool soundOnSelect;
     private bool hovered;
     private bool isChecked;
 
-    public CheckboxComponent(Rectangle bounds, Action<bool> action, string label, bool isChecked, string hoverText = "")
+    public CheckboxComponent(Rectangle bounds, Action<bool> action, string label, bool isChecked, string hoverText = "", bool smallFont = false, bool soundOnSelect = true)
     {
       width = bounds.Width;
       height = bounds.Height;
@@ -28,6 +30,8 @@ namespace MagicScepter.UI
       this.label = label;
       this.isChecked = isChecked;
       this.hoverText = hoverText;
+      this.smallFont = smallFont;
+      this.soundOnSelect = soundOnSelect;
 
       checkbox = new ClickableTextureComponent(
         new Rectangle(bounds.X + bounds.Width - 9 * 4 - 24, bounds.Y + bounds.Height / 2 - 18 - 8, 9 * 4, 9 * 4),
@@ -53,7 +57,10 @@ namespace MagicScepter.UI
       {
         isChecked = !isChecked;
         action(isChecked);
-        Game1.playSound("drumkit6");
+        if (soundOnSelect || !isChecked)
+        {
+          Game1.playSound("drumkit6");
+        }
         base.receiveLeftClick(x, y, playSound);
       }
     }
@@ -67,7 +74,14 @@ namespace MagicScepter.UI
 
     public override void draw(SpriteBatch b)
     {
-      GameHelper.DrawText(b, label, new Vector2(xPositionOnScreen, checkbox.bounds.Y));
+      if (smallFont)
+      {
+        GameHelper.DrawSmallText(b, label, new Vector2(xPositionOnScreen, checkbox.bounds.Y));
+      }
+      else
+      {
+        GameHelper.DrawText(b, label, new Vector2(xPositionOnScreen, checkbox.bounds.Y));
+      }
       checkbox.sourceRect.X = isChecked ? 236 : 227;
       checkbox.draw(b);
 

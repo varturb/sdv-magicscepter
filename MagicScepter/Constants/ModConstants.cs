@@ -14,6 +14,7 @@ namespace MagicScepter.Constants
     public const string RidgesideFarmLocation = "Custom_Ridgeside_SummitFarm";
     public const string MiniObeliskObjectName = "Mini-Obelisk";
     public const string IslandFarmID = "MagicScepter_IslandFarm";
+    public const string PlaySound = "throw";
     public const int TeleportScrollOrderOffset = 100;
     public const float DefaultLayerDepth = 0.86f;
     public static readonly MinMax ScrollsRadiusRange = new(20, 100);

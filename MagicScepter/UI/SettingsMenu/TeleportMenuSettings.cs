@@ -1,3 +1,4 @@
+using System;
 using MagicScepter.Constants;
 using MagicScepter.Helpers;
 using Microsoft.Xna.Framework;
@@ -10,22 +11,24 @@ namespace MagicScepter.UI
 {
   public class TeleportMenuSettings : IClickableMenu
   {
+    private CheckboxComponent playSoundCheckbox;
     private SliderComponent radiusSlider;
     private SliderComponent scaleSlider;
     private SliderComponent selectedScaleSlider;
     private OptionComponent resetOption;
     private TeleportMenu teleportMenu;
     private readonly Texture2D spritesheetTexture;
-    private const int radiusSliderID = 200;
-    private const int scaleSliderID = 201;
-    private const int selectedScaleSliderID = 202;
-    private const int resetButtonID = 203;
+    private const int playSoundCheckboxID = 200;
+    private const int radiusSliderID = 201;
+    private const int scaleSliderID = 202;
+    private const int selectedScaleSliderID = 203;
+    private const int resetButtonID = 204;
     private static ModConfig ModConfig => ModUtility.Config;
 
     public TeleportMenuSettings()
     {
       width = 512;
-      height = 352;
+      height = 416;
 
       spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
       exitFunction = delegate
@@ -49,6 +52,15 @@ namespace MagicScepter.UI
     private void CreateComponents()
     {
       var slot = 0;
+      playSoundCheckbox = new CheckboxComponent(
+        new(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
+        SetPlaySound,
+        I18n.TeleportMenuSettings_PlaySound(),
+        ModUtility.Config.PlaySound,
+        smallFont: true,
+        soundOnSelect: false
+      );
+
       radiusSlider = new SliderComponent(
         new(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
         min: ModConstants.ScrollsRadiusRange.Min,
@@ -92,9 +104,16 @@ namespace MagicScepter.UI
 
       teleportMenu = new TeleportMenu(previewMode: true);
 
+      playSoundCheckbox.SetupIDs(
+        ID: playSoundCheckboxID,
+        upID: upperRightCloseButton_ID,
+        downID: radiusSliderID,
+        leftID: -1,
+        rightID: upperRightCloseButton_ID
+      );
       radiusSlider.SetupIDs(
         ID: radiusSliderID,
-        upID: upperRightCloseButton_ID,
+        upID: playSoundCheckboxID,
         downID: scaleSliderID,
         leftID: -1,
         rightID: -1
@@ -123,10 +142,20 @@ namespace MagicScepter.UI
 
       initializeUpperRightCloseButton();
       upperRightCloseButton.myID = upperRightCloseButton_ID;
-      upperRightCloseButton.downNeighborID = radiusSliderID;
-      upperRightCloseButton.leftNeighborID = radiusSliderID;
+      upperRightCloseButton.downNeighborID = playSoundCheckboxID;
+      upperRightCloseButton.leftNeighborID = playSoundCheckboxID;
 
       populateClickableComponentList();
+    }
+
+    private void SetPlaySound(bool playSound)
+    {
+      ModDataHelper.SetPlaySound(playSound);
+
+      if (playSound)
+      {
+        Game1.playSound(ModConstants.PlaySound);
+      }
     }
 
     private static void SetScrollsRadius(int radius)
@@ -168,7 +197,7 @@ namespace MagicScepter.UI
     {
       if (Game1.options.SnappyMenus)
       {
-        currentlySnappedComponent = radiusSlider.ClickableComponent;
+        currentlySnappedComponent = playSoundCheckbox.ClickableComponent;
         base.snapCursorToCurrentSnappedComponent();
       }
     }
@@ -177,6 +206,7 @@ namespace MagicScepter.UI
     {
       allClickableComponents ??= new();
       allClickableComponents.Clear();
+      allClickableComponents.Add(playSoundCheckbox.ClickableComponent);
       allClickableComponents.Add(radiusSlider.ClickableComponent);
       allClickableComponents.Add(scaleSlider.ClickableComponent);
       allClickableComponents.Add(selectedScaleSlider.ClickableComponent);
@@ -186,6 +216,7 @@ namespace MagicScepter.UI
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
+      playSoundCheckbox.receiveLeftClick(x, y);
       radiusSlider.receiveLeftClick(x, y);
       scaleSlider.receiveLeftClick(x, y);
       selectedScaleSlider.receiveLeftClick(x, y);
@@ -212,6 +243,7 @@ namespace MagicScepter.UI
     public override void receiveKeyPress(Keys key)
     {
       base.receiveKeyPress(key);
+      playSoundCheckbox.receiveKeyPress(key);
       radiusSlider.receiveKeyPress(key);
       scaleSlider.receiveKeyPress(key);
       selectedScaleSlider.receiveKeyPress(key);
@@ -252,6 +284,7 @@ namespace MagicScepter.UI
       // hoverText = string.Empty;
 
       // draw options
+      playSoundCheckbox.draw(b);
       radiusSlider.draw(b);
       scaleSlider.draw(b);
       selectedScaleSlider.draw(b);

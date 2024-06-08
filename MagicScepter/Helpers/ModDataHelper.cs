@@ -107,6 +107,12 @@ namespace MagicScepter.Helpers
       ModUtility.Helper.WriteConfig(ModUtility.Config);
     }
 
+    public static void SetPlaySound(bool value)
+    {
+      ModUtility.Config.PlaySound = value;
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
+    }
+
     public static void SetRadius(int value)
     {
       ModUtility.Config.Radius = value;
