@@ -8,6 +8,7 @@ using MagicScepter.Helpers;
 using System.Collections.Generic;
 using StardewModdingAPI;
 using MagicScepter.Models;
+using MagicScepter.Constants;
 
 namespace MagicScepter.Handlers
 {
@@ -67,6 +68,10 @@ namespace MagicScepter.Handlers
       else
       {
         Game1.activeClickableMenu = new TeleportMenu();
+        if (ModUtility.Config.PlaySound)
+        {
+				  Game1.playSound(ModConstants.PlaySound);
+        }
       }
     }
 
