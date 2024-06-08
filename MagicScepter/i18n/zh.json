@@ -41,6 +41,7 @@
   "settings-menu.option.reset-keybinds.message": "按键已重置",
   
   "teleport-menu-settings.title": "传送菜单设置",
+  "teleport-menu-settings.play-sound": "播放声音",
   "teleport-menu-settings.radius": "半径",
   "teleport-menu-settings.scale": "尺寸",
   "teleport-menu-settings.selected-scale": "选定尺寸",
@@ -62,7 +63,7 @@
   "teleport-scroll.east-scarp-farm": "山间草地",
   "teleport-scroll.downtown-zuzu": "祖祖城",
   "teleport-scroll.visit-mount-vapius": "雾呜山峰",
-  "teleport-scroll.enchanted-grave": "魔法树林",
+  "teleport-scroll.enchanted-grove": "魔法树林",
   "teleport-scroll.pelican-town-obelisk": "鹈鹕镇",
   "teleport-scroll.mini-obelisk": "迷你图腾尖塔"
 }

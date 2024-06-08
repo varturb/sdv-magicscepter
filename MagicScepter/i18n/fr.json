@@ -41,6 +41,7 @@
   "settings-menu.option.reset-keybinds.message": "Les raccourcis clavier ont été réinitialisés.",
   
   "teleport-menu-settings.title": "Paramètres du menu de téléportation",
+  "teleport-menu-settings.play-sound": "Jouer son",
   "teleport-menu-settings.radius": "Rayon",
   "teleport-menu-settings.scale": "Échelle",
   "teleport-menu-settings.selected-scale": "Échelle (sélection)",
@@ -62,7 +63,7 @@
   "teleport-scroll.east-scarp-farm": "Ferme des prés",
   "teleport-scroll.downtown-zuzu": "Centre-ville de Zuzu",
   "teleport-scroll.visit-mount-vapius": "Mont Vapius",
-  "teleport-scroll.enchanted-grave": "Tombe enchantée",
+  "teleport-scroll.enchanted-grove": "Bosquet enchantée",
   "teleport-scroll.mini-obelisk": "Mini-obélisque",
   "teleport-scroll.pelican-town-obelisk": "Ville de Pélican"
 }

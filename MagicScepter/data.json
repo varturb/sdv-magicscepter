@@ -114,9 +114,9 @@
     }
   },
   {
-    "ID": "MagicScepter_EnchantedGrave",
+    "ID": "MagicScepter_EnchantedGrove",
     "Order": 7,
-    "TranslationKey": "teleport-scroll.enchanted-grave",
+    "TranslationKey": "teleport-scroll.enchanted-grove",
     "SpriteOffset": 896,
     "Action": {
       "Do": {
