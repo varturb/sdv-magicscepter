@@ -32,8 +32,7 @@ namespace MagicScepter.UI
 
     protected override void SetupTexture()
     {
-      var texture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
-      SetTexture(texture);
+      SetTexture(FileHelper.GetSpritesheetTexture());
     }
 
     public void UpdatePosition(int x, int y)

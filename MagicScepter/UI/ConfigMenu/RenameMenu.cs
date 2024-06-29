@@ -241,14 +241,9 @@ namespace MagicScepter.UI
       base.draw(b);
 
       GameHelper.DrawFadedBackground(b, 0.2f);
+
+      GameHelper.DrawTextInScroll(b, I18n.RenameMenu_Title(), Game1.uiViewport.Width / 2, Game1.uiViewport.Height / 2 - 86);
       
-      SpriteText.drawStringWithScrollCenteredAt(
-        b,
-        I18n.RenameMenu_Title(),
-        Game1.uiViewport.Width / 2,
-        Game1.uiViewport.Height / 2 - 86,
-        I18n.RenameMenu_Title()
-      );
       textBox.Draw(b);
 
       saveButton.draw(b);

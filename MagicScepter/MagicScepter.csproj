@@ -87,6 +87,7 @@
     <Compile Include="UI/SettingsMenu/TeleportMenuSettings.cs" />
     <Compile Include="UI/SettingsMenu/OptionComponent.cs" />
     <Compile Include="UI/SettingsMenu/CheckboxComponent.cs" />
+    <Compile Include="UI/SettingsMenu/DropdownComponent.cs" />
     <Compile Include="UI/SettingsMenu/SliderComponent.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -32,7 +32,7 @@ namespace MagicScepter.UI
       width = 832;
       height = 576;
 
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
+      spritesheetTexture = FileHelper.GetSpritesheetTexture();
 
       ResetLayout();
       CreateComponents();
@@ -119,7 +119,6 @@ namespace MagicScepter.UI
         leftID: configPageButtonID,
         rightID: -1
       );
- 
       resetKeybindsOption = new OptionComponent(
         new(xPositionOnScreen + 24, yPositionOnScreen + height - 16 - 64 * slot--, width - 48, 64),
         ResetKeybinds,
@@ -249,12 +248,8 @@ namespace MagicScepter.UI
       // draw faded background
       GameHelper.DrawFadedBackground(b, 0.2f);
       // draw menu title
-      SpriteText.drawStringWithScrollCenteredAt(
-        b,
-        I18n.SettingsMenu_Title(),
-        xPositionOnScreen + width / 2,
-        yPositionOnScreen - 64
-      );
+      GameHelper.DrawTextInScroll(b, I18n.SettingsMenu_Title(), xPositionOnScreen + width / 2, yPositionOnScreen - 64);
+      
       // draw menu box
       drawTextureBox(
         b,

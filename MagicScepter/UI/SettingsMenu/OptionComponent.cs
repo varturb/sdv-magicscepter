@@ -45,6 +45,7 @@ namespace MagicScepter.UI
       button.downNeighborID = downID;
       button.leftNeighborID = leftID;
       button.rightNeighborID = rightID;
+      button.fullyImmutable = true;
     }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -67,11 +68,13 @@ namespace MagicScepter.UI
     {
       if (isSmallFont)
       {
-        GameHelper.DrawSmallText(b, label, new Vector2(xPositionOnScreen, button.bounds.Y));
+        var scale = GameHelper.GetTextScale(label, Game1.smallFont, width - button.bounds.Width - 32);
+        GameHelper.DrawSmallText(b, label, new Vector2(xPositionOnScreen, button.bounds.Y), scale);
       }
       else
       {
-        GameHelper.DrawText(b, label, new Vector2(xPositionOnScreen, button.bounds.Y));
+        var scale = GameHelper.GetTextScale(label, Game1.dialogueFont, width - button.bounds.Width - 32);
+        GameHelper.DrawText(b, label, new Vector2(xPositionOnScreen, button.bounds.Y), scale);
       }
 
       button.draw(b);

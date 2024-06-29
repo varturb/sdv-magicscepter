@@ -14,7 +14,7 @@ namespace MagicScepter.UI
     private readonly ConfigMenu parentMenu;
 
     public MoveUpButton(int index, List<TeleportScroll> teleportScrolls, ConfigMenu parentMenu, bool skip = false)
-      : base(36, 36, new Rectangle(421, 459, 12, 12), 3f, I18n.ConfigurationMenu_ButtonHover_MoveUp())
+      : base(36, 36, new Rectangle(64, 18, 12, 12), 3f, I18n.ConfigurationMenu_ButtonHover_MoveUp())
     {
       this.index = index;
       this.teleportScrolls = teleportScrolls;
@@ -24,7 +24,7 @@ namespace MagicScepter.UI
 
     protected override void SetupTexture()
     {
-      SetTexture(Game1.mouseCursors);
+      SetTexture(FileHelper.GetSpritesheetTexture());
     }
 
     public void UpdatePosition(int x, int y)

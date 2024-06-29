@@ -31,7 +31,7 @@ namespace MagicScepter.UI
         Game1.activeClickableMenu = new ConfigMenu();
       };
 
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
+      spritesheetTexture = FileHelper.GetSpritesheetTexture();
       
       SetPosition();
       CreateComponents();
@@ -125,12 +125,8 @@ namespace MagicScepter.UI
       // draw faded background
       GameHelper.DrawFadedBackground(b, 0.2f);
       // draw menu title
-      SpriteText.drawStringWithScrollCenteredAt(
-        b,
-        teleportScroll.Text,
-        xPositionOnScreen + width / 2,
-        yPositionOnScreen - 64
-      );
+      GameHelper.DrawTextInScroll(b, teleportScroll.Text, xPositionOnScreen + width / 2, yPositionOnScreen - 64);
+
       // draw menu box
       drawTextureBox(
         b,

@@ -1,5 +1,6 @@
 using System;
 using MagicScepter.Constants;
+using MagicScepter.Helpers;
 using MagicScepter.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,7 +13,6 @@ namespace MagicScepter.UI
   {
     public string ID;
     public bool Hovered = false;
-    private static readonly Texture2D spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
     private int buttonRadius = 0;
     private float ageMS = 0;
     private float alpha = 0f;
@@ -22,11 +22,12 @@ namespace MagicScepter.UI
     private static int ScrollsRadius => ModUtility.Config.Radius;
     private static float ScrollScale => ModUtility.Config.Scale;
     private static float SelectedScrollScale => ModUtility.Config.SelectedScale;
+    private static Texture2D scrollsTexture = FileHelper.GetScrollsTexture();
     private readonly bool previewMode = false;
     private const float expandTimeMS = 200f;
 
     public ScrollComponent(TeleportScroll teleportScroll, int count, int x, int y, Rectangle source, Action<string> action, bool previewMode = false)
-      : base(new Rectangle(x, y, 64, 64), spritesheetTexture, source, 1f)
+      : base(new Rectangle(x, y, 64, 64), FileHelper.GetSpritesheetTexture(), source, 1f)
     {
       this.count = count;
       this.teleportScroll = teleportScroll;
@@ -35,6 +36,8 @@ namespace MagicScepter.UI
       scale = ScrollScale;
       ID = teleportScroll.ID;
       myID = teleportScroll.Order;
+
+      texture = FileHelper.GetSpritesheetTexture();
     }
 
     public void SetupIDs(int upID = -1, int downID = -1, int leftID = -1, int rightID = -1)
@@ -107,7 +110,28 @@ namespace MagicScepter.UI
     public override void draw(SpriteBatch b)
     {
       var color = Color.White * alpha;
-      base.draw(b, color, ModConstants.DefaultLayerDepth);
+      b.Draw(
+        texture,
+        new Vector2((float)(bounds.X) + (float)(sourceRect.Width / 2) * baseScale, (float)(bounds.Y) + (float)(sourceRect.Height / 2) * baseScale),
+        new Rectangle(0, 0, 64, 64),
+        color,
+        0f,
+        new Vector2(sourceRect.Width / 2, sourceRect.Height / 2),
+        scale,
+        SpriteEffects.None,
+        ModConstants.DefaultLayerDepth
+      );
+      b.Draw(
+        scrollsTexture,
+        new Vector2((float)(bounds.X) + (float)(sourceRect.Width / 2) * baseScale, (float)(bounds.Y) + (float)(sourceRect.Height / 2) * baseScale),
+        sourceRect,
+        color,
+        0f,
+        new Vector2(sourceRect.Width / 2, sourceRect.Height / 2),
+        scale,
+        SpriteEffects.None,
+        ModConstants.DefaultLayerDepth
+      );
     }
   }
 }

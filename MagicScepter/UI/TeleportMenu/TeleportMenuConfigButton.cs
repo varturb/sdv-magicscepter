@@ -1,5 +1,6 @@
 using System;
 using MagicScepter.Constants;
+using MagicScepter.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -9,11 +10,10 @@ namespace MagicScepter.UI
 {
   public class TeleportMenuConfigButton : ClickableTextureComponent
   {
-    private static readonly Texture2D spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
     private readonly Action<SpriteBatch, string> drawAction;
 
     public TeleportMenuConfigButton(int x, int y, Action<SpriteBatch, string> drawAction)
-      : base(new Rectangle(x, y, 36, 36), spritesheetTexture, new Rectangle(116, 64, 12, 12), 3f)
+      : base(new Rectangle(x, y, 36, 36), FileHelper.GetSpritesheetTexture(), new Rectangle(116, 64, 12, 12), 3f)
     {
       this.drawAction = drawAction;
     }

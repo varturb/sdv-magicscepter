@@ -12,34 +12,41 @@ namespace MagicScepter.UI
   public class TeleportMenuSettings : IClickableMenu
   {
     private CheckboxComponent playSoundCheckbox;
+    private DropdownComponent themeDropdown;
     private SliderComponent radiusSlider;
     private SliderComponent scaleSlider;
     private SliderComponent selectedScaleSlider;
     private OptionComponent resetOption;
     private TeleportMenu teleportMenu;
-    private readonly Texture2D spritesheetTexture;
+    private static Texture2D spritesheetTexture;
     private const int playSoundCheckboxID = 200;
-    private const int radiusSliderID = 201;
-    private const int scaleSliderID = 202;
-    private const int selectedScaleSliderID = 203;
-    private const int resetButtonID = 204;
+    private const int themeDropdownID = 201;
+    private const int radiusSliderID = 202;
+    private const int scaleSliderID = 203;
+    private const int selectedScaleSliderID = 204;
+    private const int resetButtonID = 205;
     private static ModConfig ModConfig => ModUtility.Config;
 
     public TeleportMenuSettings()
     {
       width = 512;
-      height = 416;
+      height = 480;
 
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
+      Init();
+
       exitFunction = delegate
       {
         Game1.activeClickableMenu = new SettingsMenu();
       };
 
+      snapToDefaultClickableComponent();
+    }
+
+    private void Init()
+    {
+      spritesheetTexture = FileHelper.GetSpritesheetTexture();
       ResetLayout();
       CreateComponents();
-
-      snapToDefaultClickableComponent();
     }
 
     private void ResetLayout()
@@ -59,6 +66,19 @@ namespace MagicScepter.UI
         ModUtility.Config.PlaySound,
         smallFont: true,
         soundOnSelect: false
+      );
+
+      themeDropdown = new DropdownComponent(
+        new(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
+        I18n.TeleportMenuSettings_Theme(),
+        new()
+        {
+          new(ModConstants.ThemeDefault, I18n.TeleportMenuSettings_Theme_Options_Default()),
+          new(ModConstants.ThemeVintage, I18n.TeleportMenuSettings_Theme_Options_Vintage()),
+          new(ModConstants.ThemeWitchy, I18n.TeleportMenuSettings_Theme_Options_Witchy())
+        },
+        ModUtility.Config.Theme,
+        SetTheme
       );
 
       radiusSlider = new SliderComponent(
@@ -107,13 +127,20 @@ namespace MagicScepter.UI
       playSoundCheckbox.SetupIDs(
         ID: playSoundCheckboxID,
         upID: upperRightCloseButton_ID,
-        downID: radiusSliderID,
+        downID: themeDropdownID,
         leftID: -1,
         rightID: upperRightCloseButton_ID
       );
+      themeDropdown.SetupIDs(
+        ID: themeDropdownID,
+        upID: playSoundCheckboxID,
+        downID: radiusSliderID,
+        leftID: -1,
+        rightID: -1
+      );
       radiusSlider.SetupIDs(
         ID: radiusSliderID,
-        upID: playSoundCheckboxID,
+        upID: themeDropdownID,
         downID: scaleSliderID,
         leftID: -1,
         rightID: -1
@@ -144,6 +171,7 @@ namespace MagicScepter.UI
       upperRightCloseButton.myID = upperRightCloseButton_ID;
       upperRightCloseButton.downNeighborID = playSoundCheckboxID;
       upperRightCloseButton.leftNeighborID = playSoundCheckboxID;
+      upperRightCloseButton.fullyImmutable = true;
 
       populateClickableComponentList();
     }
@@ -171,6 +199,16 @@ namespace MagicScepter.UI
     private static void SetSelectedScrollScale(int scale)
     {
       ModDataHelper.SetSelectedScale(scale.ToFloat(100));
+    }
+
+    private void SetTheme(string theme)
+    {
+      ModDataHelper.SetTheme(theme);
+      Init();
+      if (Game1.options.snappyMenus)
+      {
+        snapCursorToCurrentSnappedComponent();
+      }
     }
 
     private void ResetScrollsSettings()
@@ -207,6 +245,7 @@ namespace MagicScepter.UI
       allClickableComponents ??= new();
       allClickableComponents.Clear();
       allClickableComponents.Add(playSoundCheckbox.ClickableComponent);
+      allClickableComponents.Add(themeDropdown.ClickableComponent);
       allClickableComponents.Add(radiusSlider.ClickableComponent);
       allClickableComponents.Add(scaleSlider.ClickableComponent);
       allClickableComponents.Add(selectedScaleSlider.ClickableComponent);
@@ -217,6 +256,7 @@ namespace MagicScepter.UI
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
       playSoundCheckbox.receiveLeftClick(x, y);
+      themeDropdown.receiveLeftClick(x, y);
       radiusSlider.receiveLeftClick(x, y);
       scaleSlider.receiveLeftClick(x, y);
       selectedScaleSlider.receiveLeftClick(x, y);
@@ -227,6 +267,7 @@ namespace MagicScepter.UI
 
     public override void releaseLeftClick(int x, int y)
     {
+      themeDropdown.leftClickReleased(x, y);
       radiusSlider.releaseLeftClick(x, y);
       scaleSlider.releaseLeftClick(x, y);
       selectedScaleSlider.releaseLeftClick(x, y);
@@ -235,6 +276,7 @@ namespace MagicScepter.UI
 
     public override void leftClickHeld(int x, int y)
     {
+      themeDropdown.leftClickHeld(x, y);
       radiusSlider.leftClickHeld(x, y);
       scaleSlider.leftClickHeld(x, y);
       selectedScaleSlider.leftClickHeld(x, y);
@@ -242,11 +284,17 @@ namespace MagicScepter.UI
 
     public override void receiveKeyPress(Keys key)
     {
-      base.receiveKeyPress(key);
+      if (themeDropdown.Clicked)
+      {
+        themeDropdown.receiveKeyPress(key);
+        return;
+      }
+      themeDropdown.receiveKeyPress(key);
       playSoundCheckbox.receiveKeyPress(key);
       radiusSlider.receiveKeyPress(key);
       scaleSlider.receiveKeyPress(key);
       selectedScaleSlider.receiveKeyPress(key);
+      base.receiveKeyPress(key);
     }
 
     public override void performHoverAction(int x, int y)
@@ -289,6 +337,7 @@ namespace MagicScepter.UI
       scaleSlider.draw(b);
       selectedScaleSlider.draw(b);
       resetOption.draw(b);
+      themeDropdown.Draw(b);
 
       // draw hover text
       // if (hoverText.IsNotEmpty()) drawHoverText(b, hoverText, Game1.smallFont);

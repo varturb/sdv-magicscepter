@@ -42,6 +42,10 @@
   
   "teleport-menu-settings.title": "传送菜单设置",
   "teleport-menu-settings.play-sound": "播放声音",
+  "teleport-menu-settings.theme": "主题",
+  "teleport-menu-settings.theme.options.default": "“默认",
+  "teleport-menu-settings.theme.options.vintage": "复古",
+  "teleport-menu-settings.theme.options.witchy": "巫术",
   "teleport-menu-settings.radius": "半径",
   "teleport-menu-settings.scale": "尺寸",
   "teleport-menu-settings.selected-scale": "选定尺寸",

@@ -131,6 +131,13 @@ namespace MagicScepter.Helpers
       ModUtility.Helper.WriteConfig(ModUtility.Config);
     }
 
+    public static void SetTheme(string value)
+    {
+      ModUtility.Config.Theme = value;
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
+      FileHelper.ReloadTexture();
+    }
+
     public static void ResetScrollsSettings()
     {
       var defaultConfig = new ModConfig();

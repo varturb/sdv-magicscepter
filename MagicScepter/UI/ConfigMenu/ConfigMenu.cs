@@ -17,6 +17,7 @@ namespace MagicScepter.UI
   {
     public List<TeleportScroll> teleportScrolls;
     private readonly Texture2D spritesheetTexture;
+    private readonly Texture2D scrollsTexture;
     private readonly List<VisibilityButton> visibilityButtons = new();
     private readonly List<RenameButton> renameButtons = new();
     private readonly List<MoveUpButton> moveUpButtons = new();
@@ -47,8 +48,8 @@ namespace MagicScepter.UI
       height = 576;
 
       teleportScrolls = ScrollHandler.GetTeleportScrolls();
-
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
+      spritesheetTexture = FileHelper.GetSpritesheetTexture();
+      scrollsTexture = FileHelper.GetScrollsTexture();
 
       topRowIndex = 0;
       ResetLayout();
@@ -112,20 +113,20 @@ namespace MagicScepter.UI
 
       scrollUpButton = new ClickableTextureComponent(
         new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen, 44, 48),
-        Game1.mouseCursors,
-        new Rectangle(421, 459, 11, 12),
+        spritesheetTexture,
+        new Rectangle(64, 18, 12, 12),
         4f
         );
       scrollDownButton = new ClickableTextureComponent(
         new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen + height - 64, 44, 48),
-        Game1.mouseCursors,
-        new Rectangle(421, 472, 11, 12),
+        spritesheetTexture,
+        new Rectangle(64, 31, 12, 12),
         4f
       );
       scrollBar = new ClickableTextureComponent(
         new Rectangle(scrollUpButton.bounds.X + 12, scrollUpButton.bounds.Y + scrollUpButton.bounds.Height + 4, 24, 40),
-        Game1.mouseCursors,
-        new Rectangle(435, 463, 6, 10),
+        spritesheetTexture,
+        new Rectangle(64, 43, 6, 10),
         4f
       );
       scrollBarRunner = new Rectangle(
@@ -461,12 +462,8 @@ namespace MagicScepter.UI
       // draw faded background
       GameHelper.DrawFadedBackground(b, 0.2f);
       // draw menu title
-      SpriteText.drawStringWithScrollCenteredAt(
-        b,
-        I18n.ConfigurationMenu_Title(),
-        xPositionOnScreen + width / 2,
-        yPositionOnScreen - 64
-      );
+      GameHelper.DrawTextInScroll(b, I18n.ConfigurationMenu_Title(), xPositionOnScreen + width / 2, yPositionOnScreen - 64);
+
       // draw menu box
       drawTextureBox(
         b,
@@ -503,6 +500,18 @@ namespace MagicScepter.UI
         drawTextureBox(
           b,
           spritesheetTexture,
+          new Rectangle(0, 0, 64, 64),
+          row.bounds.X + 48,
+          row.bounds.Y + 16,
+          64,
+          64,
+          color * 0.9f,
+          1f,
+          false
+        );
+        drawTextureBox(
+          b,
+          scrollsTexture,
           teleportScrolls[i].SpirteSource,
           row.bounds.X + 48,
           row.bounds.Y + 16,

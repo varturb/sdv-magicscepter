@@ -49,6 +49,7 @@ namespace MagicScepter.UI
       checkbox.downNeighborID = downID;
       checkbox.leftNeighborID = leftID;
       checkbox.rightNeighborID = rightID;
+      checkbox.fullyImmutable = true;
     }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -76,11 +77,13 @@ namespace MagicScepter.UI
     {
       if (smallFont)
       {
-        GameHelper.DrawSmallText(b, label, new Vector2(xPositionOnScreen, checkbox.bounds.Y));
+        var scale = GameHelper.GetTextScale(label, Game1.smallFont, width - checkbox.bounds.Width - 32);
+        GameHelper.DrawSmallText(b, label, new Vector2(xPositionOnScreen, checkbox.bounds.Y), scale);
       }
       else
       {
-        GameHelper.DrawText(b, label, new Vector2(xPositionOnScreen, checkbox.bounds.Y));
+        var scale = GameHelper.GetTextScale(label, Game1.dialogueFont, width - checkbox.bounds.Width - 32);
+        GameHelper.DrawText(b, label, new Vector2(xPositionOnScreen, checkbox.bounds.Y), scale);
       }
       checkbox.sourceRect.X = isChecked ? 236 : 227;
       checkbox.draw(b);

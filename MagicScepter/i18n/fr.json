@@ -31,7 +31,7 @@
   "rename-menu.message.success": "Le nom a été changé en {{name}}",
   
   "settings-menu.title": "Paramètres",
-  "settings-menu.option.old-dialog.label": "Utiliser l'ancien menu de la \nboîte de dialogue",
+  "settings-menu.option.old-dialog.label": "Utiliser l'ancien menu de la boîte de dialogue",
   "settings-menu.option.adjust-teleport-menu.label": "Ajuster le menu de téléportation",
   "settings-menu.option.reset-settings.label": "Réinitialiser les options",
   "settings-menu.option.reset-settings.message": "Les paramètres ont été réinitialisés.",
@@ -42,6 +42,10 @@
   
   "teleport-menu-settings.title": "Paramètres du menu de téléportation",
   "teleport-menu-settings.play-sound": "Jouer son",
+  "teleport-menu-settings.theme": "Thème d’affichage",
+  "teleport-menu-settings.theme.options.default": "Par défaut",
+  "teleport-menu-settings.theme.options.vintage": "Rétro",
+  "teleport-menu-settings.theme.options.witchy": "Moussu",
   "teleport-menu-settings.radius": "Rayon",
   "teleport-menu-settings.scale": "Échelle",
   "teleport-menu-settings.selected-scale": "Échelle (sélection)",

@@ -103,12 +103,12 @@ namespace MagicScepter.UI
 
       if (Context.IsMainPlayer && !previewMode)
       {
-        SpriteText.drawStringWithScrollCenteredAt(b, label + textOffset, bounds.X, bounds.Y);
+        GameHelper.DrawTextInScroll(b, label + textOffset, bounds.X, bounds.Y);
         configButton.draw(b);
       }
       else
       {
-        SpriteText.drawStringWithScrollCenteredAt(b, label, bounds.X, bounds.Y);
+        GameHelper.DrawTextInScroll(b, label, bounds.X, bounds.Y);
       }
     }
   }

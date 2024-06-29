@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using MagicScepter.Constants;
+using MagicScepter.Helpers;
 using MagicScepter.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,7 +23,7 @@ namespace MagicScepter.UI
       height = 64;
       this.teleportScrolls = teleportScrolls;
 
-      spritesheetTexture = ModUtility.Helper.ModContent.Load<Texture2D>(ModConstants.SpritesheetTexturePath);
+      spritesheetTexture = FileHelper.GetSpritesheetTexture();
 
       if (Game1.activeClickableMenu is DialogueBox dialogueBox && dialogueBox.responseCC?.Count > 0)
       {

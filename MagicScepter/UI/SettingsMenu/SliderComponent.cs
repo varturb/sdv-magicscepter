@@ -50,6 +50,7 @@ namespace MagicScepter.UI
       sliderComponent.downNeighborID = downID;
       sliderComponent.leftNeighborID = leftID;
       sliderComponent.rightNeighborID = rightID;
+      sliderComponent.fullyImmutable = true;
     }
 
     private void EmitValue()
