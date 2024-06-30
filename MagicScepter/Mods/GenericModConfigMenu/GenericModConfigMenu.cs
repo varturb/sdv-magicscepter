@@ -1,4 +1,5 @@
 using MagicScepter.Constants;
+using MagicScepter.Helpers;
 using StardewModdingAPI.Events;
 
 namespace MagicScepter.Mods.GenericModConfigMenu
@@ -25,6 +26,23 @@ namespace MagicScepter.Mods.GenericModConfigMenu
         name: () => I18n.SettingsMenu_Option_OldDialog_Label(),
         getValue: () => ModUtility.Config.UseOldDialogMenu,
         setValue: value => ModUtility.Config.UseOldDialogMenu = value
+      );
+
+      configMenu.AddTextOption(
+        mod: ModUtility.Manifest,
+        name: () => I18n.TeleportMenuSettings_Theme(),
+        getValue: () => ModUtility.Config.Theme,
+        setValue: value => 
+        {
+          ModUtility.Config.Theme = value;
+          FileHelper.ReloadTexture();
+        },
+        allowedValues: new[] 
+        { 
+          ModConstants.ThemeDefault,
+          ModConstants.ThemeVintage,
+          ModConstants.ThemeWitchy,
+        }
       );
 
       configMenu.AddParagraph(
