@@ -369,5 +369,27 @@
         }
       ]
     }
+  },
+  {
+    "ID": "MagicScepter_FieldObelisk",
+    "Order": 16,
+    "TranslationKey": "teleport-scroll.grampletown-fields",
+    "SpriteOffset": 1024,
+    "Action": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "lamplight.GrampFieldsWarp_FieldObelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "lamplight.GrampFieldsWarp"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "lamplight.GrampFieldsWarp_FieldObelisk"
+        }
+      ]
+    }
   }
 ]

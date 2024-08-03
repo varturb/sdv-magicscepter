@@ -10,6 +10,7 @@ namespace MagicScepter.Mods
     VisitMountVapius,
     StardewValleyExpanded,
     GenericModConfigMenu,
-    PelicanTownObelisk
+    PelicanTownObelisk,
+    GrampFieldsWarp
   }
 }
