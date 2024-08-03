@@ -371,7 +371,7 @@
     }
   },
   {
-    "ID": "MagicScepter_FieldObelisk",
+    "ID": "MagicScepter_GrampFieldsWarp",
     "Order": 16,
     "TranslationKey": "teleport-scroll.grampletown-fields",
     "SpriteOffset": 1024,
@@ -410,6 +410,28 @@
         {
           "Type": "Obelisk",
           "Is": "TheSamePlant.ChaosObelisk_ChaosObelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "MagicScepter_DarkClub",
+    "Order": 17,
+    "TranslationKey": "teleport-scroll.dark-club",
+    "SpriteOffset": 1152,
+    "Action": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "simezi21.Dark_Club_CP_Furniture_WarpCircle"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "simezi21.Dark_Club_CP_Furniture"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "simezi21.Dark_Club_CP_Furniture_WarpCircle"
         }
       ]
     }

@@ -12,6 +12,7 @@ namespace MagicScepter.Mods
     GenericModConfigMenu,
     PelicanTownObelisk,
     GrampFieldsWarp,
-    ChaosObelisk
+    ChaosObelisk,
+    DarkClub
   }
 }

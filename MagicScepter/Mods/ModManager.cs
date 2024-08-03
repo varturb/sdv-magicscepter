@@ -17,6 +17,7 @@ namespace MagicScepter.Mods
         SupportedMod.PelicanTownObelisk => IsModLoaded("Tikamin557.CP.PelicanTownObelisk_NEW"),
         SupportedMod.GrampFieldsWarp => IsModLoaded("lamplight.GrampFieldsWarp"),
         SupportedMod.ChaosObelisk => IsModLoaded("TheSamePlant.ChaosObelisk_ChaosObelisk"),
+        SupportedMod.DarkClub => IsModLoaded("simezi21.Dark_Club_CP_Furniture"),
         _ => false,
       };
     }
