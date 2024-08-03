@@ -391,5 +391,28 @@
         }
       ]
     }
+  },
+  {
+    "ID": "MagicScepter_ChaosObelisk",
+    "Order": 17,
+    "TranslationKey": "teleport-scroll.skull-cavern",
+    "SpriteOffset": 1088,
+    "Action": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "TheSamePlant.ChaosObelisk_ChaosObelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "TheSamePlant.ChaosObelisk"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "TheSamePlant.ChaosObelisk_ChaosObelisk"
+        }
+      ]
+    }
   }
 ]
+

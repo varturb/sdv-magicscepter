@@ -11,6 +11,7 @@ namespace MagicScepter.Mods
     StardewValleyExpanded,
     GenericModConfigMenu,
     PelicanTownObelisk,
-    GrampFieldsWarp
+    GrampFieldsWarp,
+    ChaosObelisk
   }
 }
