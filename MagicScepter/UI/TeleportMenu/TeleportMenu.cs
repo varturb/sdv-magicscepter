@@ -33,7 +33,7 @@ namespace MagicScepter.UI
       height = Height;
 
       this.previewMode = previewMode;
-      teleportScrolls = ScrollHandler.GetTeleportScrolls().FilterHiddenItems().AdjustOrder();
+      teleportScrolls = ScrollHandler.GetTeleportScrolls().FilterHiddenItems(previewMode).AdjustOrder();
 
       ResetLayout();
       CreateComponents();

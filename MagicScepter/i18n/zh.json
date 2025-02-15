@@ -42,6 +42,7 @@
   
   "teleport-menu-settings.title": "传送菜单设置",
   "teleport-menu-settings.play-sound": "播放声音",
+  "teleport-menu-settings.teleport-back": "返回卷轴",
   "teleport-menu-settings.theme": "主题",
   "teleport-menu-settings.theme.options.default": "“默认",
   "teleport-menu-settings.theme.options.vintage": "复古",

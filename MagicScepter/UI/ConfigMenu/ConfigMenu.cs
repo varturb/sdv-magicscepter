@@ -99,7 +99,7 @@ namespace MagicScepter.UI
 
         var moveUpButton = new MoveUpButton(i, teleportScrolls, this, skip: i == 0);
         var moveDownButton = new MoveDownButton(i, teleportScrolls, this, skip: i == teleportScrolls.Count - 1);
-        var visibilityButton = new VisibilityButton(teleportScrolls[i], this, skip: IsFarmScroll(i));
+        var visibilityButton = new VisibilityButton(teleportScrolls[i], this, skip: IsFarmOrTeleportBackScroll(i));
         var renameButton = new RenameButton(teleportScrolls[i]);
         var keybindButton = new KeybindButton(teleportScrolls[i]);
 
@@ -182,7 +182,7 @@ namespace MagicScepter.UI
           upID: i > 0 ? i - 1 + moveDownButtonOffset : -1,
           downID: i + moveDownButtonOffset,
           leftID: settingsPageButtonID,
-          rightID: IsFarmScroll(i) ? i + renameButtonOffset : i + visibilityButtonOffset
+          rightID: IsFarmOrTeleportBackScroll(i) ? i + renameButtonOffset : i + visibilityButtonOffset
         );
 
         moveDownButtons[i].SetupIDs(
@@ -190,13 +190,13 @@ namespace MagicScepter.UI
           upID: i + moveUpButtonOffset,
           downID: i + 1 + moveUpButtonOffset,
           leftID: settingsPageButtonID,
-          rightID: IsFarmScroll(i) ? i + renameButtonOffset : i + visibilityButtonOffset
+          rightID: IsFarmOrTeleportBackScroll(i) ? i + renameButtonOffset : i + visibilityButtonOffset
         );
 
         visibilityButtons[i].SetupIDs(
           ID: i + visibilityButtonOffset,
-          upID: i > 0 ? i - 1 + (IsFarmScroll(i - 1) ? renameButtonOffset : visibilityButtonOffset) : -1,
-          downID: i + 1 + (IsFarmScroll(i + 1) ? renameButtonOffset : visibilityButtonOffset),
+          upID: i > 0 ? i - 1 + (IsFarmOrTeleportBackScroll(i - 1) ? renameButtonOffset : visibilityButtonOffset) : -1,
+          downID: i + 1 + (IsFarmOrTeleportBackScroll(i + 1) ? renameButtonOffset : visibilityButtonOffset),
           leftID: i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : i + moveUpButtonOffset,
           rightID: i + renameButtonOffset
         );
@@ -205,7 +205,7 @@ namespace MagicScepter.UI
           ID: i + renameButtonOffset,
           upID: i > 0 ? i - 1 + renameButtonOffset : -500,
           downID: i + 1 + renameButtonOffset,
-          leftID: i + (IsFarmScroll(i) ? i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : i + moveUpButtonOffset : visibilityButtonOffset),
+          leftID: i + (IsFarmOrTeleportBackScroll(i) ? i < teleportScrolls.Count - 1 ? i + moveDownButtonOffset : i + moveUpButtonOffset : visibilityButtonOffset),
           rightID: i + keybindButtonOffset
         );
 
@@ -219,9 +219,10 @@ namespace MagicScepter.UI
       }
     }
 
-    private bool IsFarmScroll(int index)
+    private bool IsFarmOrTeleportBackScroll(int index)
     {
-      return index > -1 && teleportScrolls.Count > index && teleportScrolls[index].ActionDoWhen.Do.Type == ActionDoType.Farm;
+      return index > -1 && teleportScrolls.Count > index
+        && (teleportScrolls[index].ActionDoWhen.Do.Type == ActionDoType.Farm || teleportScrolls[index].ActionDoWhen.Do.Type == ActionDoType.TeleportBack);
     }
 
     private void SetScrollBarToCurrentIndex()

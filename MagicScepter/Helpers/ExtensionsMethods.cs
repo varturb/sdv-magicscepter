@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MagicScepter.Constants;
 using MagicScepter.Models;
 using Newtonsoft.Json;
 using StardewModdingAPI;
@@ -77,9 +78,11 @@ namespace MagicScepter.Helpers
       return ordered;
     }
 
-    public static List<TeleportScroll> FilterHiddenItems(this List<TeleportScroll> list)
+    public static List<TeleportScroll> FilterHiddenItems(this List<TeleportScroll> list, bool previewMode = false)
     {
-      return list.Where(x => !x.Hidden).ToList();
+      return previewMode
+        ? list.Where(x => (previewMode && x.ID == ModConstants.TeleportBackScrollID) || !x.Hidden).ToList()
+        : list.Where(x => !x.Hidden).ToList();
     }
 
     public static List<TeleportScroll> FilterItemsWithoutKeybind(this List<TeleportScroll> list)

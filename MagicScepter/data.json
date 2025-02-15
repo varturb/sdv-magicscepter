@@ -435,6 +435,17 @@
         }
       ]
     }
+  },
+  {
+    "ID": "MagicScepter_TeleportBack",
+    "Order": 18,
+    "TranslationKey": "teleport-scroll.teleport-back",
+    "SpriteOffset": 1216,
+    "Action": {
+      "Do": {
+        "Type": "TeleportBack"        
+      }
+    }
   }
 ]
 

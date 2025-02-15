@@ -1,4 +1,3 @@
-using System;
 using MagicScepter.Constants;
 using MagicScepter.Helpers;
 using Microsoft.Xna.Framework;
@@ -12,6 +11,7 @@ namespace MagicScepter.UI
   public class TeleportMenuSettings : IClickableMenu
   {
     private CheckboxComponent playSoundCheckbox;
+    private CheckboxComponent teleportBackCheckbox;
     private DropdownComponent rotationDropdown;
     private DropdownComponent themeDropdown;
     private SliderComponent radiusSlider;
@@ -21,18 +21,19 @@ namespace MagicScepter.UI
     private TeleportMenu teleportMenu;
     private static Texture2D spritesheetTexture;
     private const int playSoundCheckboxID = 200;
-    private const int themeDropdownID = 201;
-    private const int rotationDropdownID = 202;
-    private const int radiusSliderID = 203;
-    private const int scaleSliderID = 204;
-    private const int selectedScaleSliderID = 205;
-    private const int resetButtonID = 206;
+    private const int teleportBackCheckboxID = 201;
+    private const int themeDropdownID = 202;
+    private const int rotationDropdownID = 203;
+    private const int radiusSliderID = 204;
+    private const int scaleSliderID = 205;
+    private const int selectedScaleSliderID = 206;
+    private const int resetButtonID = 207;
     private static ModConfig ModConfig => ModUtility.Config;
 
     public TeleportMenuSettings()
     {
       width = 512;
-      height = 540;
+      height = 600;
 
       Init();
 
@@ -70,6 +71,15 @@ namespace MagicScepter.UI
         soundOnSelect: false
       );
 
+      teleportBackCheckbox = new CheckboxComponent(
+        new(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
+        SetTeleportBack,
+        I18n.TeleportMenuSettings_TeleportBack(),
+        ModUtility.Config.EnableTeleportBack,
+        smallFont: true,
+        soundOnSelect: false
+      );
+
       themeDropdown = new DropdownComponent(
         new(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
         I18n.TeleportMenuSettings_Theme(),
@@ -91,7 +101,7 @@ namespace MagicScepter.UI
           new(ModConstants.RotationCounterclockwise, I18n.TeleportMenuSettings_Rotation_Counterclockwise()),
           new(ModConstants.RotationClockwise, I18n.TeleportMenuSettings_Rotation_Clockwise()),
         },
-        ModUtility.Config.ClockwiseRotation ? ModConstants.RotationClockwise : ModConstants.RotationCounterclockwise,
+        ModUtility.Config.Rotation,
         SetRotation
       );
 
@@ -141,13 +151,20 @@ namespace MagicScepter.UI
       playSoundCheckbox.SetupIDs(
         ID: playSoundCheckboxID,
         upID: upperRightCloseButton_ID,
-        downID: themeDropdownID,
+        downID: teleportBackCheckboxID,
         leftID: -1,
         rightID: upperRightCloseButton_ID
       );
+      teleportBackCheckbox.SetupIDs(
+        ID: teleportBackCheckboxID,
+        upID: playSoundCheckboxID,
+        downID: themeDropdownID,
+        leftID: -1,
+        rightID: -1
+      );
       themeDropdown.SetupIDs(
         ID: themeDropdownID,
-        upID: playSoundCheckboxID,
+        upID: teleportBackCheckboxID,
         downID: rotationDropdownID,
         leftID: -1,
         rightID: -1
@@ -207,6 +224,12 @@ namespace MagicScepter.UI
       }
     }
 
+    private void SetTeleportBack(bool enabled)
+    {
+      ModDataHelper.SetTeleportBack(enabled);
+      CreateComponents();
+    }
+
     private static void SetScrollsRadius(int radius)
     {
       ModDataHelper.SetRadius(radius);
@@ -226,6 +249,7 @@ namespace MagicScepter.UI
     {
       ModDataHelper.SetTheme(theme);
       Init();
+
       if (Game1.options.snappyMenus)
       {
         snapCursorToCurrentSnappedComponent();
@@ -235,7 +259,8 @@ namespace MagicScepter.UI
     private void SetRotation(string rotation)
     {
       ModDataHelper.SetRotation(rotation);
-      Init();
+      CreateComponents();
+
       if (Game1.options.snappyMenus)
       {
         snapCursorToCurrentSnappedComponent();
@@ -247,7 +272,7 @@ namespace MagicScepter.UI
       ModDataHelper.ResetScrollsSettings();
       Game1.playSound("shwip");
       GameHelper.ShowMessage(I18n.TeleportMenuSettings_Reset_Message(), Models.MessageType.Warn);
-      CreateComponents();
+      Init();
 
       if (Game1.options.SnappyMenus)
       {
@@ -276,6 +301,7 @@ namespace MagicScepter.UI
       allClickableComponents ??= new();
       allClickableComponents.Clear();
       allClickableComponents.Add(playSoundCheckbox.ClickableComponent);
+      allClickableComponents.Add(teleportBackCheckbox.ClickableComponent);
       allClickableComponents.Add(themeDropdown.ClickableComponent);
       allClickableComponents.Add(rotationDropdown.ClickableComponent);
       allClickableComponents.Add(radiusSlider.ClickableComponent);
@@ -288,6 +314,7 @@ namespace MagicScepter.UI
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
       playSoundCheckbox.receiveLeftClick(x, y);
+      teleportBackCheckbox.receiveLeftClick(x, y);
       themeDropdown.receiveLeftClick(x, y);
       rotationDropdown.receiveLeftClick(x, y);
       radiusSlider.receiveLeftClick(x, y);
@@ -327,6 +354,7 @@ namespace MagicScepter.UI
       themeDropdown.receiveKeyPress(key);
       rotationDropdown.receiveKeyPress(key);
       playSoundCheckbox.receiveKeyPress(key);
+      teleportBackCheckbox.receiveKeyPress(key);
       radiusSlider.receiveKeyPress(key);
       scaleSlider.receiveKeyPress(key);
       selectedScaleSlider.receiveKeyPress(key);
@@ -369,6 +397,7 @@ namespace MagicScepter.UI
 
       // draw options
       playSoundCheckbox.draw(b);
+      teleportBackCheckbox.draw(b);
       radiusSlider.draw(b);
       scaleSlider.draw(b);
       selectedScaleSlider.draw(b);

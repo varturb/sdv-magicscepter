@@ -37,6 +37,7 @@
     <Compile Include="Models/SaveDataEntry.cs" />
     <Compile Include="Models/ActionDoWhen.cs" />
     <Compile Include="Models/TeleportScroll.cs" />
+    <Compile Include="Models/TeleportBackScroll.cs" />
     <Compile Include="Models/MiniObeliskScroll.cs" />
     <Compile Include="Models/OrderThreshold.cs" />
     <Compile Include="Models/Neighbourhood.cs" />
@@ -53,6 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches/WandDoFunctionPatch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Managers/TeleportBackManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Multiplayer/MultiplayerManager.cs" />

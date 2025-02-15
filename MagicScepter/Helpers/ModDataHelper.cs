@@ -113,6 +113,12 @@ namespace MagicScepter.Helpers
       ModUtility.Helper.WriteConfig(ModUtility.Config);
     }
 
+    public static void SetTeleportBack(bool value)
+    {
+      ModUtility.Config.EnableTeleportBack = value;
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
+    }
+
     public static void SetRadius(int value)
     {
       ModUtility.Config.Radius = value;
@@ -133,9 +139,8 @@ namespace MagicScepter.Helpers
 
     public static void SetRotation(string value)
     {
-      ModUtility.Config.ClockwiseRotation = value == ModConstants.RotationClockwise;
+      ModUtility.Config.Rotation = value;
       ModUtility.Helper.WriteConfig(ModUtility.Config);
-      FileHelper.ReloadTexture();
     }
 
     public static void SetTheme(string value)
@@ -148,10 +153,16 @@ namespace MagicScepter.Helpers
     public static void ResetScrollsSettings()
     {
       var defaultConfig = new ModConfig();
+      ModUtility.Config.PlaySound = defaultConfig.PlaySound;
+      ModUtility.Config.EnableTeleportBack = defaultConfig.EnableTeleportBack;
+      ModUtility.Config.Theme = defaultConfig.Theme;
+      ModUtility.Config.Rotation = defaultConfig.Rotation;
       ModUtility.Config.Radius = defaultConfig.Radius;
       ModUtility.Config.Scale = defaultConfig.Scale;
       ModUtility.Config.SelectedScale = defaultConfig.SelectedScale;
+
       ModUtility.Helper.WriteConfig(ModUtility.Config);
+      FileHelper.ReloadTexture();
     }
 
     public static void OnDayStarted(object sender, DayStartedEventArgs e)

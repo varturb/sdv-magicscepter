@@ -42,6 +42,7 @@
 
   "teleport-menu-settings.title": "Teleport Menu Settings",
   "teleport-menu-settings.play-sound": "Play sound",
+  "teleport-menu-settings.teleport-back": "Teleport back scroll",
   "teleport-menu-settings.theme": "Theme",
   "teleport-menu-settings.theme.options.default": "Default",
   "teleport-menu-settings.theme.options.vintage": "Vintage",
@@ -75,5 +76,6 @@
   "teleport-scroll.pelican-town-obelisk": "Pelican Town",
   "teleport-scroll.grampletown-fields": "Grampletown Fields",
   "teleport-scroll.skull-cavern": "Skull Cavern",
-  "teleport-scroll.dark-club": "Dark Club"
+  "teleport-scroll.dark-club": "Dark Club",
+  "teleport-scroll.teleport-back": "Teleport back"
 }

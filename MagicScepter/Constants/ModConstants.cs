@@ -9,6 +9,7 @@ namespace MagicScepter.Constants
     public const string EmoteMenuTexturePath = "LooseSprites\\EmoteMenu";
     public const string MiniObeliskNeedsSpaceMessagePath = "Strings\\StringsFromCSFiles:MiniObelisk_NeedsSpace";
     public const string MiniObeliskID = "MagicScepter_MiniObelisk";
+    public const string TeleportBackScrollID = "MagicScepter_TeleportBack";
     public const string EastScarpFarmLocation = "EastScarp_MeadowFarm";
     public const string RidgesideFarmLocation = "Custom_Ridgeside_SummitFarm";
     public const string MiniObeliskObjectName = "Mini-Obelisk";
@@ -22,6 +23,7 @@ namespace MagicScepter.Constants
     public const string RotationClockwise = "Clockwise";
     public const string RotationCounterclockwise = "Counterclockwise";
     public const int TeleportScrollOrderOffset = 100;
+    public const int TeleportBackScrollOrderOffset = 200;
     public const float DefaultLayerDepth = 0.86f;
     public static readonly MinMax ScrollsRadiusRange = new(20, 100);
     public static readonly int ScrollsRadiusInterval = 1;

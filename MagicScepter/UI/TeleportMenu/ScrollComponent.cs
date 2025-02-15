@@ -74,7 +74,7 @@ namespace MagicScepter.UI
         scale = SelectedScrollScale;
       }
 
-      var rotation = ModUtility.Config.ClockwiseRotation ? -2f : 2f;
+      var rotation = ModUtility.Config.Rotation == ModConstants.RotationClockwise ? -2f : 2f;
       var idx = teleportScroll.Order - 1;
       var num = Utility.Lerp(0f, MathF.PI * rotation, (float)idx / (float)count);
       bounds.X = (int)((float)(parentBounds.X + parentBounds.Width / 2f + (int)(-Math.Sin(num) * (double)buttonRadius) * 4) - (float)bounds.Width / 2f);

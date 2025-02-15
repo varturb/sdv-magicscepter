@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MagicScepter.Constants;
+using MagicScepter.Managers;
 using MagicScepter.Models;
 using MagicScepter.Mods;
 using MagicScepter.Mods.MultipleMiniObelisks;
@@ -55,6 +56,11 @@ namespace MagicScepter.Helpers
 
     private static void HandleDo(ActionDo @do)
     {
+      if (TeleportBackManager.IsTeleportBackEnabled() && @do.Type != ActionDoType.TeleportBack)
+      {
+        TeleportBackManager.SetCurrentLocationAsLast();
+      }
+
       switch (@do.Type)
       {
         case ActionDoType.Farm:
@@ -71,6 +77,9 @@ namespace MagicScepter.Helpers
           break;
         case ActionDoType.MultipleMiniObelisk:
           MultipleMiniObelisks.OpenTeleportMenu();
+          break;
+        case ActionDoType.TeleportBack:
+          TeleportBackManager.TeleportBack();
           break;
       }
     }

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using MagicScepter.Constants;
-using MagicScepter.Models;
 using MagicScepter.Helpers;
+using MagicScepter.Managers;
+using MagicScepter.Models;
 using Newtonsoft.Json;
 
 namespace MagicScepter.Handlers
@@ -31,6 +32,16 @@ namespace MagicScepter.Handlers
             {
               teleportScrolls.Add(m);
             }
+          }
+          continue;
+        }
+
+        if (dataItem.ID == ModConstants.TeleportBackScrollID)
+        {
+          if (TeleportBackManager.IsTeleportBackEnabled())
+          {
+            var teleportBackScroll = new TeleportBackScroll(dataItem);
+            teleportScrolls.Add(teleportBackScroll);
           }
           continue;
         }

@@ -1,13 +1,14 @@
 ﻿using System;
+using HarmonyLib;
+using MagicScepter.Helpers;
+using MagicScepter.Managers;
+using MagicScepter.Models;
+using MagicScepter.Mods;
+using MagicScepter.Mods.GenericModConfigMenu;
+using MagicScepter.Multiplayer;
+using MagicScepter.Patches;
 using StardewModdingAPI;
 using StardewValley.Tools;
-using HarmonyLib;
-using MagicScepter.Patches;
-using MagicScepter.Multiplayer;
-using MagicScepter.Mods.GenericModConfigMenu;
-using MagicScepter.Mods;
-using MagicScepter.Helpers;
-using MagicScepter.Models;
 
 namespace MagicScepter
 {
@@ -34,6 +35,7 @@ namespace MagicScepter
       Helper.Events.Multiplayer.ModMessageReceived += MultiplayerManager.OnModMessageReceived;
       Helper.Events.GameLoop.DayStarted += MultiplayerManager.OnDayStarted;
       Helper.Events.GameLoop.DayStarted += ModDataHelper.OnDayStarted;
+      Helper.Events.GameLoop.DayStarted += TeleportBackManager.OnDayStarted;
 
       if (!ModManager.IsModLoaded(SupportedMod.MultipleMiniObelisks))
       {
@@ -45,7 +47,7 @@ namespace MagicScepter
         Helper.Events.GameLoop.GameLaunched += GenericModConfigMenu.OnGameLaunched;
       }
 
-      I18n.Init(Helper.Translation);      
+      I18n.Init(Helper.Translation);
     }
   }
 }

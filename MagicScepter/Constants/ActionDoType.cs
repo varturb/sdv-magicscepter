@@ -7,5 +7,6 @@ namespace MagicScepter.Constants
     public const string Obelisk = "Obelisk";
     public const string MiniObelisk = "MiniObelisk";
     public const string MultipleMiniObelisk = "MultipleMiniObelisk";
+    public const string TeleportBack = "TeleportBack";
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using MagicScepter.Constants;
 
 namespace MagicScepter.Models
 {
@@ -83,7 +84,7 @@ namespace MagicScepter.Models
             ? substractOffset : addOffset;
       }
 
-      if (ModUtility.Config.ClockwiseRotation) {
+      if (ModUtility.Config.Rotation == ModConstants.RotationClockwise) {
         (neighbourhood.Left, neighbourhood.Right) = (neighbourhood.Right, neighbourhood.Left);
       }
 

@@ -42,6 +42,7 @@
   
   "teleport-menu-settings.title": "Paramètres du menu de téléportation",
   "teleport-menu-settings.play-sound": "Jouer son",
+  "teleport-menu-settings.teleport-back": "Parchemin de retour",
   "teleport-menu-settings.theme": "Thème d’affichage",
   "teleport-menu-settings.theme.options.default": "Par défaut",
   "teleport-menu-settings.theme.options.vintage": "Rétro",
