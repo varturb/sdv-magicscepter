@@ -83,6 +83,10 @@ namespace MagicScepter.Models
             ? substractOffset : addOffset;
       }
 
+      if (ModUtility.Config.ClockwiseRotation) {
+        (neighbourhood.Left, neighbourhood.Right) = (neighbourhood.Right, neighbourhood.Left);
+      }
+
       return neighbourhood;
     }
   }

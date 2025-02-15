@@ -19,6 +19,8 @@ namespace MagicScepter.Constants
     public const string ThemeDefault = "Default";
     public const string ThemeVintage = "Vintage";
     public const string ThemeWitchy = "Witchy";
+    public const string RotationClockwise = "Clockwise";
+    public const string RotationCounterclockwise = "Counterclockwise";
     public const int TeleportScrollOrderOffset = 100;
     public const float DefaultLayerDepth = 0.86f;
     public static readonly MinMax ScrollsRadiusRange = new(20, 100);

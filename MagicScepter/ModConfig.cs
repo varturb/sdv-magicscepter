@@ -7,6 +7,7 @@ namespace MagicScepter
     public bool UseOldDialogMenu { get; set; } = false;
     public string Theme { get; set; } = ModConstants.ThemeDefault;
     public bool PlaySound { get; set; } = true;
+    public bool ClockwiseRotation { get; set; } = false;
     public int Radius { get; set; } = ModConstants.DefaultScrollsRadius;
     public float Scale { get; set; } = ModConstants.DefaultScrollsScale;
     public float SelectedScale { get; set; } = ModConstants.DefaultSelectedScrollScale;

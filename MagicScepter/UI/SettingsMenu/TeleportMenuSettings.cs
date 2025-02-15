@@ -12,6 +12,7 @@ namespace MagicScepter.UI
   public class TeleportMenuSettings : IClickableMenu
   {
     private CheckboxComponent playSoundCheckbox;
+    private DropdownComponent rotationDropdown;
     private DropdownComponent themeDropdown;
     private SliderComponent radiusSlider;
     private SliderComponent scaleSlider;
@@ -21,16 +22,17 @@ namespace MagicScepter.UI
     private static Texture2D spritesheetTexture;
     private const int playSoundCheckboxID = 200;
     private const int themeDropdownID = 201;
-    private const int radiusSliderID = 202;
-    private const int scaleSliderID = 203;
-    private const int selectedScaleSliderID = 204;
-    private const int resetButtonID = 205;
+    private const int rotationDropdownID = 202;
+    private const int radiusSliderID = 203;
+    private const int scaleSliderID = 204;
+    private const int selectedScaleSliderID = 205;
+    private const int resetButtonID = 206;
     private static ModConfig ModConfig => ModUtility.Config;
 
     public TeleportMenuSettings()
     {
       width = 512;
-      height = 480;
+      height = 540;
 
       Init();
 
@@ -79,6 +81,18 @@ namespace MagicScepter.UI
         },
         ModUtility.Config.Theme,
         SetTheme
+      );
+
+      rotationDropdown = new DropdownComponent(
+        new(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
+        I18n.TeleportMenuSettings_Rotation(),
+        new()
+        {
+          new(ModConstants.RotationCounterclockwise, I18n.TeleportMenuSettings_Rotation_Counterclockwise()),
+          new(ModConstants.RotationClockwise, I18n.TeleportMenuSettings_Rotation_Clockwise()),
+        },
+        ModUtility.Config.ClockwiseRotation ? ModConstants.RotationClockwise : ModConstants.RotationCounterclockwise,
+        SetRotation
       );
 
       radiusSlider = new SliderComponent(
@@ -134,13 +148,20 @@ namespace MagicScepter.UI
       themeDropdown.SetupIDs(
         ID: themeDropdownID,
         upID: playSoundCheckboxID,
+        downID: rotationDropdownID,
+        leftID: -1,
+        rightID: -1
+      );
+      rotationDropdown.SetupIDs(
+        ID: rotationDropdownID,
+        upID: themeDropdownID,
         downID: radiusSliderID,
         leftID: -1,
         rightID: -1
       );
       radiusSlider.SetupIDs(
         ID: radiusSliderID,
-        upID: themeDropdownID,
+        upID: rotationDropdownID,
         downID: scaleSliderID,
         leftID: -1,
         rightID: -1
@@ -211,6 +232,16 @@ namespace MagicScepter.UI
       }
     }
 
+    private void SetRotation(string rotation)
+    {
+      ModDataHelper.SetRotation(rotation);
+      Init();
+      if (Game1.options.snappyMenus)
+      {
+        snapCursorToCurrentSnappedComponent();
+      }
+    }
+
     private void ResetScrollsSettings()
     {
       ModDataHelper.ResetScrollsSettings();
@@ -246,6 +277,7 @@ namespace MagicScepter.UI
       allClickableComponents.Clear();
       allClickableComponents.Add(playSoundCheckbox.ClickableComponent);
       allClickableComponents.Add(themeDropdown.ClickableComponent);
+      allClickableComponents.Add(rotationDropdown.ClickableComponent);
       allClickableComponents.Add(radiusSlider.ClickableComponent);
       allClickableComponents.Add(scaleSlider.ClickableComponent);
       allClickableComponents.Add(selectedScaleSlider.ClickableComponent);
@@ -257,6 +289,7 @@ namespace MagicScepter.UI
     {
       playSoundCheckbox.receiveLeftClick(x, y);
       themeDropdown.receiveLeftClick(x, y);
+      rotationDropdown.receiveLeftClick(x, y);
       radiusSlider.receiveLeftClick(x, y);
       scaleSlider.receiveLeftClick(x, y);
       selectedScaleSlider.receiveLeftClick(x, y);
@@ -268,6 +301,7 @@ namespace MagicScepter.UI
     public override void releaseLeftClick(int x, int y)
     {
       themeDropdown.leftClickReleased(x, y);
+      rotationDropdown.leftClickReleased(x, y);
       radiusSlider.releaseLeftClick(x, y);
       scaleSlider.releaseLeftClick(x, y);
       selectedScaleSlider.releaseLeftClick(x, y);
@@ -277,6 +311,7 @@ namespace MagicScepter.UI
     public override void leftClickHeld(int x, int y)
     {
       themeDropdown.leftClickHeld(x, y);
+      rotationDropdown.leftClickHeld(x, y);
       radiusSlider.leftClickHeld(x, y);
       scaleSlider.leftClickHeld(x, y);
       selectedScaleSlider.leftClickHeld(x, y);
@@ -290,6 +325,7 @@ namespace MagicScepter.UI
         return;
       }
       themeDropdown.receiveKeyPress(key);
+      rotationDropdown.receiveKeyPress(key);
       playSoundCheckbox.receiveKeyPress(key);
       radiusSlider.receiveKeyPress(key);
       scaleSlider.receiveKeyPress(key);
@@ -337,6 +373,7 @@ namespace MagicScepter.UI
       scaleSlider.draw(b);
       selectedScaleSlider.draw(b);
       resetOption.draw(b);
+      rotationDropdown.Draw(b);
       themeDropdown.Draw(b);
 
       // draw hover text
