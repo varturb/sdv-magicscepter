@@ -32,13 +32,13 @@ namespace MagicScepter.Mods.GenericModConfigMenu
         mod: ModUtility.Manifest,
         name: () => I18n.TeleportMenuSettings_Theme(),
         getValue: () => ModUtility.Config.Theme,
-        setValue: value => 
+        setValue: value =>
         {
           ModUtility.Config.Theme = value;
           FileHelper.ReloadTexture();
         },
-        allowedValues: new[] 
-        { 
+        allowedValues: new[]
+        {
           ModConstants.ThemeDefault,
           ModConstants.ThemeVintage,
           ModConstants.ThemeWitchy,
@@ -60,6 +60,26 @@ namespace MagicScepter.Mods.GenericModConfigMenu
         name: () => I18n.TeleportMenuSettings_PlaySound(),
         getValue: () => ModUtility.Config.PlaySound,
         setValue: value => ModUtility.Config.PlaySound = value
+      );
+
+      configMenu.AddBoolOption(
+        mod: ModUtility.Manifest,
+        name: () => I18n.TeleportMenuSettings_TeleportBack(),
+        getValue: () => ModUtility.Config.EnableTeleportBack,
+        setValue: value => ModUtility.Config.EnableTeleportBack = value
+      );
+
+
+      configMenu.AddTextOption(
+        mod: ModUtility.Manifest,
+        name: () => I18n.TeleportMenuSettings_Rotation(),
+        getValue: () => ModUtility.Config.Rotation,
+        setValue: value => ModUtility.Config.Rotation = value,
+        allowedValues: new[]
+        {
+          ModConstants.RotationCounterclockwise,
+          ModConstants.RotationClockwise
+        }
       );
 
       configMenu.AddNumberOption(
