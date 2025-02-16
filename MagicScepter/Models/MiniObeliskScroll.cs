@@ -10,7 +10,7 @@ namespace MagicScepter.Models
   {
     public MiniObeliskScroll(DataEntry data, int index, int x, int y) : base(data)
     {
-      ID = $"{ID}#{x}{y}";
+      ID = $"{ID}#{x}_{y}";
 
       var saveEntry = ModDataHelper.GetSaveDataEntry(ID);
       Order = saveEntry?.Order ?? (data.Order + ModConstants.TeleportScrollOrderOffset + index);
