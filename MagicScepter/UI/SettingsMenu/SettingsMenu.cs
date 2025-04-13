@@ -1,9 +1,7 @@
-using MagicScepter.Constants;
 using MagicScepter.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 
 namespace MagicScepter.UI

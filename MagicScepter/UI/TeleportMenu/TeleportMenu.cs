@@ -1,15 +1,15 @@
-using MagicScepter.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using MagicScepter.Handlers;
+using MagicScepter.Helpers;
+using MagicScepter.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using System.Collections.Generic;
-using StardewModdingAPI;
-using System.Linq;
-using MagicScepter.Helpers;
-using System;
 
 namespace MagicScepter.UI
 {
@@ -130,6 +130,11 @@ namespace MagicScepter.UI
       scrollLabelComponent.SetupIDs(upID, downID);
 
       populateClickableComponentList();
+
+      if (!previewMode && ModUtility.Platform == GamePlatform.Android)
+      {
+        upperRightCloseButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width - 36, yPositionOnScreen - 8, 48, 48), Game1.mouseCursors, new Rectangle(337, 494, 12, 12), 4f);
+      }
     }
 
     private void DrawHoverText(SpriteBatch b, string text)
@@ -343,6 +348,8 @@ namespace MagicScepter.UI
       {
         scrollLabelComponent.visible = true;
       }
+
+      base.performHoverAction(x, y);
     }
 
     public override void receiveKeyPress(Keys key)
@@ -367,6 +374,8 @@ namespace MagicScepter.UI
 
       scrollComponents.ForEach(s => s.OnClick(x, y));
       scrollLabelComponent.OnClick(x, y);
+
+      base.receiveLeftClick(x, y, playSound);
     }
 
     public override void receiveScrollWheelAction(int direction)
@@ -422,6 +431,8 @@ namespace MagicScepter.UI
         scrollLabelComponent.SetDefaultLabel();
       }
       scrollLabelComponent.Draw(b);
+
+      base.draw(b);
 
       drawMouse(b);
     }

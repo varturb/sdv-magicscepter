@@ -9,6 +9,7 @@ namespace MagicScepter
     public static IModHelper Helper { get; private set; }
     public static IMonitor Monitor { get; private set; }
     public static IManifest Manifest { get; private set; }
+    public static GamePlatform Platform { get; private set; }
     public static ModConfig Config { get; set; }
 
     public static void Initialize(IModHelper helper, IMonitor monitor, IManifest manifest)
@@ -16,6 +17,7 @@ namespace MagicScepter
       Helper = helper;
       Monitor = monitor;
       Manifest = manifest;
+      Platform = StardewModdingAPI.Constants.TargetPlatform;
       Config = ValidateConfig(helper.ReadConfig<ModConfig>());
     }
 
