@@ -13,6 +13,7 @@ namespace MagicScepter.Mods
     PelicanTownObelisk,
     GrampFieldsWarp,
     ChaosObelisk,
-    DarkClub
+    DarkClub,
+    Lilybrook
   }
 }

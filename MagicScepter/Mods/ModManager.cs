@@ -18,6 +18,7 @@ namespace MagicScepter.Mods
         SupportedMod.GrampFieldsWarp => IsModLoaded("lamplight.GrampFieldsWarp"),
         SupportedMod.ChaosObelisk => IsModLoaded("TheSamePlant.ChaosObelisk_ChaosObelisk"),
         SupportedMod.DarkClub => IsModLoaded("simezi21.Dark_Club_CP_Furniture"),
+        SupportedMod.Lilybrook => IsModLoaded("8BitAlien.Lilybrook"),
         _ => false,
       };
     }

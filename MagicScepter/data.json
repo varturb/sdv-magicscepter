@@ -437,10 +437,32 @@
     }
   },
   {
-    "ID": "MagicScepter_TeleportBack",
+    "ID": "MagicScepter_Lilybrook",
     "Order": 18,
-    "TranslationKey": "teleport-scroll.teleport-back",
+    "TranslationKey": "teleport-scroll.lilybrook",
     "SpriteOffset": 1216,
+    "Action": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "8BitAlien.Lilybrook_Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "8BitAlien.Lilybrook"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "8BitAlien.Lilybrook_Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "MagicScepter_TeleportBack",
+    "Order": 19,
+    "TranslationKey": "teleport-scroll.teleport-back",
+    "SpriteOffset": 1280,
     "Action": {
       "Do": {
         "Type": "TeleportBack"        
