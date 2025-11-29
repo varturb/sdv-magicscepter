@@ -13,7 +13,7 @@ namespace MagicScepter.Helpers
     {
       try
       {
-        var building = Game1.getFarm().buildings.FirstOrDefault(building => building.buildingType.Value == name);
+        var building = Game1.getFarm().buildings.FirstOrDefault(building => building.buildingType.Value.StartsWith(name));
         if (building != null) return building;
 
         if (ModManager.IsModLoaded(SupportedMod.EastScarp))

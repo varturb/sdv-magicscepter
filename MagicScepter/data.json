@@ -291,16 +291,16 @@
     "Action": {
       "Do": {
         "Type": "Obelisk",
-        "Name": "Woods Obelisk"
+        "Name": "DeepWoodsMod.WoodsObelisk"
       },
       "When": [
         {
           "Type": "Mod",
-          "Is": "maxvollmer.deepwoodsmod"
+          "Is": "maxmakesmods.deepwoodsmod"
         },
         {
           "Type": "Obelisk",
-          "Is": "Woods Obelisk"
+          "Is": "DeepWoodsMod.WoodsObelisk"
         }
       ]
     }

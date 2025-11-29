@@ -10,7 +10,7 @@ namespace MagicScepter.Mods
         SupportedMod.RidgesideVillage => IsModLoaded("Rafseazz.RidgesideVillage"),
         SupportedMod.EastScarp => IsModLoaded("atravita.EastScarp"),
         SupportedMod.DowntownZuzu => IsModLoaded("DTZ.DowntownZuzuDLL"),
-        SupportedMod.DeepWoods => IsModLoaded("maxvollmer.deepwoodsmod"),
+        SupportedMod.DeepWoods => IsModLoaded("maxmakesmods.deepwoodsmod"),
         SupportedMod.VisitMountVapius => IsModLoaded("lumisteria.visitmountvapius.code"),
         SupportedMod.StardewValleyExpanded => IsModLoaded("FlashShifter.SVECode"),
         SupportedMod.GenericModConfigMenu => IsModLoaded("spacechase0.GenericModConfigMenu"),
