@@ -459,10 +459,36 @@
     }
   },
   {
-    "ID": "MagicScepter_TeleportBack",
+    "ID": "MagicScepter_Sunberry",
     "Order": 19,
-    "TranslationKey": "teleport-scroll.teleport-back",
+    "TranslationKey": "teleport-scroll.sunberry-village",
     "SpriteOffset": 1280,
+    "Action": {
+      "Do": {
+        "Type": "Teleport",
+        "Location": "Custom_SBV_SunberryVillage",
+        "Point": {
+          "X": 6,
+          "Y": 9
+        }
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "skellady.SBVCP"
+        },
+        {
+          "Type": "Event",
+          "Is": "skellady.SBVCP_WarpTotemEvent"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "MagicScepter_TeleportBack",
+    "Order": 20,
+    "TranslationKey": "teleport-scroll.teleport-back",
+    "SpriteOffset": 1344,
     "Action": {
       "Do": {
         "Type": "TeleportBack"        

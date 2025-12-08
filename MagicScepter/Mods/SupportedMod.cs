@@ -14,6 +14,7 @@ namespace MagicScepter.Mods
     GrampFieldsWarp,
     ChaosObelisk,
     DarkClub,
-    Lilybrook
+    Lilybrook,
+    SunberryVillage
   }
 }
