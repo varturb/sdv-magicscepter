@@ -26,7 +26,7 @@ namespace MagicScepter.UI
       }
     }
 
-    private static void OpenConfigMenu()
+    public static void OpenConfigMenu()
     {
       Game1.exitActiveMenu();
       Game1.activeClickableMenu = new ConfigMenu();
@@ -40,7 +40,7 @@ namespace MagicScepter.UI
       var color = Color.White * alpha;
 
       base.draw(b, color, ModConstants.DefaultLayerDepth);
-      
+
       if (hovered)
       {
         drawAction(b, I18n.ConfigurationMenu_Title());

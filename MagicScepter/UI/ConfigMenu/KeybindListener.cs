@@ -81,7 +81,7 @@ namespace MagicScepter.UI
         .ToList()
         .FindScrollWithKeybind(sButton)
         ?.Text;
-      
+
       return text != null;
     }
 
@@ -102,13 +102,22 @@ namespace MagicScepter.UI
 
     public override void receiveKeyPress(Keys key)
     {
-      var button = key.ToSButton();
-
       if (greyedOut || !IsListening)
         return;
 
       if (Game1.options.doesInputListContain(Game1.options.actionButton, key)
+          || Game1.options.doesInputListContain(Game1.options.useToolButton, key))
+      {
+        IsListening = true;
+        Game1.playSound("breathin");
+        GameMenu.forcePreventClose = true;
+        return;
+      }
+
+      var button = key.ToSButton();
+      if (Game1.options.doesInputListContain(Game1.options.actionButton, key)
           || Game1.options.doesInputListContain(Game1.options.useToolButton, key)
+          || Game1.options.doesInputListContain(Game1.options.journalButton, key)
           || invalidButtons.Contains(button))
       {
         GameHelper.ShowMessage(I18n.KeybindMenu_Message_InvalidKey(), MessageType.Error);

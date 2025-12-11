@@ -196,11 +196,19 @@ namespace MagicScepter.UI
 
     private void HandleUseToolButton(Keys key)
     {
-      if ((Game1.options.doesInputListContain(Game1.options.useToolButton, key)
-        || Game1.options.doesInputListContain(Game1.options.actionButton, key))
+      if (key != Keys.None
+        && (Game1.options.doesInputListContain(Game1.options.useToolButton, key) || Game1.options.doesInputListContain(Game1.options.actionButton, key))
         && TryGetSelectedScroll(out var teleportScroll))
       {
         TeleportByID(teleportScroll.ID);
+      }
+    }
+
+    private static void HandleOpenConfigMenu(Keys key)
+    {
+      if (Game1.options.SnappyMenus && Game1.options.doesInputListContain(Game1.options.journalButton, key))
+      {
+        TeleportMenuConfigButton.OpenConfigMenu();
       }
     }
 
@@ -227,14 +235,13 @@ namespace MagicScepter.UI
         currentlySnappedComponent = targetScroll;
 
         selectedID = targetScroll.ID;
-
         lastMousePos = Game1.getMousePosition();
       }
     }
 
     private void HandleKeybind(Keys key)
     {
-      if (!Context.IsMainPlayer)
+      if (!Context.IsMainPlayer || key == Keys.None)
       {
         return;
       }
@@ -276,22 +283,20 @@ namespace MagicScepter.UI
         return;
       }
 
-      var gamepadStateTS = Game1.input.GetGamePadState().ThumbSticks;
-      var rightThumbStickUsed = (double)Math.Abs(gamepadStateTS.Right.X) > 0.5 || (double)Math.Abs(gamepadStateTS.Right.Y) > 0.5;
-      var leftThumbStickUsed = (double)Math.Abs(gamepadStateTS.Left.X) > 0.5 || (double)Math.Abs(gamepadStateTS.Left.Y) > 0.5;
-
-      if (!(leftThumbStickUsed || rightThumbStickUsed))
+      if (!ThumbstickUsed().any)
       {
         return;
       }
 
-      var thumbstickPosition = rightThumbStickUsed
+      var gamepadStateTS = Game1.input.GetGamePadState().ThumbSticks;
+      var thumbstickPosition = ThumbstickUsed().right
         ? new Vector2(gamepadStateTS.Right.X, gamepadStateTS.Right.Y)
         : new Vector2(gamepadStateTS.Left.X, gamepadStateTS.Left.Y);
       thumbstickPosition.Y *= -1f;
       thumbstickPosition.Normalize();
 
       var temp = -1f;
+      var tempID = string.Empty;
       scrollComponents.ForEach(s =>
       {
         var scrollCenterPosition = new Vector2(
@@ -302,9 +307,29 @@ namespace MagicScepter.UI
         if ((double)dot > (double)temp)
         {
           temp = dot;
-          selectedID = s.ID;
+          tempID = s.ID;
         }
       });
+
+      if (tempID.IsNotEmpty())
+      {
+        selectedID = tempID;
+
+        if (TryGetSelectedScrollComponent(out var scroll))
+        {
+          currentlySnappedComponent = scroll;
+          base.snapCursorToCurrentSnappedComponent();
+        }
+      }
+    }
+
+    private static (bool any, bool left, bool right) ThumbstickUsed()
+    {
+      var gamepadStateTS = Game1.input.GetGamePadState().ThumbSticks;
+      var rightThumbStickUsed = (double)Math.Abs(gamepadStateTS.Right.X) > 0.5 || (double)Math.Abs(gamepadStateTS.Right.Y) > 0.5;
+      var leftThumbStickUsed = (double)Math.Abs(gamepadStateTS.Left.X) > 0.5 || (double)Math.Abs(gamepadStateTS.Left.Y) > 0.5;
+
+      return (leftThumbStickUsed || rightThumbStickUsed, leftThumbStickUsed, rightThumbStickUsed);
     }
 
     public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
@@ -359,10 +384,15 @@ namespace MagicScepter.UI
         return;
       }
 
+      HandleOpenConfigMenu(key);
       HandleKeybind(key);
       HandleUseToolButton(key);
       HandleMoveKeys(key);
-      base.receiveKeyPress(key);
+
+      if (!ThumbstickUsed().any)
+      {
+        base.receiveKeyPress(key);
+      }
     }
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -380,7 +410,7 @@ namespace MagicScepter.UI
 
     public override void receiveScrollWheelAction(int direction)
     {
-      if (previewMode)
+      if (previewMode || Game1.options.SnappyMenus)
       {
         return;
       }
@@ -400,15 +430,6 @@ namespace MagicScepter.UI
       var y = positionHoverTextOnTop ? yPositionOnScreen - 60 - scrollLabelOffset : yPositionOnScreen + height + scrollLabelOffset;
       var x = xPositionOnScreen + width / 2;
       scrollLabelComponent.UpdatePosition(x, y);
-
-      if (!previewMode && TryGetSelectedScrollComponent(out var scroll))
-      {
-        currentlySnappedComponent = scroll;
-        if (Game1.options.SnappyMenus)
-        {
-          base.snapCursorToCurrentSnappedComponent();
-        }
-      }
     }
 
     public override void draw(SpriteBatch b)
