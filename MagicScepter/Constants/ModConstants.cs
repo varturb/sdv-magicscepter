@@ -12,6 +12,7 @@ namespace MagicScepter.Constants
     public const string TeleportBackScrollID = "MagicScepter_TeleportBack";
     public const string EastScarpFarmLocation = "EastScarp_MeadowFarm";
     public const string RidgesideFarmLocation = "Custom_Ridgeside_SummitFarm";
+    public const string GrampletonFieldsLocation = "Custom_GrampletonFields";
     public const string MiniObeliskObjectName = "Mini-Obelisk";
     public const string IslandFarmID = "MagicScepter_IslandFarm";
     public const string PlaySound = "throw";

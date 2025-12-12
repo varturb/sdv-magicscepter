@@ -15,6 +15,7 @@ namespace MagicScepter.Mods
         SupportedMod.StardewValleyExpanded => IsModLoaded("FlashShifter.SVECode"),
         SupportedMod.GenericModConfigMenu => IsModLoaded("spacechase0.GenericModConfigMenu"),
         SupportedMod.PelicanTownObelisk => IsModLoaded("Tikamin557.CP.PelicanTownObelisk_NEW"),
+        SupportedMod.GrampFields => IsModLoaded("flashshifter.GrampletonFields"),
         SupportedMod.GrampFieldsWarp => IsModLoaded("lamplight.GrampFieldsWarp"),
         SupportedMod.ChaosObelisk => IsModLoaded("TheSamePlant.ChaosObelisk_ChaosObelisk"),
         SupportedMod.DarkClub => IsModLoaded("simezi21.Dark_Club_CP_Furniture"),

@@ -28,6 +28,12 @@ namespace MagicScepter.Helpers
           if (building != null) return building;
         }
 
+        if (ModManager.IsModLoaded(SupportedMod.GrampFields))
+        {
+          building = Game1.getLocationFromName(ModConstants.GrampletonFieldsLocation).buildings.FirstOrDefault(building => building.buildingType.Value == name);
+          if (building != null) return building;
+        }
+
         return null;
       }
       catch
