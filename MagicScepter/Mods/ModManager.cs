@@ -21,6 +21,7 @@ namespace MagicScepter.Mods
         SupportedMod.DarkClub => IsModLoaded("simezi21.Dark_Club_CP_Furniture"),
         SupportedMod.Lilybrook => IsModLoaded("8BitAlien.Lilybrook"),
         SupportedMod.SunberryVillage => IsModLoaded("skellady.SBVCP"),
+        SupportedMod.AuroraVineyard => IsModLoaded("jennajuffuffles.vineyardtravelpackage"),
         _ => false,
       };
     }

@@ -16,6 +16,7 @@ namespace MagicScepter.Mods
     ChaosObelisk,
     DarkClub,
     Lilybrook,
-    SunberryVillage
+    SunberryVillage,
+    AuroraVineyard
   }
 }

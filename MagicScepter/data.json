@@ -485,15 +485,36 @@
     }
   },
   {
-    "ID": "MagicScepter_TeleportBack",
+    "ID": "MagicScepter_AuroraVineyard",
     "Order": 20,
-    "TranslationKey": "teleport-scroll.teleport-back",
+    "TranslationKey": "teleport-scroll.aurora-vineyard",
     "SpriteOffset": 1344,
     "Action": {
       "Do": {
-        "Type": "TeleportBack"        
+        "Type": "Obelisk",
+        "Name": "Aurora Vineyard Obelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "jennajuffuffles.vineyardtravelpackage"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "Aurora Vineyard Obelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "MagicScepter_TeleportBack",
+    "Order": 21,
+    "TranslationKey": "teleport-scroll.teleport-back",
+    "SpriteOffset": 1408,
+    "Action": {
+      "Do": {
+        "Type": "TeleportBack"
       }
     }
   }
 ]
-
