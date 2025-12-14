@@ -10,13 +10,14 @@ using MagicScepter.Tools;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Locations;
 
 namespace MagicScepter.Helpers
 {
   public static class TeleportHelper
   {
-    public static bool CanTeleport(List<ActionWhen> whenList)
+    public static bool CanTeleport(List<ActionWhen> whenList, string scrollID = null)
     {
       if (whenList == null)
       {
@@ -25,7 +26,7 @@ namespace MagicScepter.Helpers
 
       foreach (var when in whenList)
       {
-        if (!HandleWhen(when))
+        if (!HandleWhen(when, scrollID))
         {
           return false;
         }
@@ -34,27 +35,37 @@ namespace MagicScepter.Helpers
       return true;
     }
 
-    public static void Teleport(ActionDo @do)
+    public static void Teleport(ActionDo @do, string scrollID)
     {
-      HandleDo(@do);
+      HandleDo(@do, scrollID);
     }
 
-    private static bool HandleWhen(ActionWhen when)
+    private static bool HandleWhen(ActionWhen when, string scrollID)
     {
+      var isMemory = false;
+      if (ModUtility.Config.MemoryMode && scrollID != null)
+      {
+        var memoryList = ModDataHelper.GetMemorySaveData();
+        if (memoryList.Contains(scrollID))
+        {
+          isMemory = true;
+        }
+      }
+
       return when.Type switch
       {
-        ActionWhenType.Obelisk => CanTeleportUsingObelisk(when.Is),
-        ActionWhenType.IslandObelisk => HasIslandObelisk(when.Is),
+        ActionWhenType.Obelisk => isMemory || CanTeleportUsingObelisk(when.Is),
+        ActionWhenType.IslandObelisk => isMemory || HasIslandObelisk(when.Is) ,
         ActionWhenType.MiniObelisk => HasMiniObelisk(when.Is),
         ActionWhenType.MultipleMiniObelisk => MultipleMiniObelisks.CanTeleport(),
         ActionWhenType.Mod => when.Is != null ? IsModLoaded(when.Is) : !IsModLoaded(when.IsNot),
-        ActionWhenType.Quest => IsQuestCompleted(when.Is),
-        ActionWhenType.Event => IsEventSeen(when.Is),
+        ActionWhenType.Quest => isMemory || IsQuestCompleted(when.Is) ,
+        ActionWhenType.Event => isMemory || IsEventSeen(when.Is) ,
         _ => false,
       };
     }
 
-    private static void HandleDo(ActionDo @do)
+    private static void HandleDo(ActionDo @do, string scrollID)
     {
       if (TeleportBackManager.IsTeleportBackEnabled() && @do.Type != ActionDoType.TeleportBack)
       {
@@ -68,9 +79,11 @@ namespace MagicScepter.Helpers
           break;
         case ActionDoType.Teleport:
           TeleportUsingWand(@do.Location, @do.Point.X, @do.Point.Y);
+          ModDataHelper.UpdateMemorySaveData(scrollID);
           break;
         case ActionDoType.Obelisk:
           TeleportUsingObelisk(@do.Name);
+          ModDataHelper.UpdateMemorySaveData(scrollID);
           break;
         case ActionDoType.MiniObelisk:
           TeleportUsingMiniObelisk(@do.Location, @do.Point.X, @do.Point.Y);
@@ -148,8 +161,8 @@ namespace MagicScepter.Helpers
 
     private static void TeleportUsingObelisk(string obeliskName)
     {
-      var obelisk = LocationHelper.FindBuilding(obeliskName);
-      obelisk?.doAction(new Vector2(obelisk.tileX.Value, obelisk.tileY.Value), Game1.player);
+      var obelisk = new Building(obeliskName, new Vector2(-1, -1));
+      obelisk.doAction(new Vector2(-1, -1), Game1.player);
     }
 
     private static void TeleportUsingMiniObelisk(string location, int x, int y)

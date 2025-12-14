@@ -32,7 +32,7 @@ namespace MagicScepter.Models
         DefaultText = TranslationHelper.Get(data.TranslationKey);
         Text = saveEntry?.Name.DefaultIfEmpty(DefaultText) ?? DefaultText;
         Hidden = ActionDoWhen.Do.Type != ActionDoType.Farm && (saveEntry?.Hidden ?? false);
-        CanTeleport = TeleportHelper.CanTeleport(ActionDoWhen.When);
+        CanTeleport = TeleportHelper.CanTeleport(ActionDoWhen.When, data.ID);
         Keybind = saveEntry?.Keybind.MapToSButton() ?? SButton.None;
       }
     }
@@ -41,7 +41,7 @@ namespace MagicScepter.Models
     {
       if (CanTeleport)
       {
-        TeleportHelper.Teleport(ActionDoWhen.Do);
+        TeleportHelper.Teleport(ActionDoWhen.Do, ID);
       }
     }
   }

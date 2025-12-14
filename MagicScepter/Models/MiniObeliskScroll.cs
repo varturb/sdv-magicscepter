@@ -25,9 +25,7 @@ namespace MagicScepter.Models
 
     public static void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
     {
-      var shouldUpdateSaveData = e.Added.Concat(e.Removed)
-        .Where(x => x.Value.Name == ModConstants.MiniObeliskObjectName)
-        .Any();
+      var shouldUpdateSaveData = e.Added.Concat(e.Removed).Any(x => x.Value.Name == ModConstants.MiniObeliskObjectName);
       if (shouldUpdateSaveData)
       {
         ModDataHelper.UpdateSaveData();

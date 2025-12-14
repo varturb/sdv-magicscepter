@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MagicScepter.Constants;
@@ -12,23 +13,42 @@ namespace MagicScepter.Helpers
 {
   public static class ModDataHelper
   {
-    private static readonly string saveDateKey = ModConstants.ConfigurationSaveKey;
+    private static readonly string configSaveDataKey = ModConstants.ConfigurationSaveKey;
+    private static readonly string memorySaveDataKey = ModConstants.MemorySaveDataKey;
 
     public static List<SaveDataEntry> GetSaveData()
     {
       try
       {
-        if (Context.IsMainPlayer && !Game1.player.modData.ContainsKey(saveDateKey))
+        if (Context.IsMainPlayer && !Game1.player.modData.ContainsKey(configSaveDataKey))
         {
-          Game1.player.modData.Add(saveDateKey, string.Empty);
+          Game1.player.modData.Add(configSaveDataKey, string.Empty);
         }
 
-        var entires = JsonConvert.DeserializeObject<List<SaveDataEntry>>(Game1.MasterPlayer.modData[saveDateKey]);
+        var entires = JsonConvert.DeserializeObject<List<SaveDataEntry>>(Game1.MasterPlayer.modData[configSaveDataKey]);
         return entires ?? new List<SaveDataEntry>();
       }
       catch
       {
         return new List<SaveDataEntry>();
+      }
+    }
+
+    public static List<string> GetMemorySaveData()
+    {
+      try
+      {
+        if (Context.IsMainPlayer && !Game1.player.modData.ContainsKey(memorySaveDataKey))
+        {
+          Game1.player.modData.Add(memorySaveDataKey, string.Empty);
+        }
+
+        var memoryList = JsonConvert.DeserializeObject<List<string>>(Game1.player.modData[memorySaveDataKey]);
+        return memoryList ?? new List<string>();
+      }
+      catch
+      {
+        return new List<string>();
       }
     }
 
@@ -43,13 +63,13 @@ namespace MagicScepter.Helpers
       if (!Context.IsMainPlayer)
         return;
 
-      if (!Game1.player.modData.ContainsKey(saveDateKey))
+      if (!Game1.player.modData.ContainsKey(configSaveDataKey))
       {
-        Game1.player.modData.Add(saveDateKey, string.Empty);
+        Game1.player.modData.Add(configSaveDataKey, string.Empty);
       }
 
       var saveData = GetEntriesToSave(new());
-      Game1.player.modData[saveDateKey] = JsonConvert.SerializeObject(saveData);
+      Game1.player.modData[configSaveDataKey] = JsonConvert.SerializeObject(saveData);
     }
 
     public static void UpdateSaveData(SaveDataEntry entry)
@@ -57,13 +77,13 @@ namespace MagicScepter.Helpers
       if (!Context.IsMainPlayer)
         return;
 
-      if (!Game1.player.modData.ContainsKey(saveDateKey))
+      if (!Game1.player.modData.ContainsKey(configSaveDataKey))
       {
-        Game1.player.modData.Add(saveDateKey, string.Empty);
+        Game1.player.modData.Add(configSaveDataKey, string.Empty);
       }
 
       var saveData = GetEntriesToSave(new() { entry });
-      Game1.player.modData[saveDateKey] = JsonConvert.SerializeObject(saveData);
+      Game1.player.modData[configSaveDataKey] = JsonConvert.SerializeObject(saveData);
     }
 
     public static void UpdateSaveData(List<SaveDataEntry> entriesToSave)
@@ -71,18 +91,35 @@ namespace MagicScepter.Helpers
       if (!Context.IsMainPlayer)
         return;
 
-      if (!Game1.player.modData.ContainsKey(saveDateKey))
+      if (!Game1.player.modData.ContainsKey(configSaveDataKey))
       {
-        Game1.player.modData.Add(saveDateKey, string.Empty);
+        Game1.player.modData.Add(configSaveDataKey, string.Empty);
       }
 
       var saveData = GetEntriesToSave(entriesToSave);
-      Game1.player.modData[saveDateKey] = JsonConvert.SerializeObject(saveData);
+      Game1.player.modData[configSaveDataKey] = JsonConvert.SerializeObject(saveData);
+    }
+
+    public static void UpdateMemorySaveData(string scrollID)
+    {
+      if (!Context.IsMainPlayer)
+        return;
+
+      var memoryList = new List<string>();
+      try
+      {
+        memoryList = JsonConvert.DeserializeObject<List<string>>(Game1.player.modData[memorySaveDataKey]) ?? new List<string>();
+      }
+      catch { }
+
+      memoryList.Add(scrollID);
+      memoryList = memoryList.Distinct().ToList();
+      Game1.player.modData[memorySaveDataKey] = JsonConvert.SerializeObject(memoryList);
     }
 
     public static void RestoreConfiguraiton()
     {
-      Game1.player.modData[saveDateKey] = string.Empty;
+      Game1.player.modData[configSaveDataKey] = string.Empty;
     }
 
     public static void RestoreKeybinds()
@@ -92,7 +129,7 @@ namespace MagicScepter.Helpers
       {
         entry.Keybind = null;
       }
-      Game1.player.modData[saveDateKey] = JsonConvert.SerializeObject(entires);
+      Game1.player.modData[configSaveDataKey] = JsonConvert.SerializeObject(entires);
     }
 
     public static void RestoreSettings()
@@ -104,6 +141,12 @@ namespace MagicScepter.Helpers
     public static void SetMenuType(bool value)
     {
       ModUtility.Config.UseOldDialogMenu = value;
+      ModUtility.Helper.WriteConfig(ModUtility.Config);
+    }
+
+    public static void SetMemoryMode(bool value)
+    {
+      ModUtility.Config.MemoryMode = value;
       ModUtility.Helper.WriteConfig(ModUtility.Config);
     }
 

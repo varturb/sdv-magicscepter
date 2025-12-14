@@ -28,6 +28,13 @@ namespace MagicScepter.Mods.GenericModConfigMenu
         setValue: value => ModUtility.Config.UseOldDialogMenu = value
       );
 
+      configMenu.AddBoolOption(
+        mod: ModUtility.Manifest,
+        name: () => I18n.SettingsMenu_Option_MemoryMode_Label(),
+        getValue: () => ModUtility.Config.MemoryMode,
+        setValue: value => ModUtility.Config.MemoryMode = value
+      );
+
       configMenu.AddTextOption(
         mod: ModUtility.Manifest,
         name: () => I18n.TeleportMenuSettings_Theme(),

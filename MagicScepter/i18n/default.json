@@ -32,6 +32,7 @@
   
   "settings-menu.title": "Settings",
   "settings-menu.option.old-dialog.label": "Use Old Dialog Menu",
+  "settings-menu.option.memory-mode.label": "Memory Mode",
   "settings-menu.option.adjust-teleport-menu.label": "Adjust Teleport Menu",
   "settings-menu.option.reset-settings.label": "Reset Settings",
   "settings-menu.option.reset-settings.message": "Settings has been reset",

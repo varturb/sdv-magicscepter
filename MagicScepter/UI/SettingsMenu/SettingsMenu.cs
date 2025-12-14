@@ -15,13 +15,15 @@ namespace MagicScepter.UI
     // private OptionComponent resetSettingsOption;
     private OptionComponent resetKeybindsOption;
     private CheckboxComponent menuTypeCheckbox;
+    private CheckboxComponent memoryModeCheckbox;
     private const int configPageButtonID = 100;
     private const int settingsPageButtonID = 101;
     private const int menuTypeCheckboxID = 102;
-    private const int resetConfigurationOptionID = 103;
-    private const int resetKeybindsOptionID = 104;
+    private const int memoryModeCheckboxID = 104;
+    private const int resetConfigurationOptionID = 105;
+    private const int resetKeybindsOptionID = 106;
     // private const int resetSettingsOptionID = 105;
-    private const int adjustTeleportMenuOptionID = 106;
+    private const int adjustTeleportMenuOptionID = 107;
     private readonly Texture2D spritesheetTexture;
     private string hoverText = string.Empty;
 
@@ -85,6 +87,20 @@ namespace MagicScepter.UI
       menuTypeCheckbox.SetupIDs(
         ID: menuTypeCheckboxID,
         upID: upperRightCloseButton_ID,
+        downID: memoryModeCheckboxID,
+        leftID: configPageButtonID,
+        rightID: upperRightCloseButton_ID
+      );
+
+      memoryModeCheckbox = new CheckboxComponent(
+        new(xPositionOnScreen + 24, yPositionOnScreen + 32 + 64 * slot++, width - 48, 64),
+        SetMemoryMode,
+        I18n.SettingsMenu_Option_MemoryMode_Label(),
+        ModUtility.Config.MemoryMode
+      );
+      memoryModeCheckbox.SetupIDs(
+        ID: memoryModeCheckboxID,
+        upID: menuTypeCheckboxID,
         downID: adjustTeleportMenuOptionID,
         leftID: configPageButtonID,
         rightID: upperRightCloseButton_ID
@@ -97,7 +113,7 @@ namespace MagicScepter.UI
       );
       adjustTeleportMenuOption.SetupIDs(
         ID: adjustTeleportMenuOptionID,
-        upID: menuTypeCheckboxID,
+        upID: memoryModeCheckboxID,
         downID: resetConfigurationOptionID,
         leftID: configPageButtonID,
         rightID: -1
@@ -156,6 +172,11 @@ namespace MagicScepter.UI
       ModDataHelper.SetMenuType(value);
     }
 
+    private void SetMemoryMode(bool value)
+    {
+      ModDataHelper.SetMemoryMode(value);
+    }
+
     private void OpenTeleportMenuSettings()
     {
       exitThisMenu();
@@ -201,6 +222,7 @@ namespace MagicScepter.UI
       allClickableComponents.Add(configPageButon);
       allClickableComponents.Add(settingsPageButon);
       allClickableComponents.Add(menuTypeCheckbox.ClickableComponent);
+      allClickableComponents.Add(memoryModeCheckbox.ClickableComponent);
       allClickableComponents.Add(adjustTeleportMenuOption.ClickableComponent);
       allClickableComponents.Add(resetConfigurationOption.ClickableComponent);
       allClickableComponents.Add(resetKeybindsOption.ClickableComponent);
@@ -223,6 +245,7 @@ namespace MagicScepter.UI
       }
 
       menuTypeCheckbox.receiveLeftClick(x, y);
+      memoryModeCheckbox.receiveLeftClick(x, y);
       adjustTeleportMenuOption.receiveLeftClick(x, y);
       resetConfigurationOption.receiveLeftClick(x, y);
       resetKeybindsOption.receiveLeftClick(x, y);
@@ -234,6 +257,7 @@ namespace MagicScepter.UI
     public override void performHoverAction(int x, int y)
     {
       menuTypeCheckbox.performHoverAction(x, y);
+      memoryModeCheckbox.performHoverAction(x, y);
       adjustTeleportMenuOption.performHoverAction(x, y);
       resetConfigurationOption.performHoverAction(x, y);
       resetKeybindsOption.performHoverAction(x, y);
@@ -276,6 +300,7 @@ namespace MagicScepter.UI
 
       // draw options
       menuTypeCheckbox.draw(b);
+      memoryModeCheckbox.draw(b);
       adjustTeleportMenuOption.draw(b);
       resetConfigurationOption.draw(b);
       resetKeybindsOption.draw(b);

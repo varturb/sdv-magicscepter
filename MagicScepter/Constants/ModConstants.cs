@@ -6,6 +6,7 @@ namespace MagicScepter.Constants
   {
     public static readonly string ConfigurationSaveKey = $"{ModUtility.Manifest.UniqueID}/configuration";
     public static readonly string SettingsSaveKey = $"{ModUtility.Manifest.UniqueID}/settings";
+    public static readonly string MemorySaveDataKey = $"{ModUtility.Manifest.UniqueID}/memory";
     public const string EmoteMenuTexturePath = "LooseSprites\\EmoteMenu";
     public const string MiniObeliskNeedsSpaceMessagePath = "Strings\\StringsFromCSFiles:MiniObelisk_NeedsSpace";
     public const string MiniObeliskID = "MagicScepter_MiniObelisk";

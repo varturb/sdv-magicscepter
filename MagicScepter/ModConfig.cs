@@ -5,6 +5,7 @@ namespace MagicScepter
   public class ModConfig
   {
     public bool UseOldDialogMenu { get; set; } = false;
+    public bool MemoryMode { get; set; } = false;
     public string Theme { get; set; } = ModConstants.ThemeDefault;
     public bool PlaySound { get; set; } = true;
     public string Rotation { get; set; } = ModConstants.RotationCounterclockwise;
