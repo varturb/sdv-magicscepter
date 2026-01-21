@@ -17,6 +17,7 @@ namespace MagicScepter.Mods
     DarkClub,
     Lilybrook,
     SunberryVillage,
-    AuroraVineyard
+    AuroraVineyard,
+    FriendableMRQi
   }
 }

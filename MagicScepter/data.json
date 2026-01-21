@@ -507,10 +507,32 @@
     }
   },
   {
-    "ID": "MagicScepter_TeleportBack",
+    "ID": "MagicScepter_FriendableMRQi",
     "Order": 21,
-    "TranslationKey": "teleport-scroll.teleport-back",
+    "TranslationKey": "teleport-scroll.friendable-mrqi",
     "SpriteOffset": 1408,
+    "Action": {
+      "Do": {
+        "Type": "Obelisk",
+        "Name": "AngelOfStars.Mrqifriendable_QiObelisk"
+      },
+      "When": [
+        {
+          "Type": "Mod",
+          "Is": "AngelOfStars.Mrqifriendable"
+        },
+        {
+          "Type": "Obelisk",
+          "Is": "AngelOfStars.Mrqifriendable_QiObelisk"
+        }
+      ]
+    }
+  },
+  {
+    "ID": "MagicScepter_TeleportBack",
+    "Order": 22,
+    "TranslationKey": "teleport-scroll.teleport-back",
+    "SpriteOffset": 1472,
     "Action": {
       "Do": {
         "Type": "TeleportBack"

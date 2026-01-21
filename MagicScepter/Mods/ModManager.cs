@@ -22,6 +22,7 @@ namespace MagicScepter.Mods
         SupportedMod.Lilybrook => IsModLoaded("8BitAlien.Lilybrook"),
         SupportedMod.SunberryVillage => IsModLoaded("skellady.SBVCP"),
         SupportedMod.AuroraVineyard => IsModLoaded("jennajuffuffles.vineyardtravelpackage"),
+        SupportedMod.FriendableMRQi => IsModLoaded("AngelOfStars.Mrqifriendable"),
         _ => false,
       };
     }
