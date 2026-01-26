@@ -1,7 +1,7 @@
 ﻿{
   "Name": "MagicScepter",
   "Author": "not4bene",
-  "Version": "2.0.16",
+  "Version": "2.0.17",
   "Description": "Makes your Return Scepter worth its price",
   "UniqueID": "not4bene.MagicScepter",
   "EntryDll": "MagicScepter.dll",
