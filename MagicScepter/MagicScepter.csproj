@@ -30,6 +30,7 @@
     <Compile Include="Helpers/ExtensionsMethods.cs" />
     <Compile Include="Helpers/TranslationHelper.cs" />
     <Compile Include="Helpers/GameHelper.cs" />
+    <Compile Include="Helpers/HorseHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models/MessageType.cs" />
@@ -54,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches/WandDoFunctionPatch.cs" />
+    <Compile Include="Patches/GameOnFadeToBlackCompletePatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers/TeleportBackManager.cs" />

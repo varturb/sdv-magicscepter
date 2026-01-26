@@ -8,6 +8,7 @@ using MagicScepter.Mods.GenericModConfigMenu;
 using MagicScepter.Multiplayer;
 using MagicScepter.Patches;
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Tools;
 
 namespace MagicScepter
@@ -24,6 +25,10 @@ namespace MagicScepter
         harmony.Patch(
           original: AccessTools.Method(typeof(Wand), nameof(Wand.DoFunction)),
           prefix: new HarmonyMethod(typeof(WandDoFunctionPatch), nameof(WandDoFunctionPatch.WandDoFunction_Prefix))
+        );
+        harmony.Patch(
+          original: AccessTools.Method(typeof(Game1), "onFadeToBlackComplete"),
+          postfix: new HarmonyMethod(typeof(GameOnFadeToBlackCompletePatch), nameof(GameOnFadeToBlackCompletePatch.GameOnFadeToBlackComplete_Postfix))
         );
       }
       catch (Exception e)

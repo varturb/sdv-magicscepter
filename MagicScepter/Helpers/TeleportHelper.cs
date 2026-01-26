@@ -55,12 +55,12 @@ namespace MagicScepter.Helpers
       return when.Type switch
       {
         ActionWhenType.Obelisk => isMemory || CanTeleportUsingObelisk(when.Is),
-        ActionWhenType.IslandObelisk => isMemory || HasIslandObelisk(when.Is) ,
+        ActionWhenType.IslandObelisk => isMemory || HasIslandObelisk(when.Is),
         ActionWhenType.MiniObelisk => HasMiniObelisk(when.Is),
         ActionWhenType.MultipleMiniObelisk => MultipleMiniObelisks.CanTeleport(),
         ActionWhenType.Mod => when.Is != null ? IsModLoaded(when.Is) : !IsModLoaded(when.IsNot),
-        ActionWhenType.Quest => isMemory || IsQuestCompleted(when.Is) ,
-        ActionWhenType.Event => isMemory || IsEventSeen(when.Is) ,
+        ActionWhenType.Quest => isMemory || IsQuestCompleted(when.Is),
+        ActionWhenType.Event => isMemory || IsEventSeen(when.Is),
         _ => false,
       };
     }
@@ -71,6 +71,8 @@ namespace MagicScepter.Helpers
       {
         TeleportBackManager.SetCurrentLocationAsLast();
       }
+
+      HorseHelper.BeforeTryWarpHorse();
 
       switch (@do.Type)
       {
